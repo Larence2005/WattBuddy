@@ -2,37 +2,26 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
-from streamlit_navigation_bar import st_navbar
 
-st.set_page_config(initial_sidebar_state="collapsed")
+# Initialize session state for page selection
+if 'page_selection' not in st.session_state:
+    st.session_state.page_selection = 'About'
 
-pages = ["Home", "Library", "Tutorials", "Development", "Download"]
-styles = {
-    "nav": {
-        "background-color": "rgb(123, 209, 146)",
-    },
-    "div": {
-        "max-width": "32rem",
-    },
-    "span": {
-        "border-radius": "0.5rem",
-        "color": "rgb(49, 51, 63)",
-        "margin": "0 0.125rem",
-        "padding": "0.4375rem 0.625rem",
-    },
-    "active": {
-        "background-color": "rgba(255, 255, 255, 0.25)",
-    },
-    "hover": {
-        "background-color": "rgba(255, 255, 255, 0.35)",
-    },
-}
+def set_page_selection(page):
+    st.session_state.page_selection = page
 
-page = st_navbar(pages, styles=styles)
-st.write(page)
 
+# Sidebar navigation
 with st.sidebar:
-    st.write("Sidebar")
+    st.title("Navigation")
+    if st.button("About", use_container_width=True, on_click=set_page_selection, args=("About",)):
+        pass  # Selection handled by callback
+
+    if st.button("Budget and Pricing", use_container_width=True, on_click=set_page_selection, args=("Budget and Pricing",)):
+        pass  # Selection handled by callback
+
+    if st.button("Suggest Appliances", use_container_width=True, on_click=set_page_selection, args=("Suggest Appliances",)):
+        pass  # Selection handled by callback
 
 
 # Home page content
@@ -66,23 +55,33 @@ if st.session_state.page_selection == "Budget and Pricing":
                 })
                 st.success(f"{appliance_name} added successfully!")
 
+    
+    # Check if appliances list is initialized and not empty
+    if "appliances" in st.session_state and st.session_state["appliances"]:
+        df = pd.DataFrame(st.session_state["appliances"])  # Create DataFrame from session state
     # Display appliances
     if st.session_state["appliances"]:
         st.subheader("Appliance List")
         df = pd.DataFrame(st.session_state["appliances"])
         st.dataframe(df)
-    
+
+        # Add remove buttons
         # Add remove buttons with a flag to catch removal action
         for idx, row in df.iterrows():
             # Use a unique key for each button based on index
             remove_button = st.button(f"Remove {row['Name']}", key=f"remove_{idx}")
             
             if remove_button:
+                # Safely remove the appliance
+                st.session_state["appliances"] = [
+                    appliance for i, appliance in enumerate(st.session_state["appliances"]) if i != idx
+                ]
                 # Remove the appliance from the session state without rerun
                 st.session_state["appliances"].pop(idx)  # Remove the appliance from the list
                 st.session_state['removed_appliance'] = row['Name']  # Store the removed appliance's name
                 st.success(f"Appliance '{row['Name']}' removed!")
-            
+                st.experimental_rerun()  # Rerun the script to update the UI
+
 
         # Total consumption and cost
         total_cost = df["Cost (Php)"].sum()
@@ -149,7 +148,7 @@ if st.session_state.page_selection == "Budget and Pricing":
         # Predict suggested hours using the trained Linear Regression model
         daily_budget = budget / 30  # Daily budget based on total budget
         cost_per_hour = model.coef_[0][0]  # Coefficient from the Linear Regression model (cost per hour)
-        
+
         # Suggest hours based on budget and cost relationship
         df["Hours Suggested"] = df.apply(
             lambda row: 0 if classification in ["low", "balanced"] else min(
@@ -160,13 +159,13 @@ if st.session_state.page_selection == "Budget and Pricing":
         )
 
 
-        
+
         # Display the updated table with suggested hours
         st.write("\n")
         st.write("\n### Usage Suggestions:")
         st.dataframe(df[["Name", "Hours Used", "Cost (Php)", "Hours Suggested"]])
 
-        
+
     else:
         st.info("Add appliances to calculate and analyze.")
 
