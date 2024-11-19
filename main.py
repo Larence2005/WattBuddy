@@ -66,11 +66,11 @@ if st.session_state.page_selection == "Budget and Pricing":
             # Use a unique key for each button based on index
             remove_button = st.button(f"Remove {row['Name']}", key=f"remove_{idx}")
             if remove_button:
-                # Remove the appliance from the session state
+                # Mark the appliance for removal (without rerun)
                 st.session_state["appliances"].pop(idx)
-                # Once appliance is removed, update the table and reflect the change immediately
-                st.experimental_rerun()  # This ensures the update is displayed immediately
-
+                # Use session_state to track the appliance removal (this will force a UI update)
+                st.session_state['removed_appliance'] = row['Name']
+                st.experimental_rerun()  # Trigger rerun to update the UI after removal
 
 
         # Total consumption and cost
