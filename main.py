@@ -30,7 +30,7 @@ if st.session_state.page_selection == "Budget and Pricing":
     st.title("Budget and Pricing")
     st.write('\n')
     budget = st.number_input("Enter your budget in Php:", min_value=0.0, value=1000.0, step=50.0)
-    price_per_kwh = st.number_input("Enter Meralco's price per kWh in Php:", min_value=0.0, value=10.0, step=0.1)
+    price_per_kwh = st.number_input("Enter Meralco's price per kWh in Php:", min_value=0.0, value=11.8569, step=0.1)
     st.write('\n')
 
     # Add appliances section
@@ -123,7 +123,7 @@ if st.session_state.page_selection == "Budget and Pricing":
         ax.axis("equal")
         st.pyplot(fig)
 
-                # Predict suggested hours based on budget
+        # Predict suggested hours based on budget
         df["Hours Suggested"] = df.apply(
             lambda row: max(
                 (budget / monthly_cost) * row["Cost (Php)"] / (row["Wattage (W)"] * price_per_kwh / 1000),
