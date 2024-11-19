@@ -10,9 +10,6 @@ if 'page_selection' not in st.session_state:
 def set_page_selection(page):
     st.session_state.page_selection = page
 
-# App title
-st.subheader("Your Electricity Advisor")
-st.write('\n')
 
 # Sidebar navigation
 with st.sidebar:
@@ -147,7 +144,9 @@ if st.session_state.page_selection == "Budget and Pricing":
 # About page content
 elif st.session_state.page_selection == "About":
     st.title("WattBuddy")
-    st.subheader("About WattBuddy")
+    st.subheader("Your Electricity Advisor")
+    st.write('\n')
+    st.header("About WattBuddy")
     st.write("""
         WattBuddy helps users manage their electricity consumption and budget. By entering the cost of electricity and 
         adding appliances, users can calculate the total cost and consumption based on their usage.
