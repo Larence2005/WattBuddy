@@ -195,6 +195,11 @@ if st.session_state.page_selection == "Budget and Pricing":
             st.write(f"  - Saved Percentage: {saved_percentage:.2f}%")
             st.write("\n")
 
+    else:
+        st.info("Add appliances to calculate and analyze.")
+
+        
+
             # Predict the target values
             y_pred = model.predict(X)
             
@@ -217,9 +222,6 @@ if st.session_state.page_selection == "Budget and Pricing":
             st.write(f"Mean Squared Error: {mse:.2f}")
             st.write(f"Root Mean Squared Error: {rmse:.2f}")
 
-
-    else:
-        st.info("Add appliances to calculate and analyze.")
 
 # About page content
 elif st.session_state.page_selection == "About":
