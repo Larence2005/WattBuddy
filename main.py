@@ -107,10 +107,10 @@ if st.session_state.page_selection == "Budget and Pricing":
 
         # Display total and monthly stats with highlighted styling
         st.write('\n')
-        st.markdown(f"### **Electric Cost (Per Day):** Php **{total_daily_cost:.2f}**")
-        st.markdown(f"### **kWh Consumption (Per Day):** **{total_daily_kwh:.2f} kWh**")
-        st.markdown(f"### **Electric Cost (Monthly):** Php **{total_monthly_cost:.2f}**")
-        st.markdown(f"### **kWh Consumption (Monthly):** **{monthly_kwh:.2f} kWh**")
+        st.markdown(f"**Electric Cost (Per Day):** Php **{total_daily_cost:.2f}**")
+        st.markdown(f"**kWh Consumption (Per Day):** **{total_daily_kwh:.2f} kWh**")
+        st.markdown(f"**Electric Cost (Monthly):** Php **{total_monthly_cost:.2f}**")
+        st.markdown(f"**kWh Consumption (Monthly):** **{monthly_kwh:.2f} kWh**")
 
         # Cost status (monthly cost vs. budget)
         if total_monthly_cost <= budget * 0.7:
