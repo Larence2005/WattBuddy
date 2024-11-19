@@ -73,52 +73,6 @@ if st.session_state["appliances"]:
             st.success(f"Appliance '{row['Name']}' removed!")
 
 
-        # Total consumption and cost
-        total_cost = df["Cost (Php)"].sum()
-        total_kwh = df["kWh Consumed"].sum()
-
-        # Calculate monthly values
-        monthly_cost = total_cost * 30  # Assuming 30 days in a month
-        monthly_kwh = total_kwh * 30  # Assuming usage is similar every day
-
-        # Display total and monthly stats
-        st.write('\n')
-        st.write(f"#### Electric Cost (Per Day): Php {total_cost:.2f}")
-        st.write(f"#### kWh Consumption (Per Day): {total_kwh:.2f} kWh")
-        st.write(f"#### Electric Cost (Monthly): Php {monthly_cost:.2f}")
-        st.write(f"#### kWh Consumption (Monthly): {monthly_kwh:.2f} kWh")
-
-        # Cost status (monthly cost vs. budget)
-        if monthly_cost <= budget * 0.7:
-            st.success("Your monthly electric cost is LOW!")
-            classification = "low"
-        elif monthly_cost <= budget:
-            st.warning("Your monthly electric cost is BALANCED!")
-            classification = "balanced"
-        else:
-            st.error("Your monthly electric cost is HIGH!")
-            classification = "high"
-
-        # Money Saved or Loss
-        st.write('\n')
-        st.subheader("Money Saved or Loss")
-        total_monthly_loss = max(monthly_cost - budget, 0)
-        money_saved_texts = []
-
-        for idx, row in df.iterrows():
-            appliance_monthly_cost = row["Cost (Php)"] * 30
-            if classification == "high":
-                appliance_excess_ratio = appliance_monthly_cost / monthly_cost
-                percentage_lost = appliance_excess_ratio * 100
-                money_saved_texts.append(f"{row['Name']}: Reduce usage! Potential loss: {percentage_lost:.2f}%")
-            else:
-                appliance_cost_ratio = appliance_monthly_cost / monthly_cost
-                money_saved_percentage = appliance_cost_ratio * 100
-                money_saved_texts.append(f"{row['Name']}: Money saved: {money_saved_percentage:.2f}%")
-
-        st.write(f"**Total Monthly Loss: Php {total_monthly_loss:.2f}**")
-        for text in money_saved_texts:
-            st.write(text)
 
         # Train Linear Regression Model
         X = df["Hours Used"].values.reshape(-1, 1)  # Feature: Hours Used
