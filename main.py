@@ -160,11 +160,11 @@ if st.session_state.page_selection == "Budget and Pricing":
         daily_budget = budget / 30  # Daily budget based on total budget
         cost_per_hour = model.coef_[0][0]  # Coefficient from the Linear Regression model (cost per hour)
         
-        # Suggest hours based on budget and cost relationship
+        # Suggest hours based on budget and cost relationship using the trained model
         df["Hours Suggested"] = df.apply(
             lambda row: 0 if monthly_cost <= budget else min(
-                daily_budget / (row["Wattage (W)"] * price_per_kwh / 1000),  # Maximum hours within budget
-                model.predict([[row["Hours Used"]]])[0][0] / cost_per_hour,  # Predicted hours from the model
+                (budget / 30) / (row["Wattage (W)"] * price_per_kwh / 1000),  # Maximum hours within budget
+                model.predict([[row["Hours Used"]]])[0][0] / model.coef_[0][0],  # Predicted hours from the model
             ),
             axis=1,
         )
@@ -179,7 +179,6 @@ if st.session_state.page_selection == "Budget and Pricing":
             hours_suggested = row["Hours Suggested"]
             
             # Calculate the saved cost based on the suggested hours using the model
-            # Predict the cost for the suggested hours based on the model
             predicted_cost_for_suggested_hours = model.predict([[hours_suggested]])[0][0] if hours_suggested > 0 else 0
             saved_cost = original_cost - predicted_cost_for_suggested_hours
         
@@ -188,7 +187,6 @@ if st.session_state.page_selection == "Budget and Pricing":
             st.write(f"  - Suggested Hours: {hours_suggested:.2f} hours")
             st.write(f"  - Saved Cost: Php {saved_cost:.2f}")
             st.write("\n")
-
 
 
     else:
