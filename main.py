@@ -37,7 +37,7 @@ if st.session_state.page_selection == "Budget and Pricing":
     st.subheader("Add Appliances")
     if "appliances" not in st.session_state:
         st.session_state["appliances"] = []
-    
+
     # Form to add appliances
     with st.form("add_appliance_form"):
         appliance_name = st.text_input("Appliance Name:")
@@ -46,50 +46,46 @@ if st.session_state.page_selection == "Budget and Pricing":
         add_appliance = st.form_submit_button("Add Appliance")
         if add_appliance:
             if appliance_name and wattage and hours_used:
-                daily_cost = (wattage * hours_used / 1000) * price_per_kwh
                 st.session_state["appliances"].append({
                     "Name": appliance_name,
                     "Wattage (W)": wattage,
                     "Hours Used": hours_used,
                     "kWh Consumed": wattage * hours_used / 1000,
-                    "Cost (Php) - Daily": daily_cost,
-                    "Cost (Php) - Weekly": daily_cost * 7,
-                    "Cost (Php) - Monthly": daily_cost * 30
+                    "Cost (Php)": (wattage * hours_used / 1000) * price_per_kwh
                 })
                 st.success(f"{appliance_name} added successfully!")
-    
+
     # Display appliances
     if st.session_state["appliances"]:
         st.subheader("Appliance List")
         df = pd.DataFrame(st.session_state["appliances"])
-        
-        # Ensure the column exists before summing
-        if "Cost (Php) - Daily" in df.columns:
-            total_cost = df["Cost (Php) - Daily"].sum()
-            total_kwh = df["kWh Consumed"].sum()
-    
-            # Calculate monthly values
-            monthly_cost = total_cost * 30  # Assuming 30 days in a month
-            monthly_kwh = total_kwh * 30  # Assuming usage is similar every day
-    
-            # Display total and monthly stats
-            st.write('\n')
-            st.write(f"#### Electric Cost (Per Day): Php {total_cost:.2f}")
-            st.write(f"#### kWh Consumption (Per Day): {total_kwh:.2f} kWh")
-            st.write(f"#### Electric Cost (Monthly): Php {monthly_cost:.2f}")
-            st.write(f"#### kWh Consumption (Monthly): {monthly_kwh:.2f}")
-    
-            # Cost status (monthly cost vs. budget)
-            if monthly_cost <= budget * 0.7:
-                st.success("Your monthly electric cost is LOW!")
-                classification = "low"
-            elif monthly_cost <= budget:
-                st.warning("Your monthly electric cost is BALANCED!")
-                classification = "balanced"
-            else:
-                st.error("Your monthly electric cost is HIGH!")
-                classification = "high"
+        st.dataframe(df)
 
+        # Total consumption and cost
+        total_cost = df["Cost (Php)"].sum()
+        total_kwh = df["kWh Consumed"].sum()
+
+        # Calculate monthly values
+        monthly_cost = total_cost * 30  # Assuming 30 days in a month
+        monthly_kwh = total_kwh * 30  # Assuming usage is similar every day
+
+        # Display total and monthly stats
+        st.write('\n')
+        st.write(f"#### Electric Cost (Per Day): Php {total_cost:.2f}")
+        st.write(f"#### kWh Consumption (Per Day): {total_kwh:.2f} kWh")
+        st.write(f"#### Electric Cost (Monthly): Php {monthly_cost:.2f}")
+        st.write(f"#### kWh Consumption (Monthly): {monthly_kwh:.2f} kWh")
+
+        # Cost status (monthly cost vs. budget)
+        if monthly_cost <= budget * 0.7:
+            st.success("Your monthly electric cost is LOW!")
+            classification = "low"
+        elif monthly_cost <= budget:
+            st.warning("Your monthly electric cost is BALANCED!")
+            classification = "balanced"
+        else:
+            st.error("Your monthly electric cost is HIGH!")
+            classification = "high"
 
         # Money Saved or Loss
         st.write('\n')
@@ -165,3 +161,4 @@ elif st.session_state.page_selection == "About":
 
 elif st.session_state.page_selection == "Suggest Appliances":
     st.header("This page suggests appliances based on your budget")
+
