@@ -171,6 +171,7 @@ if st.session_state.page_selection == "Budget and Pricing":
 
         # Display the suggested hours and saved cost as a percentage in bullet points
         st.write("\n")
+        st.write("\n")
         st.write("### Usage Suggestions:")
         
         for idx, row in df.iterrows():
