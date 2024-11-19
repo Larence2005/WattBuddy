@@ -207,7 +207,21 @@ if st.session_state.page_selection == "Budget and Pricing":
             
             # Calculate Root Mean Squared Error
             rmse = mse ** 0.5
+
+            # Create polynomial features
+            poly = PolynomialFeatures(degree=2)
+            X_poly = poly.fit_transform(X)
             
+            # Train a model with polynomial features
+            model = LinearRegression()
+            model.fit(X_poly, y)
+            
+            # Predict
+            y_pred = model.predict(X_poly)
+            # Calculate R-squared again
+            r2 = r2_score(y, y_pred)
+            print(f"R-squared: {r2:.2f}")
+
             # Print the metrics
             st.write(f"R-squared: {r2:.2f}")
             st.write(f"Mean Absolute Error: {mae:.2f}")
