@@ -168,9 +168,25 @@ if st.session_state.page_selection == "Budget and Pricing":
             axis=1,
         )
 
-        # Add the suggested hours to the appliance table and display it
-        st.dataframe(df[["Name", "Hours Used", "Cost (Php)", "Hours Suggested"]])
-
+        
+        # Display the suggested hours as a bulleted list with saved cost
+        st.write("### Usage Suggestions:")
+        
+        for idx, row in df.iterrows():
+            appliance_name = row["Name"]
+            hours_used = row["Hours Used"]
+            original_cost = row["Cost (Php)"]
+            hours_suggested = row["Hours Suggested"]
+            
+            # Calculate the saved cost based on suggested hours
+            suggested_cost = (hours_suggested / hours_used) * original_cost if hours_used > 0 else 0
+            saved_cost = original_cost - suggested_cost
+        
+            st.write(f"• **{appliance_name}:**")
+            st.write(f"  - Hours Used: {hours_used} hours")
+            st.write(f"  - Suggested Hours: {hours_suggested:.2f} hours")
+            st.write(f"  - Saved Cost: Php {saved_cost:.2f}")
+            st.write("\n")
 
 
     else:
