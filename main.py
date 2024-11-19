@@ -129,14 +129,13 @@ if st.session_state.page_selection == "Budget and Pricing":
         
         # Suggest hours based on budget and cost relationship
         df["Hours Suggested"] = df.apply(
-            lambda row: min(
+            lambda row: 0 if classification in ["low", "balanced"] else min(
                 daily_budget / (row["Wattage (W)"] * price_per_kwh / 1000),  # Maximum hours within budget
                 model.predict([[row["Hours Used"]]])[0][0] / cost_per_hour,  # Predicted hours from the model
-            )
-            if classification == "high"
-            else row["Hours Used"],  # Keep current hours for "low" or "balanced" classifications
+            ),
             axis=1,
         )
+
 
         
         # Display the updated table with suggested hours
