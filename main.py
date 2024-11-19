@@ -151,14 +151,10 @@ if st.session_state.page_selection == "Budget and Pricing":
         )
 
         
-        # Display usage suggestions in sentence format with bold names and recalculated suggested hours
+    # Display the updated table with suggested hours
         st.write("\n")
         st.write("\n### Usage Suggestions:")
-        for index, row in df.iterrows():
-            st.write(f"**{row['Name']}**")
-            st.write(f"- Hours Used: {row['Hours Used']}")
-            st.write(f"- Cost: Php {row['Cost (Php)']:.3f}")
-            st.write(f"- Suggested Hours (optimized usage): {row['Hours Suggested']:.3f}")
+        st.dataframe(df[["Name", "Hours Used", "Cost (Php)", "Hours Suggested"]])
 
             
         
