@@ -10,8 +10,8 @@ st.subheader("Your Electricity Advisor")
 st.write('\n')
 
 # Sidebar for navigation
-if st.button("Home", use_container_width=True, on_click=set_page_selection, args=('home',)):
-        st.session_state.page_selection = 'home'
+if st.button("Home", use_container_width=True, on_click=set_page_selection, args=('Home',)):
+        st.session_state.page_selection = 'Home'
 elif st.sidebar.button("About"):
     page = "About"
 else:
