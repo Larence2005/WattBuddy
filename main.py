@@ -10,9 +10,6 @@ from streamlit_navigation_bar import st_navbar
 page = st_navbar(["About", "Budget and Pricing", "Suggested Appliances"])
 st.session_state.page_selection = page
 
-# Navigation using st_navbar
-page = st_navbar(["About", "Budget and Pricing", "Suggest Appliances"])
-
 if 'page_selection' not in st.session_state:
     st.session_state.page_selection = 'About'
 
