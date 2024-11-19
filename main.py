@@ -271,26 +271,10 @@ elif st.session_state.page_selection == "Suggest Appliances":
 
         
     # Load the trained model using joblib
-    try:
-        model = joblib.load('appliance_model_philippines_monthly.joblib')
-    except FileNotFoundError:
-        st.error("Model file not found. Please ensure 'appliance_model_philippines_monthly.joblib' is in the directory.")
-        st.stop()
+    model = joblib.load('appliance_model_philippines_monthly.joblib')
     
     # Load dataset for reference
-    try:
-        dataset = pd.read_csv('appliance_data_philippines_monthly.csv')
-    except FileNotFoundError:
-        st.error("Dataset file not found. Please ensure 'appliance_data_philippines_monthly.csv' is in the directory.")
-        st.stop()
-    
-    # Check required columns in the dataset
-    required_columns = ['Rated Power (kWh)', 'Daily Usage (Hours)', 'Essential']
-    missing_columns = [col for col in required_columns if col not in dataset.columns]
-    
-    if missing_columns:
-        st.error(f"The following required columns are missing in the dataset: {', '.join(missing_columns)}")
-        st.stop()
+    dataset = pd.read_csv('appliance_data_philippines_monthly.csv')
     
     # Streamlit UI
     st.title("Electric Advisor - Appliance Recommendation (Philippine Rate)")
@@ -300,33 +284,31 @@ elif st.session_state.page_selection == "Suggest Appliances":
     budget = st.number_input("Enter your total monthly budget for electricity (in ₱):", min_value=0.0, step=1.0)
     essential_only = st.checkbox("Show only essential appliances", value=False)
     
-    # Compute Monthly Cost
-    dataset['Monthly Cost'] = np.round(
-        dataset['Rated Power (kWh)'] * dataset['Daily Usage (Hours)'] * rate * 30, 2
-    )
-    
     if st.button("Get Recommendations"):
-        # Filter data for essentials if the checkbox is checked
+        # Adjust costs based on the user's rate
+        dataset['Adjusted Monthly Cost'] = (
+            dataset['Rated Power (kWh)'] * dataset['Daily Usage (Hours)'] * rate * 30
+        )
+    
+        # Apply essential filter if checked
         if essential_only:
-            filtered_data = dataset[dataset['Essential'] == True]
+            filtered_data = dataset[dataset['Essential']]
         else:
             filtered_data = dataset
     
-        # Calculate total monthly cost and recommend appliances within budget
+        # Calculate total monthly cost and filter appliances
         recommended_appliances = []
         total_cost = 0
     
         for _, row in filtered_data.iterrows():
-            if total_cost + row['Monthly Cost'] <= budget:
-                total_cost += row['Monthly Cost']
+            if total_cost + row['Adjusted Monthly Cost'] <= budget:
+                total_cost += row['Adjusted Monthly Cost']
                 recommended_appliances.append(row)
     
-        # Display results
         if recommended_appliances:
-            recommended_df = pd.DataFrame(recommended_appliances)
             st.write(f"Appliances within your total monthly budget of ₱{budget} at {rate}₱/kWh:")
-            st.table(recommended_df[[
-                'Appliance Type', 'Essential', 'Rated Power (kWh)', 'Daily Usage (Hours)', 'Monthly Cost'
+            st.table(pd.DataFrame(recommended_appliances)[[
+                'Appliance Type', 'Essential', 'Rated Power (kWh)', 'Daily Usage (Hours)', 'Adjusted Monthly Cost'
             ]])
             st.write(f"Total Monthly Cost: ₱{total_cost}")
         else:
