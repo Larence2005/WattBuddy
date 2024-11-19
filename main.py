@@ -172,6 +172,38 @@ if st.session_state.page_selection == "Budget and Pricing":
         st.write("\n### Usage Suggestions:")
         st.dataframe(df[["Name", "Hours Used", "Cost (Php)", "Hours Suggested"]])
 
+
+        # Display cost reduction recommendations
+        st.write('\n')
+        st.subheader("Cost Reduction Recommendations")
+        
+        # Sort appliances by monthly cost in descending order
+        sorted_df = df.sort_values("Monthly Cost (Php)", ascending=False)
+        
+        # Define a threshold for appliances to focus on (top 3 most expensive appliances)
+        top_expensive_appliances = sorted_df.head(3)
+        
+        # Suggest reducing usage for the top expensive appliances
+        for idx, row in top_expensive_appliances.iterrows():
+            appliance_name = row["Name"]
+            appliance_monthly_cost = row["Monthly Cost (Php)"]
+            appliance_usage_hours = row["Hours Used"]
+            
+            # Calculate how many hours to reduce to save a percentage of the cost
+            # Example: Suggest reducing usage by 20% for the most expensive appliances
+            suggested_reduction = appliance_monthly_cost * 0.2  # 20% reduction
+            suggested_hours_to_reduce = (suggested_reduction / appliance_monthly_cost) * appliance_usage_hours
+            
+            st.write(f"**{appliance_name}:**")
+            st.write(f"  - Current Monthly Cost: Php {appliance_monthly_cost:.2f}")
+            st.write(f"  - Suggested Hours to Reduce: {suggested_hours_to_reduce:.2f} hours")
+            st.write(f"  - Suggested Monthly Savings: Php {suggested_reduction:.2f}")
+        
+            # If the appliance is very expensive, recommend stopping usage entirely
+            if appliance_monthly_cost > budget * 0.3:  # Consider if the appliance is taking more than 30% of budget
+                st.write(f"  - **Recommendation:** Consider reducing usage or avoiding usage for this appliance.")
+
+
     else:
         st.info("Add appliances to calculate and analyze.")
 
