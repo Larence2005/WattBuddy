@@ -1,15 +1,18 @@
+#Imports
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import joblib
+
+from PIL import Image
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.preprocessing import LabelEncoder
 
+#--------------------------------------------------------------------------------------------------------------------------------------------------
 #more stable
-
 # Initialize session state for page selection
 if 'page_selection' not in st.session_state:
     st.session_state.page_selection = 'About'
@@ -17,11 +20,21 @@ if 'page_selection' not in st.session_state:
 def set_page_selection(page):
     st.session_state.page_selection = page
 
+#--------------------------------------------------------------------------------------------------------------------------------------------------
 # Sidebar navigation
 with st.sidebar:
-    st.title("Navigation")
-    if st.button("About", use_container_width=True, on_click=set_page_selection, args=("About",)):
-        pass  # Selection handled by callback
+    #LOGO Area
+    try:
+        img = Image.open("IMAGES/wattbuddy (transparent).png")
+        st.image(
+            img,
+            width=300,  # Adjust width for desired size
+            use_container_width= True
+        )
+    except FileNotFoundError:
+        st.error("Image file not found. Please check the path to the image.")
+   
+    st.markdown("---")
 
     if st.button("Budget and Pricing", use_container_width=True, on_click=set_page_selection, args=("Budget and Pricing",)):
         pass  # Selection handled by callback
@@ -29,10 +42,21 @@ with st.sidebar:
     if st.button("Suggest Appliances", use_container_width=True, on_click=set_page_selection, args=("Suggest Appliances",)):
         pass  # Selection handled by callback
 
+    if st.button("About", use_container_width=True, on_click=set_page_selection, args=("About",)):
+        pass  # Selection handled by callback
+
+#--------------------------------------------------------------------------------------------------------------------------------------------------
 # Home page content
 if st.session_state.page_selection == "Budget and Pricing":
     # Budget and Pricing Input Section
-    st.title("Budget and Pricing")
+    st.markdown("""
+        <h2 style="color: orange;">
+            Budget and Pricing
+        </h2>
+    """, unsafe_allow_html=True)
+
+    st.markdown("---")
+    
     st.write('\n')
     budget = st.number_input("Enter your budget in Php:", min_value=0.0, value=1000.0, step=50.0)
     price_per_kwh = st.number_input("Enter Meralco's price per kWh in Php:", min_value=0.0, value=11.8569, step=0.1)
@@ -121,10 +145,10 @@ if st.session_state.page_selection == "Budget and Pricing":
             st.success("Your total monthly electric cost is LOW!")
             classification = "low"
         elif total_monthly_cost <= budget:
-            st.warning("Your total monthly electric cost is BALANCED!")
+            st.warning("Your total monthly electric cost is BALANCED!" ,icon="⚠️")
             classification = "balanced"
         else:
-            st.error("Your total monthly electric cost is HIGH!")
+            st.error("Your total monthly electric cost is HIGH!" ,icon="🚨")
             classification = "high"
 
         # Money Saved or Loss
@@ -247,22 +271,17 @@ if st.session_state.page_selection == "Budget and Pricing":
         st.write(f"Mean Squared Error: {mse:.2f}")
         st.write(f"Root Mean Squared Error: {rmse:.2f}")
 
-
-# About page content
-elif st.session_state.page_selection == "About":
-    st.title("WattBuddy")
-    st.subheader("Your Electricity Advisor")
-    st.write('\n')
-    st.header("About WattBuddy")
-    st.write("""
-        WattBuddy helps users manage their electricity consumption and budget. By entering the cost of electricity and 
-        adding appliances, users can calculate the total cost and consumption based on their usage.
-        The app also provides suggestions for adjusting appliance usage to stay within the given budget.
-    """)
-
+#--------------------------------------------------------------------------------------------------------------------------------------------------
 # Suggest Appliances page content
 elif st.session_state.page_selection == "Suggest Appliances":
-    st.title("Suggest Appliances")
+    st.markdown("""
+    <h2 style="color: orange;">
+        Suggested Appliances
+    </h2>
+    """, unsafe_allow_html=True)
+    
+    st.markdown("---")
+    
     st.write("This page suggests appliances based on your budget")
     st.write('Rating: Php11.8569')
 
@@ -316,3 +335,47 @@ elif st.session_state.page_selection == "Suggest Appliances":
             st.write(f"Total Monthly Cost: ₱{total_cost}")
         else:
             st.write("No combination of appliances fits within your monthly budget.")
+
+#--------------------------------------------------------------------------------------------------------------------------------------------------
+# About page content
+elif st.session_state.page_selection == "About":
+    st.markdown("""
+        <h2 style="color: orange;">
+            About WattBuddy
+        </h2>
+    """, unsafe_allow_html=True)
+
+    st.markdown("---")
+
+    #Content
+    st.write("\n")
+    st.markdown("""
+            <p style="text-align: justify;">
+            WattBuddy helps users manage their electricity consumption and budget. By entering the cost of electricity and 
+            adding appliances, users can calculate the total cost and consumption based on their usage.
+            The app also provides suggestions for adjusting appliance usage to stay within the given budget.
+            It also provides a list of suggested appliances based on the user's budget.
+        </p>
+    """, unsafe_allow_html=True)
+
+    st.write("\n\n")
+
+    st.markdown("""
+        <h5 style="color: whitesmoke;">
+            Developed by: Cardinal Bytes
+        </h5>
+    """, unsafe_allow_html=True)
+
+    st.write("""
+            - Evan Vincent B. Lim
+            - John Larence D. Lusaya
+            - Kobe Aniban Lituañas
+            - Louis Patrick N. Jaso
+             
+            Your Electricity Advisor | Powered By: Streamlit and Python
+        """)
+    
+    on = st.toggle("Learn More")
+
+    if on:
+        st.write("SOMETHING HERE")
