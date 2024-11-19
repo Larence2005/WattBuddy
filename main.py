@@ -102,33 +102,35 @@ if st.session_state.page_selection == "Budget and Pricing":
                 st.success(f"Appliance '{row['Name']}' removed!")
             
 
-                # Total consumption and cost
+                # Initialize monthly cost variables
                 total_monthly_cost = 0
                 total_kwh = 0
                 
+                # Loop through the appliances DataFrame to calculate the correct total cost
                 for idx, row in df.iterrows():
+                    # Calculate the monthly cost based on actual usage days and weeks
                     appliance_monthly_cost = row["Cost (Php)"] * row["Weeks in Month"] * len(row["Days Used"].split(", "))
                     total_monthly_cost += appliance_monthly_cost
                     total_kwh += row["kWh Consumed"] * row["Weeks in Month"] * len(row["Days Used"].split(", "))
                 
                 # Display total and monthly stats
                 st.write('\n')
-                st.write(f"#### Electric Cost (Per Day): Php {total_cost:.2f}")
-                st.write(f"#### kWh Consumption (Per Day): {total_kwh:.2f} kWh")
+                st.write(f"#### Electric Cost (Per Day): Php {total_monthly_cost / 30:.2f}")
+                st.write(f"#### kWh Consumption (Per Day): {total_kwh / 30:.2f} kWh")
                 st.write(f"#### Electric Cost (Monthly): Php {total_monthly_cost:.2f}")
                 st.write(f"#### kWh Consumption (Monthly): {total_kwh:.2f} kWh")
+                
+                # Check if the monthly cost is within the user's budget
+                if total_monthly_cost <= budget * 0.7:
+                    st.success("Your monthly electric cost is LOW!")
+                    classification = "low"
+                elif total_monthly_cost <= budget:
+                    st.warning("Your monthly electric cost is BALANCED!")
+                    classification = "balanced"
+                else:
+                    st.error("Your monthly electric cost is HIGH!")
+                    classification = "high"
 
-
-        # Cost status (monthly cost vs. budget)
-        if monthly_cost <= budget * 0.7:
-            st.success("Your monthly electric cost is LOW!")
-            classification = "low"
-        elif monthly_cost <= budget:
-            st.warning("Your monthly electric cost is BALANCED!")
-            classification = "balanced"
-        else:
-            st.error("Your monthly electric cost is HIGH!")
-            classification = "high"
 
         # Money Saved or Loss
         st.write('\n')
