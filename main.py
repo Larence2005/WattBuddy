@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+
 #more stable
 
 # Initialize session state for page selection
@@ -190,6 +192,28 @@ if st.session_state.page_selection == "Budget and Pricing":
             st.write(f"  - Suggested Hours: {hours_suggested:.2f} hours")
             st.write(f"  - Saved Percentage: {saved_percentage:.2f}%")
             st.write("\n")
+
+                # Predict the target values
+            y_pred = model.predict(X)
+            
+            # Calculate R-squared
+            r2 = r2_score(y, y_pred)
+            
+            # Calculate Mean Absolute Error
+            mae = mean_absolute_error(y, y_pred)
+            
+            # Calculate Mean Squared Error
+            mse = mean_squared_error(y, y_pred)
+            
+            # Calculate Root Mean Squared Error
+            rmse = mse ** 0.5
+            
+            # Print the metrics
+            print(f"R-squared: {r2:.2f}")
+            print(f"Mean Absolute Error: {mae:.2f}")
+            print(f"Mean Squared Error: {mse:.2f}")
+            print(f"Root Mean Squared Error: {rmse:.2f}")
+
 
 
     else:
