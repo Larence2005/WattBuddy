@@ -70,6 +70,7 @@ if st.session_state.page_selection == "Budget and Pricing":
                 # Remove the appliance from the session state without rerun
                 st.session_state["appliances"].pop(idx)  # Remove the appliance from the list
                 st.session_state['removed_appliance'] = row['Name']  # Store the removed appliance's name
+                st.success(f"Appliance '{row['Name']}' removed!")
             
 
         # Total consumption and cost
@@ -82,13 +83,10 @@ if st.session_state.page_selection == "Budget and Pricing":
 
         # Display total and monthly stats
         st.write('\n')
-        st.write(f"Electric Cost (Per Day): Php {total_cost:.2f}")
-        st.write('\n')
-        st.write(f"kWh Consumption (Per Day): {total_kwh:.2f} kWh")
-        st.write('\n')
-        st.write(f"Electric Cost (Monthly): Php {monthly_cost:.2f}")
-        st.write('\n')
-        st.write(f"kWh Consumption (Monthly): {monthly_kwh:.2f} kWh")
+        st.write(f"#### Electric Cost (Per Day): Php {total_cost:.2f}")
+        st.write(f"#### kWh Consumption (Per Day): {total_kwh:.2f} kWh")
+        st.write(f"#### Electric Cost (Monthly): Php {monthly_cost:.2f}")
+        st.write(f"#### kWh Consumption (Monthly): {monthly_kwh:.2f} kWh")
 
         # Cost status (monthly cost vs. budget)
         if monthly_cost <= budget * 0.7:
@@ -150,13 +148,13 @@ if st.session_state.page_selection == "Budget and Pricing":
             axis=1,
         )
 
+
         
-    # Display the updated table with suggested hours
+        # Display the updated table with suggested hours
         st.write("\n")
         st.write("\n### Usage Suggestions:")
         st.dataframe(df[["Name", "Hours Used", "Cost (Php)", "Hours Suggested"]])
 
-            
         
     else:
         st.info("Add appliances to calculate and analyze.")
