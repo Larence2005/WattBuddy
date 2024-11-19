@@ -212,7 +212,7 @@ if st.session_state.page_selection == "Budget and Pricing":
 
             st.write ('\n')
             st.write ('\n')
-            st.write(f'Accuracy: {accuracy:.2f}')
+            st.write(f'Accuracy: {accuracy:.1f}')
             st.write(f"Mean Absolute Error: {mae:.2f}")
             st.write(f"Mean Squared Error: {mse:.2f}")
             st.write(f"Root Mean Squared Error: {rmse:.2f}")
