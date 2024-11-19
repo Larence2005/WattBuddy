@@ -168,40 +168,37 @@ if st.session_state.page_selection == "Budget and Pricing":
             axis=1,
         )
 
+        # Display the updated table with suggested hours
         st.write("\n")
-        st.write("\n### Usage Suggestions:")
+        st.write("### Usage Suggestions:")
+        
+        # Add the suggested hours to the appliance table and display it
         st.dataframe(df[["Name", "Hours Used", "Cost (Php)", "Hours Suggested"]])
-
-
-        # Display cost reduction recommendations
+        
+        # Provide additional cost reduction recommendations
         st.write('\n')
         st.subheader("Cost Reduction Recommendations")
         
-        # Sort appliances by monthly cost in descending order
+        # Sort appliances by the predicted monthly cost
         sorted_df = df.sort_values("Monthly Cost (Php)", ascending=False)
         
-        # Define a threshold for appliances to focus on (top 3 most expensive appliances)
-        top_expensive_appliances = sorted_df.head(3)
-        
-        # Suggest reducing usage for the top expensive appliances
-        for idx, row in top_expensive_appliances.iterrows():
+        # Identify appliances that are exceeding the budget
+        for idx, row in sorted_df.iterrows():
             appliance_name = row["Name"]
             appliance_monthly_cost = row["Monthly Cost (Php)"]
             appliance_usage_hours = row["Hours Used"]
+            suggested_hours = row["Hours Suggested"]
             
-            # Calculate how many hours to reduce to save a percentage of the cost
-            # Example: Suggest reducing usage by 20% for the most expensive appliances
-            suggested_reduction = appliance_monthly_cost * 0.2  # 20% reduction
-            suggested_hours_to_reduce = (suggested_reduction / appliance_monthly_cost) * appliance_usage_hours
-            
-            st.write(f"**{appliance_name}:**")
-            st.write(f"  - Current Monthly Cost: Php {appliance_monthly_cost:.2f}")
-            st.write(f"  - Suggested Hours to Reduce: {suggested_hours_to_reduce:.2f} hours")
-            st.write(f"  - Suggested Monthly Savings: Php {suggested_reduction:.2f}")
-        
-            # If the appliance is very expensive, recommend stopping usage entirely
-            if appliance_monthly_cost > budget * 0.3:  # Consider if the appliance is taking more than 30% of budget
-                st.write(f"  - **Recommendation:** Consider reducing usage or avoiding usage for this appliance.")
+            # Suggest reducing usage if appliance exceeds budget
+            if appliance_monthly_cost > monthly_cost:
+                st.write(f"**{appliance_name}:**")
+                st.write(f"  - Current Monthly Cost: Php {appliance_monthly_cost:.2f}")
+                st.write(f"  - Suggested Hours to Reduce: {suggested_hours:.2f} hours")
+                st.write(f"  - Potential Savings: Php {appliance_monthly_cost - suggested_hours * cost_per_hour:.2f}")
+            else:
+                st.write(f"**{appliance_name}:**")
+                st.write(f"  - This appliance is within the budget. No changes needed.")
+
 
 
     else:
