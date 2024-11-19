@@ -74,7 +74,6 @@ if st.session_state.page_selection == "Budget and Pricing":
                     "Hours Used": hours_used,
                     "Days Used": ", ".join(selected_days),
                     "Weeks in Month": weeks_in_month,
-                    "Days per Month": monthly_days,
                     "kWh Consumed": kwh_consumed,
                     "Cost (Php)": daily_cost,
                     "Monthly Cost (Php)": monthly_cost
@@ -95,13 +94,13 @@ if st.session_state.page_selection == "Budget and Pricing":
                 st.session_state['removed_appliance'] = row['Name']
                 st.success(f"Appliance '{row['Name']}' removed!")
 
-        # Calculate total daily and monthly costs using actual usage days
+        # Calculate totals
         total_daily_cost = df["Cost (Php)"].sum()
         total_monthly_cost = df["Monthly Cost (Php)"].sum()  # Sum of individual monthly costs
         total_daily_kwh = df["kWh Consumed"].sum()
         
-        # Calculate monthly kWh based on actual usage days
-        monthly_kwh = sum(row["kWh Consumed"] * row["Days per Month"] for _, row in df.iterrows())
+        # Calculate monthly kWh based on monthly costs and price per kWh
+        monthly_kwh = total_monthly_cost / price_per_kwh
 
         # Display total and monthly stats
         st.write('\n')
@@ -128,7 +127,7 @@ if st.session_state.page_selection == "Budget and Pricing":
         money_saved_texts = []
 
         for idx, row in df.iterrows():
-            appliance_monthly_cost = row["Monthly Cost (Php)"]  # Use the pre-calculated monthly cost
+            appliance_monthly_cost = row["Monthly Cost (Php)"]
             if classification == "high":
                 appliance_excess_ratio = appliance_monthly_cost / total_monthly_cost
                 percentage_lost = appliance_excess_ratio * 100
@@ -142,7 +141,6 @@ if st.session_state.page_selection == "Budget and Pricing":
         for text in money_saved_texts:
             st.write(text)
 
-        # Rest of the code remains the same (Linear Regression, graphs, etc.)
         # Train Linear Regression Model
         X = df["Hours Used"].values.reshape(-1, 1)
         y = df["Cost (Php)"].values.reshape(-1, 1)
@@ -177,7 +175,7 @@ if st.session_state.page_selection == "Budget and Pricing":
     else:
         st.info("Add appliances to calculate and analyze.")
 
-# About page content remains the same
+# About page content
 elif st.session_state.page_selection == "About":
     st.title("WattBuddy")
     st.subheader("Your Electricity Advisor")
@@ -189,7 +187,7 @@ elif st.session_state.page_selection == "About":
         The app also provides suggestions for adjusting appliance usage to stay within the given budget.
     """)
 
-# Suggest Appliances page content remains the same
+# Suggest Appliances page content
 elif st.session_state.page_selection == "Suggest Appliances":
     st.title("Suggest Appliances")
     st.write("This page suggests appliances based on your budget")
