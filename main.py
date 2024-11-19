@@ -85,6 +85,27 @@ if st.session_state.page_selection == "Home":
             st.error("Your monthly electric cost is HIGH!")
             classification = "high"
 
+        # Money Saved or Loss
+        st.write('\n')
+        st.subheader("Money Saved or Loss")
+        total_monthly_loss = max(monthly_cost - budget, 0)
+        money_saved_texts = []
+
+        for idx, row in df.iterrows():
+            appliance_monthly_cost = row["Cost (Php)"] * 30
+            if classification == "high":
+                appliance_excess_ratio = appliance_monthly_cost / monthly_cost
+                percentage_lost = appliance_excess_ratio * 100
+                money_saved_texts.append(f"{row['Name']}: Reduce usage! Potential loss: {percentage_lost:.2f}%")
+            else:
+                appliance_cost_ratio = appliance_monthly_cost / monthly_cost
+                money_saved_percentage = appliance_cost_ratio * 100
+                money_saved_texts.append(f"{row['Name']}: Money saved: {money_saved_percentage:.2f}%")
+
+        st.write(f"**Total Monthly Loss: Php {total_monthly_loss:.2f}**")
+        for text in money_saved_texts:
+            st.write(text)
+
         # Train Linear Regression Model
         st.subheader("Usage Prediction Using Linear Regression")
         X = df["Hours Used"].values.reshape(-1, 1)  # Feature: Hours Used
