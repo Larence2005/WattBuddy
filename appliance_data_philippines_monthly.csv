@@ -1,0 +1,501 @@
+Appliance Type,Essential,Rated Power (kWh),Daily Usage (Hours),Predicted Cost,Monthly Cost
+TV,False,2.53,5,30.0,4499.69
+Microwave,False,4.7,6,55.73,10030.94
+Lamp,False,1.92,5,22.77,3414.79
+Console,False,2.78,6,32.96,5933.19
+Washing Machine,True,0.69,7,8.18,1718.06
+Fan,True,1.17,5,13.87,2080.89
+Rice Cooker,True,4.94,2,58.57,3514.39
+Electric Oven,False,4.84,6,57.39,10329.73
+Rice Cooker,True,0.52,6,6.17,1109.81
+Dishwasher,False,4.78,4,56.68,6801.12
+Air Conditioner,False,3.38,4,40.08,4809.16
+Fan,True,4.41,1,52.29,1568.67
+Console,False,2.55,5,30.24,4535.26
+Washing Machine,True,2.82,4,33.44,4012.37
+Lamp,False,2.7,1,32.01,960.41
+TV,False,3.5,7,41.5,8714.82
+Air Conditioner,False,1.13,7,13.4,2813.64
+Lamp,False,0.63,4,7.47,896.38
+Fan,True,1.89,5,22.41,3361.43
+Rice Cooker,True,3.67,6,43.51,7832.67
+TV,False,1.41,3,16.72,1504.64
+Fan,True,3.53,5,41.85,6278.23
+Console,False,4.86,2,57.62,3457.47
+Refrigerator,True,0.92,7,10.91,2290.75
+Refrigerator,True,3.53,4,41.85,5022.58
+Washing Machine,True,2.5,4,29.64,3557.07
+Console,False,4.41,6,52.29,9412.01
+Lamp,False,1.3,2,15.41,924.84
+Lamp,False,3.62,6,42.92,7725.96
+Rice Cooker,True,4.27,2,50.63,3037.74
+Refrigerator,True,4.75,3,56.32,5068.82
+Console,False,3.57,7,42.33,8889.12
+Microwave,False,2.74,4,32.49,3898.55
+Lightbulb,True,3.28,4,38.89,4666.88
+Rice Cooker,True,4.41,3,52.29,4706.0
+Rice Cooker,True,3.07,1,36.4,1092.02
+Fan,True,0.64,7,7.59,1593.57
+Air Conditioner,False,4.69,6,55.61,10009.59
+Fan,True,3.6,3,42.68,3841.64
+Electric Oven,False,3.54,6,41.97,7555.22
+Rice Cooker,True,1.47,5,17.43,2614.45
+Microwave,False,3.46,4,41.02,4922.98
+Console,False,2.27,6,26.92,4844.73
+Lightbulb,True,3.43,2,40.67,2440.15
+Console,False,0.98,6,11.62,2091.56
+Refrigerator,True,3.46,5,41.02,6153.73
+Electric Oven,False,5.0,7,59.28,12449.74
+Microwave,False,0.72,4,8.54,1024.44
+Washing Machine,True,4.9,3,58.1,5228.89
+Washing Machine,True,2.33,5,27.63,4143.99
+Lamp,False,4.42,4,52.41,6288.9
+Dishwasher,False,4.02,6,47.66,8579.65
+TV,False,3.05,7,36.16,7594.34
+Rice Cooker,True,3.82,1,45.29,1358.8
+Lamp,False,4.45,7,52.76,11080.27
+Electric Oven,False,2.32,1,27.51,825.24
+Dishwasher,False,1.97,2,23.36,1401.49
+Console,False,3.5,7,41.5,8714.82
+Lightbulb,True,4.14,4,49.09,5890.51
+Electric Oven,False,3.93,1,46.6,1397.93
+Rice Cooker,True,4.09,3,48.49,4364.52
+Refrigerator,True,2.46,4,29.17,3500.16
+Refrigerator,True,4.18,3,49.56,4460.57
+Rice Cooker,True,1.04,7,12.33,2589.55
+Dishwasher,False,2.95,3,34.98,3148.01
+Lamp,False,0.53,1,6.28,188.52
+Electric Oven,False,1.96,4,23.24,2788.74
+Console,False,2.15,6,25.49,4588.62
+Lightbulb,True,2.28,5,27.03,4055.06
+Console,False,3.63,1,43.04,1291.22
+Fan,True,2.25,1,26.68,800.34
+Dishwasher,False,2.52,6,29.88,5378.29
+Electric Oven,False,1.57,4,18.62,2233.84
+Refrigerator,True,2.18,4,25.85,3101.77
+Air Conditioner,False,1.52,7,18.02,3784.72
+Fan,True,0.83,3,9.84,885.71
+TV,False,3.22,7,38.18,8017.64
+TV,False,3.51,6,41.62,7491.19
+Air Conditioner,False,3.29,7,39.01,8191.93
+Air Conditioner,False,2.59,6,30.71,5527.69
+Air Conditioner,False,2.21,4,26.2,3144.45
+TV,False,4.39,3,52.05,4684.66
+Microwave,False,2.84,7,33.67,7071.46
+Washing Machine,True,2.66,1,31.54,946.18
+Lightbulb,True,0.62,2,7.35,441.08
+Dishwasher,False,2.04,5,24.19,3628.21
+Washing Machine,True,2.21,1,26.2,786.11
+Console,False,2.29,4,27.15,3258.28
+Refrigerator,True,3.11,5,36.87,5531.24
+Microwave,False,2.9,2,34.39,2063.1
+Lightbulb,True,3.24,2,38.42,2304.98
+Fan,True,3.94,3,46.72,4204.46
+Console,False,4.16,5,49.32,7398.71
+Rice Cooker,True,3.73,3,44.23,3980.36
+Dishwasher,False,4.8,1,56.91,1707.39
+Microwave,False,0.58,6,6.88,1237.86
+TV,False,1.38,6,16.36,2945.25
+Lightbulb,True,0.53,6,6.28,1131.15
+Console,False,3.41,5,40.43,6064.8
+Lightbulb,True,4.54,6,53.83,9689.46
+Washing Machine,True,1.6,1,18.97,569.13
+Air Conditioner,False,4.67,3,55.37,4983.46
+Fan,True,0.77,5,9.13,1369.47
+Console,False,4.7,3,55.73,5015.47
+TV,False,2.08,5,24.66,3699.35
+Air Conditioner,False,0.96,3,11.38,1024.44
+Lightbulb,True,2.69,2,31.9,1913.7
+Microwave,False,1.66,3,19.68,1771.42
+TV,False,1.78,6,21.11,3798.95
+Lightbulb,True,1.88,2,22.29,1337.46
+Air Conditioner,False,4.11,3,48.73,4385.87
+TV,False,2.93,5,34.74,5211.11
+Lamp,False,1.9,5,22.53,3379.22
+Lamp,False,3.25,5,38.53,5780.24
+Console,False,3.72,4,44.11,5292.92
+Microwave,False,1.73,1,20.51,615.37
+Washing Machine,True,2.36,5,27.98,4197.34
+Microwave,False,1.05,2,12.45,746.98
+Air Conditioner,False,1.32,5,15.65,2347.67
+Washing Machine,True,3.57,4,42.33,5079.5
+Lamp,False,1.32,6,15.65,2817.2
+Rice Cooker,True,2.86,2,33.91,2034.64
+Dishwasher,False,3.69,4,43.75,5250.24
+Dishwasher,False,0.98,6,11.62,2091.56
+Dishwasher,False,3.05,7,36.16,7594.34
+Air Conditioner,False,1.65,7,19.56,4108.42
+Rice Cooker,True,4.83,2,57.27,3436.13
+Fan,True,2.68,3,31.78,2859.88
+Electric Oven,False,4.13,1,48.97,1469.07
+Lamp,False,2.98,1,35.33,1060.01
+Washing Machine,True,0.7,4,8.3,995.98
+Microwave,False,3.35,6,39.72,7149.71
+Microwave,False,4.78,1,56.68,1700.28
+Console,False,3.21,6,38.06,6850.92
+Fan,True,4.19,6,49.68,8942.47
+Air Conditioner,False,4.48,4,53.12,6374.27
+Washing Machine,True,1.53,4,18.14,2176.93
+Lightbulb,True,1.45,4,17.19,2063.1
+Air Conditioner,False,3.25,1,38.53,1156.05
+Lightbulb,True,2.35,7,27.86,5851.38
+Rice Cooker,True,4.28,4,50.75,6089.7
+Rice Cooker,True,4.55,1,53.95,1618.47
+Washing Machine,True,2.09,4,24.78,2973.71
+Dishwasher,False,1.57,5,18.62,2792.3
+Lamp,False,4.01,6,47.55,8558.31
+Lamp,False,1.74,4,20.63,2475.72
+Electric Oven,False,4.2,2,49.8,2987.94
+TV,False,2.41,6,28.58,5143.52
+Electric Oven,False,3.5,6,41.5,7469.85
+Electric Oven,False,0.93,4,11.03,1323.23
+TV,False,3.31,7,39.25,8241.73
+Electric Oven,False,2.53,3,30.0,2699.82
+TV,False,3.14,7,37.23,7818.44
+Microwave,False,1.26,4,14.94,1792.76
+Dishwasher,False,3.82,6,45.29,8152.8
+Rice Cooker,True,4.38,2,51.93,3115.99
+Console,False,1.48,6,17.55,3158.68
+Microwave,False,0.93,7,11.03,2315.65
+Lamp,False,0.61,2,7.23,433.96
+Air Conditioner,False,3.39,1,40.19,1205.85
+Lightbulb,True,3.23,5,38.3,5744.67
+Fan,True,2.96,6,35.1,6317.36
+Console,False,1.54,4,18.26,2191.16
+Dishwasher,False,2.26,1,26.8,803.9
+Lightbulb,True,3.18,5,37.7,5655.74
+Dishwasher,False,2.74,4,32.49,3898.55
+Rice Cooker,True,4.95,3,58.69,5282.25
+Rice Cooker,True,1.11,4,13.16,1579.34
+Air Conditioner,False,3.63,2,43.04,2582.43
+TV,False,2.32,2,27.51,1650.48
+Lightbulb,True,2.43,3,28.81,2593.1
+TV,False,3.73,1,44.23,1326.79
+Lamp,False,3.62,5,42.92,6438.3
+Console,False,4.96,4,58.81,7057.23
+Air Conditioner,False,1.08,2,12.81,768.33
+Lightbulb,True,0.97,1,11.5,345.04
+Air Conditioner,False,3.76,3,44.58,4012.37
+Washing Machine,True,3.1,7,36.76,7718.84
+Fan,True,1.73,6,20.51,3692.24
+Lightbulb,True,0.86,7,10.2,2141.36
+Washing Machine,True,0.89,7,10.55,2216.05
+Lamp,False,4.52,2,53.59,3215.59
+Microwave,False,1.36,3,16.13,1451.28
+Electric Oven,False,1.96,4,23.24,2788.74
+Fan,True,1.52,7,18.02,3784.72
+Dishwasher,False,2.1,7,24.9,5228.89
+Lightbulb,True,0.81,5,9.6,1440.61
+TV,False,2.84,2,33.67,2020.42
+Fan,True,0.8,2,9.49,569.13
+Air Conditioner,False,4.1,4,48.61,5833.59
+Lightbulb,True,1.55,6,18.38,3308.08
+Air Conditioner,False,2.93,1,34.74,1042.22
+Air Conditioner,False,4.46,5,52.88,7932.27
+TV,False,3.43,2,40.67,2440.15
+Microwave,False,2.9,5,34.39,5157.75
+Console,False,1.96,2,23.24,1394.37
+Lamp,False,2.0,5,23.71,3557.07
+Refrigerator,True,3.51,3,41.62,3745.59
+Rice Cooker,True,4.97,7,58.93,12375.05
+Air Conditioner,False,3.48,2,41.26,2475.72
+Microwave,False,3.01,5,35.69,5353.39
+Dishwasher,False,3.79,1,44.94,1348.13
+Lamp,False,2.59,3,30.71,2763.84
+Dishwasher,False,0.77,3,9.13,821.68
+Rice Cooker,True,3.03,1,35.93,1077.79
+Lightbulb,True,4.81,5,57.03,8554.75
+Rice Cooker,True,1.29,4,15.3,1835.45
+Dishwasher,False,3.61,1,42.8,1284.1
+Air Conditioner,False,1.4,5,16.6,2489.95
+Lightbulb,True,2.91,1,34.5,1035.11
+Microwave,False,0.94,1,11.15,334.36
+Lightbulb,True,2.53,2,30.0,1799.88
+TV,False,3.9,5,46.24,6936.29
+Fan,True,2.06,4,24.43,2931.03
+Console,False,3.49,7,41.38,8689.92
+Rice Cooker,True,4.08,2,48.38,2902.57
+Microwave,False,4.67,1,55.37,1661.15
+Lamp,False,1.56,7,18.5,3884.32
+Air Conditioner,False,2.3,6,27.27,4908.76
+Washing Machine,True,1.19,7,14.11,2963.04
+Lamp,False,4.97,1,58.93,1767.86
+TV,False,4.67,1,55.37,1661.15
+Console,False,2.93,5,34.74,5211.11
+Fan,True,4.29,5,50.87,7629.92
+Dishwasher,False,2.84,2,33.67,2020.42
+Air Conditioner,False,3.31,4,39.25,4709.56
+Refrigerator,True,0.9,2,10.67,640.27
+Electric Oven,False,3.9,3,46.24,4161.77
+Washing Machine,True,1.07,1,12.69,380.61
+Dishwasher,False,4.22,7,50.04,10507.58
+Lamp,False,4.02,6,47.66,8579.65
+Rice Cooker,True,3.69,1,43.75,1312.56
+Microwave,False,0.66,1,7.83,234.77
+Electric Oven,False,1.86,2,22.05,1323.23
+Air Conditioner,False,1.68,6,19.92,3585.53
+Console,False,2.12,6,25.14,4524.59
+Rice Cooker,True,0.89,6,10.55,1899.48
+Electric Oven,False,4.72,2,55.96,3357.87
+Fan,True,2.99,1,35.45,1063.56
+Fan,True,1.87,2,22.17,1330.34
+Lamp,False,2.29,5,27.15,4072.85
+TV,False,2.51,5,29.76,4464.12
+Electric Oven,False,3.2,2,37.94,2276.52
+Air Conditioner,False,2.82,6,33.44,6018.56
+Console,False,4.64,1,55.02,1650.48
+Console,False,2.74,2,32.49,1949.27
+Washing Machine,True,4.96,2,58.81,3528.61
+Fan,True,4.33,2,51.34,3080.42
+Lightbulb,True,1.44,3,17.07,1536.65
+TV,False,4.69,5,55.61,8341.33
+Rice Cooker,True,1.02,7,12.09,2539.75
+Lamp,False,4.18,6,49.56,8921.13
+TV,False,2.21,4,26.2,3144.45
+Dishwasher,False,4.45,7,52.76,11080.27
+Washing Machine,True,4.41,6,52.29,9412.01
+Air Conditioner,False,4.13,4,48.97,5876.28
+Microwave,False,4.06,3,48.14,4332.51
+Lamp,False,1.87,2,22.17,1330.34
+Fan,True,0.86,3,10.2,917.72
+Console,False,2.31,3,27.39,2465.05
+Microwave,False,1.28,7,15.18,3187.13
+Fan,True,3.63,1,43.04,1291.22
+Microwave,False,2.06,7,24.43,5129.29
+Refrigerator,True,4.89,5,57.98,8697.04
+Electric Oven,False,3.38,4,40.08,4809.16
+Rice Cooker,True,4.2,2,49.8,2987.94
+Fan,True,1.1,7,13.04,2738.94
+TV,False,4.38,4,51.93,6231.99
+Console,False,4.65,6,55.13,9924.23
+Rice Cooker,True,2.69,4,31.9,3827.41
+Lightbulb,True,3.23,6,38.3,6893.6
+Console,False,3.94,7,46.72,9810.4
+Fan,True,1.29,5,15.3,2294.31
+TV,False,2.76,7,32.73,6872.26
+Lightbulb,True,2.29,6,27.15,4887.41
+Dishwasher,False,1.16,4,13.75,1650.48
+Air Conditioner,False,2.15,4,25.49,3059.08
+Lamp,False,0.81,6,9.6,1728.74
+Washing Machine,True,0.62,3,7.35,661.62
+Dishwasher,False,1.11,5,13.16,1974.17
+Lightbulb,True,4.83,1,57.27,1718.06
+Electric Oven,False,2.97,2,35.21,2112.9
+Refrigerator,True,4.85,4,57.51,6900.72
+Washing Machine,True,2.45,2,29.05,1742.96
+Lamp,False,1.9,1,22.53,675.84
+Lamp,False,2.78,7,32.96,6922.06
+Rice Cooker,True,2.48,2,29.41,1764.31
+Refrigerator,True,0.98,1,11.62,348.59
+Dishwasher,False,3.38,6,40.08,7213.74
+Microwave,False,1.47,3,17.43,1568.67
+Air Conditioner,False,3.29,4,39.01,4681.1
+Dishwasher,False,3.43,1,40.67,1220.08
+Rice Cooker,True,1.18,2,13.99,839.47
+Lightbulb,True,0.78,4,9.25,1109.81
+Console,False,4.01,3,47.55,4279.16
+Electric Oven,False,2.57,6,30.47,5485.0
+Electric Oven,False,0.76,7,9.01,1892.36
+Refrigerator,True,4.98,4,59.05,7085.68
+Fan,True,0.76,7,9.01,1892.36
+Electric Oven,False,3.63,1,43.04,1291.22
+Lamp,False,4.93,3,58.45,5260.91
+Washing Machine,True,1.58,2,18.73,1124.03
+Console,False,1.14,3,13.52,1216.52
+Rice Cooker,True,1.05,3,12.45,1120.48
+Console,False,1.86,5,22.05,3308.08
+Dishwasher,False,0.95,3,11.26,1013.76
+Console,False,3.61,3,42.8,3852.31
+Dishwasher,False,0.78,4,9.25,1109.81
+TV,False,2.79,2,33.08,1984.85
+Dishwasher,False,4.99,4,59.17,7099.91
+Air Conditioner,False,4.16,4,49.32,5918.96
+Air Conditioner,False,3.27,1,38.77,1163.16
+Air Conditioner,False,1.88,4,22.29,2674.92
+Dishwasher,False,3.31,5,39.25,5886.95
+Washing Machine,True,2.87,5,34.03,5104.4
+Console,False,2.42,7,28.69,6025.68
+Microwave,False,1.09,1,12.92,387.72
+Microwave,False,4.49,7,53.24,11179.87
+TV,False,2.52,7,29.88,6274.67
+TV,False,1.38,6,16.36,2945.25
+TV,False,2.15,2,25.49,1529.54
+Microwave,False,2.36,2,27.98,1678.94
+Refrigerator,True,4.22,4,50.04,6004.33
+Fan,True,3.8,4,45.06,5406.75
+Washing Machine,True,3.96,6,46.95,8451.6
+Dishwasher,False,0.55,4,6.52,782.56
+Electric Oven,False,2.37,2,28.1,1686.05
+Lightbulb,True,2.67,7,31.66,6648.16
+TV,False,0.59,3,7.0,629.6
+Lightbulb,True,1.67,5,19.8,2970.15
+Dishwasher,False,3.92,3,46.48,4183.11
+Air Conditioner,False,1.12,3,13.28,1195.18
+Rice Cooker,True,2.91,2,34.5,2070.21
+Fan,True,1.47,3,17.43,1568.67
+Refrigerator,True,0.55,6,6.52,1173.83
+Dishwasher,False,1.59,1,18.85,565.57
+TV,False,4.89,4,57.98,6957.63
+Microwave,False,4.11,1,48.73,1461.96
+Lightbulb,True,4.82,7,57.15,12001.55
+TV,False,2.7,5,32.01,4802.04
+Electric Oven,False,0.99,4,11.74,1408.6
+Fan,True,2.97,3,35.21,3169.35
+TV,False,2.54,5,30.12,4517.48
+Lamp,False,4.3,4,50.98,6118.16
+Fan,True,0.94,6,11.15,2006.19
+Microwave,False,2.7,6,32.01,5762.45
+Dishwasher,False,1.18,6,13.99,2518.41
+Console,False,1.96,6,23.24,4183.11
+Rice Cooker,True,3.82,3,45.29,4076.4
+Lightbulb,True,2.64,1,31.3,939.07
+TV,False,2.19,4,25.97,3115.99
+Dishwasher,False,2.28,3,27.03,2433.04
+Washing Machine,True,2.57,6,30.47,5485.0
+Console,False,4.03,7,47.78,10034.49
+Console,False,4.51,1,53.47,1604.24
+Dishwasher,False,4.8,7,56.91,11951.76
+TV,False,4.04,5,47.9,7185.28
+Fan,True,1.92,7,22.77,4780.7
+Washing Machine,True,3.6,5,42.68,6402.73
+Microwave,False,2.47,5,29.29,4392.98
+Rice Cooker,True,1.65,6,19.56,3521.5
+Electric Oven,False,4.28,5,50.75,7612.13
+TV,False,0.67,2,7.94,476.65
+Rice Cooker,True,4.56,4,54.07,6488.1
+Electric Oven,False,2.58,4,30.59,3670.9
+Console,False,3.37,6,39.96,7192.4
+Console,False,3.47,2,41.14,2468.61
+Lamp,False,4.53,7,53.71,11279.47
+Electric Oven,False,3.37,3,39.96,3596.2
+Washing Machine,True,3.26,7,38.65,8117.23
+Console,False,0.8,3,9.49,853.7
+Dishwasher,False,2.83,5,33.56,5033.25
+TV,False,1.18,1,13.99,419.73
+Air Conditioner,False,3.82,3,45.29,4076.4
+Lamp,False,2.8,1,33.2,995.98
+Fan,True,3.56,4,42.21,5065.27
+Air Conditioner,False,0.69,1,8.18,245.44
+Washing Machine,True,0.88,4,10.43,1252.09
+Air Conditioner,False,3.72,2,44.11,2646.46
+Fan,True,0.82,2,9.72,583.36
+Lightbulb,True,0.82,6,9.72,1750.08
+Lamp,False,0.55,6,6.52,1173.83
+TV,False,4.8,5,56.91,8536.97
+Console,False,3.82,3,45.29,4076.4
+Rice Cooker,True,2.09,5,24.78,3717.14
+Rice Cooker,True,1.83,4,21.7,2603.78
+Air Conditioner,False,2.07,5,24.54,3681.57
+Electric Oven,False,3.99,1,47.31,1419.27
+Console,False,3.48,4,41.26,4951.44
+Air Conditioner,False,1.33,6,15.77,2838.54
+Console,False,1.28,2,15.18,910.61
+Washing Machine,True,0.94,6,11.15,2006.19
+Console,False,3.47,3,41.14,3702.91
+Lamp,False,3.94,4,46.72,5605.94
+Washing Machine,True,1.69,4,20.04,2404.58
+Lightbulb,True,0.59,1,7.0,209.87
+Microwave,False,0.87,3,10.32,928.4
+Console,False,4.86,2,57.62,3457.47
+Refrigerator,True,1.83,7,21.7,4556.61
+Electric Oven,False,3.96,4,46.95,5634.4
+Lamp,False,3.31,4,39.25,4709.56
+Dishwasher,False,2.22,1,26.32,789.67
+Electric Oven,False,1.43,5,16.96,2543.31
+Air Conditioner,False,1.05,2,12.45,746.98
+Air Conditioner,False,3.27,6,38.77,6978.97
+Electric Oven,False,3.99,3,47.31,4257.81
+TV,False,3.4,4,40.31,4837.62
+Dishwasher,False,2.89,4,34.27,4111.97
+TV,False,0.69,6,8.18,1472.63
+Air Conditioner,False,4.86,2,57.62,3457.47
+Lamp,False,4.09,5,48.49,7274.21
+Lamp,False,1.82,4,21.58,2589.55
+Air Conditioner,False,4.91,2,58.22,3493.04
+Air Conditioner,False,3.21,6,38.06,6850.92
+Rice Cooker,True,3.12,1,36.99,1109.81
+Rice Cooker,True,3.87,5,45.89,6882.93
+Rice Cooker,True,4.15,3,49.21,4428.55
+Fan,True,3.45,4,40.91,4908.76
+Dishwasher,False,1.08,2,12.81,768.33
+Lightbulb,True,2.02,1,23.95,718.53
+Lamp,False,4.68,3,55.49,4994.13
+Dishwasher,False,1.51,7,17.9,3759.82
+Lamp,False,2.17,2,25.73,1543.77
+Air Conditioner,False,2.44,2,28.93,1735.85
+TV,False,2.48,3,29.41,2646.46
+Lightbulb,True,3.26,1,38.65,1159.6
+Microwave,False,4.74,7,56.2,11802.36
+Console,False,1.58,6,18.73,3372.1
+TV,False,1.05,1,12.45,373.49
+Rice Cooker,True,1.39,5,16.48,2472.16
+Refrigerator,True,4.49,4,53.24,6388.5
+Lightbulb,True,3.41,3,40.43,3638.88
+Refrigerator,True,1.79,6,21.22,3820.29
+Fan,True,4.17,7,49.44,10383.09
+Air Conditioner,False,4.38,3,51.93,4673.99
+TV,False,4.31,3,51.1,4599.29
+Rice Cooker,True,4.64,1,55.02,1650.48
+Lightbulb,True,1.64,4,19.45,2333.44
+Console,False,3.9,5,46.24,6936.29
+Dishwasher,False,2.57,2,30.47,1828.33
+Console,False,4.29,2,50.87,3051.97
+Air Conditioner,False,3.78,3,44.82,4033.72
+Dishwasher,False,3.99,4,47.31,5677.08
+Air Conditioner,False,3.45,7,40.91,8590.32
+Rice Cooker,True,1.3,7,15.41,3236.93
+TV,False,2.95,6,34.98,6296.01
+TV,False,4.93,1,58.45,1753.64
+Refrigerator,True,4.72,4,55.96,6715.75
+Lamp,False,0.69,4,8.18,981.75
+TV,False,1.24,1,14.7,441.08
+Rice Cooker,True,1.09,7,12.92,2714.04
+TV,False,3.77,7,44.7,9387.11
+Washing Machine,True,4.18,7,49.56,10407.99
+TV,False,1.46,3,17.31,1558.0
+Washing Machine,True,2.78,4,32.96,3955.46
+TV,False,4.28,2,50.75,3044.85
+Lamp,False,3.8,1,45.06,1351.69
+Rice Cooker,True,2.94,7,34.86,7320.45
+TV,False,3.16,6,37.47,6744.2
+Lamp,False,2.79,7,33.08,6946.96
+Washing Machine,True,1.84,7,21.82,4581.51
+Electric Oven,False,3.04,5,36.04,5406.75
+Microwave,False,3.6,3,42.68,3841.64
+Air Conditioner,False,4.43,1,52.53,1575.78
+Lamp,False,3.36,5,39.84,5975.88
+Console,False,3.93,5,46.6,6989.64
+TV,False,1.22,6,14.47,2603.78
+Lightbulb,True,2.58,4,30.59,3670.9
+Console,False,0.54,6,6.4,1152.49
+Microwave,False,1.61,4,19.09,2290.75
+Fan,True,3.77,4,44.7,5364.06
+TV,False,4.96,1,58.81,1764.31
+Air Conditioner,False,0.95,7,11.26,2365.45
+Air Conditioner,False,2.31,1,27.39,821.68
+Fan,True,4.1,3,48.61,4375.2
+TV,False,1.42,4,16.84,2020.42
+Rice Cooker,True,3.0,5,35.57,5335.6
+Fan,True,3.8,7,45.06,9461.81
+Rice Cooker,True,3.27,2,38.77,2326.32
+Air Conditioner,False,1.35,3,16.01,1440.61
+Air Conditioner,False,2.1,1,24.9,746.98
+Washing Machine,True,4.03,6,47.78,8601.0
+Console,False,2.99,3,35.45,3190.69
+Lamp,False,0.52,3,6.17,554.9
+Rice Cooker,True,3.92,7,46.48,9760.6
+Washing Machine,True,0.66,3,7.83,704.3
+Dishwasher,False,3.86,3,45.77,4119.09
+Lamp,False,1.41,2,16.72,1003.09
+Washing Machine,True,4.81,6,57.03,10265.7
+TV,False,2.16,6,25.61,4609.96
+Console,False,1.97,6,23.36,4204.46
+Rice Cooker,True,1.17,4,13.87,1664.71
+Washing Machine,True,1.88,5,22.29,3343.65
+TV,False,4.44,6,52.64,9476.03
+Dishwasher,False,4.98,3,59.05,5314.26
+Lightbulb,True,2.16,3,25.61,2304.98
+Electric Oven,False,2.52,6,29.88,5378.29
+TV,False,3.75,7,44.46,9337.31
+Lamp,False,4.49,6,53.24,9582.75
+Air Conditioner,False,3.17,3,37.59,3382.77
