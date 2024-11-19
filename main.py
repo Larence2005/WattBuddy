@@ -178,12 +178,13 @@ if st.session_state.page_selection == "Budget and Pricing":
             ),
             axis=1,
         )
-
         
-        # Display the updated table with suggested hours
+        # Display the header and usage suggestions
         st.write("\n")
-        st.write("\n### Usage Suggestions:")
+        st.write("### Usage Suggestions:")
+        # Display the updated table with suggested hours
         st.dataframe(df[["Name", "Hours Used", "Cost (Php)", "Hours Suggested"]])
+
 
         
     else:
