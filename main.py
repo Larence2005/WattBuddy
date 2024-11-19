@@ -27,8 +27,8 @@ with st.sidebar:
 # Home page content
 if st.session_state.page_selection == "Budget and Pricing":
     # Budget and Pricing Input Section
-    st.title("WattBuddy")
-    st.subheader("Budget and Pricing Input")
+    st.title("Budget and Pricing")
+    st.write('\n')
     budget = st.number_input("Enter your budget in Php:", min_value=0.0, value=1000.0, step=50.0)
     price_per_kwh = st.number_input("Enter Meralco's price per kWh in Php:", min_value=0.0, value=10.0, step=0.1)
     st.write('\n')
