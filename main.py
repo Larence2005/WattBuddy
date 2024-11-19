@@ -271,7 +271,7 @@ elif st.session_state.page_selection == "Suggest Appliances":
 
 
     # Load the trained model using joblib
-    model = joblib.load('appliance_model_philippines_monthly.joblib')
+    model = joblib.load('appliance_model_philippines_with_area.joblib')
     
     # Load dataset for reference
     dataset = pd.read_csv('appliance_data_philippines_with_area.csv')
