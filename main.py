@@ -5,7 +5,7 @@ from sklearn.linear_model import LinearRegression
 
 # Initialize session state for page selection
 if 'page_selection' not in st.session_state:
-    st.session_state.page_selection = 'Home'
+    st.session_state.page_selection = 'About'
 
 def set_page_selection(page):
     st.session_state.page_selection = page
@@ -18,14 +18,15 @@ st.write('\n')
 # Sidebar navigation
 with st.sidebar:
     st.title("Navigation")
+    if st.button("About", use_container_width=True, on_click=set_page_selection, args=("About",)):
+        pass  # Selection handled by callback
+    
     if st.button("Home", use_container_width=True, on_click=set_page_selection, args=("Home",)):
         pass  # Selection handled by callback
 
     if st.button("Suggest Appliances", use_container_width=True, on_click=set_page_selection, args=("Suggest Appliances",)):
         pass  # Selection handled by callback
-        
-    if st.button("About", use_container_width=True, on_click=set_page_selection, args=("About",)):
-        pass  # Selection handled by callback
+
 
 # Home page content
 if st.session_state.page_selection == "Home":
