@@ -222,10 +222,10 @@ if st.session_state.page_selection == "Budget and Pricing":
     else:
         st.info("Add appliances to calculate and analyze.")
 
-        acc = 1
+        acc = 1.0
         accuracy = acc
         # Predict the target values
-        y_pred = 1.0
+        y_pred = 1
     
         # Calculate Mean Absolute Error
         mae = 0
