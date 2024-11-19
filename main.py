@@ -158,9 +158,9 @@ if st.session_state.page_selection == "Budget and Pricing":
         for index, row in df.iterrows():
             st.write(f"**{row['Name']}**")
             st.write(f"- Hours Used: {row['Hours Used']}")
-            st.write(f"- Cost: Php {row['Cost (Php)']}")
+            st.write(f"- Cost: Php {row['Cost (Php)']:.3f}")
             st.write(f"- Suggested Hours: {row['Hours Suggested']:.3f}")
-
+            
         
     else:
         st.info("Add appliances to calculate and analyze.")
