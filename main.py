@@ -63,10 +63,13 @@ if st.session_state.page_selection == "Budget and Pricing":
     
         # Add remove buttons
         for idx, row in df.iterrows():
-            if st.button(f"Remove {row['Name']}", key=f"remove_{idx}"):
+            # Use a unique key for each button based on index
+            remove_button = st.button(f"Remove {row['Name']}", key=f"remove_{idx}")
+            if remove_button:
                 # Remove the appliance from the session state
                 st.session_state["appliances"].pop(idx)
-                st.experimental_rerun()  # Rerun to reflect the changes
+                # Once appliance is removed, update the table and reflect the change immediately
+                st.experimental_rerun()  # This ensures the update is displayed immediately
 
 
 
