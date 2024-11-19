@@ -105,12 +105,10 @@ if st.session_state.page_selection == "Budget and Pricing":
         # Calculate monthly kWh based on monthly costs and price per kWh
         monthly_kwh = total_monthly_cost / price_per_kwh
 
-        # Display total and monthly stats
-        st.write('\n')
-        st.write(f"###Electric Cost (Per Day): Php {total_daily_cost:.2f}")
-        st.write(f"#### kWh Consumption (Per Day): {total_daily_kwh:.2f} kWh")
-        st.write(f"#### Electric Cost (Monthly): Php {total_monthly_cost:.2f}")
-        st.write(f"#### kWh Consumption (Monthly): {monthly_kwh:.2f} kWh")
+        st.markdown(f"<h3 style='color:green;'>Electric Cost (Per Day): Php {total_daily_cost:.2f}</h3>", unsafe_allow_html=True)
+        st.markdown(f"<h3 style='color:blue;'>kWh Consumption (Per Day): {total_daily_kwh:.2f} kWh</h3>", unsafe_allow_html=True)
+        st.markdown(f"<h3 style='color:orange;'>Electric Cost (Monthly): Php {total_monthly_cost:.2f}</h3>", unsafe_allow_html=True)
+        st.markdown(f"<h3 style='color:red;'>kWh Consumption (Monthly): {monthly_kwh:.2f} kWh</h3>", unsafe_allow_html=True)
 
         # Cost status (monthly cost vs. budget)
         if total_monthly_cost <= budget * 0.7:
