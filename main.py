@@ -37,7 +37,7 @@ if st.session_state.page_selection == "Budget and Pricing":
     st.subheader("Add Appliances")
     if "appliances" not in st.session_state:
         st.session_state["appliances"] = []
-
+    
     # Form to add appliances
     with st.form("add_appliance_form"):
         appliance_name = st.text_input("Appliance Name:")
@@ -46,20 +46,24 @@ if st.session_state.page_selection == "Budget and Pricing":
         add_appliance = st.form_submit_button("Add Appliance")
         if add_appliance:
             if appliance_name and wattage and hours_used:
+                daily_cost = (wattage * hours_used / 1000) * price_per_kwh
                 st.session_state["appliances"].append({
                     "Name": appliance_name,
                     "Wattage (W)": wattage,
                     "Hours Used": hours_used,
                     "kWh Consumed": wattage * hours_used / 1000,
-                    "Cost (Php)": (wattage * hours_used / 1000) * price_per_kwh
+                    "Cost (Php) - Daily": daily_cost,
+                    "Cost (Php) - Weekly": daily_cost * 7,
+                    "Cost (Php) - Monthly": daily_cost * 30
                 })
                 st.success(f"{appliance_name} added successfully!")
-
+    
     # Display appliances
     if st.session_state["appliances"]:
         st.subheader("Appliance List")
         df = pd.DataFrame(st.session_state["appliances"])
         st.dataframe(df)
+
 
         # Total consumption and cost
         total_cost = df["Cost (Php)"].sum()
