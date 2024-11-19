@@ -174,16 +174,18 @@ if st.session_state.page_selection == "Budget and Pricing":
         df["Hours Suggested"] = df.apply(
             lambda row: 0 if classification in ["low", "balanced"] else min(
                 daily_budget / (row["Wattage (W)"] * price_per_kwh / 1000),  # Maximum hours within budget
-                model.predict([[row["Hours Used"]]])[0][0] / cost_per_hour,  # Predicted hours from the model
+                model.predict([[row["Hours Used"]]])[0] / cost_per_hour,  # Predicted hours from the model
             ),
             axis=1,
         )
-
         
-        # Display the updated table with suggested hours
+        # Display the updated suggestions in a bulletin format
         st.write("\n")
         st.write("\n### Usage Suggestions:")
-        df.dataframe([["Name", "Hours Used", "Cost (Php)", "Hours Suggested"]])
+        
+        # Iterate over the rows and create a bullet point list for each appliance
+        for index, row in df.iterrows():
+            st.write(f"- **{row['Name']}**: Suggested Hours = {row['Hours Suggested']:.2f} hours")
 
         
     else:
