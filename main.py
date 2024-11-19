@@ -55,11 +55,6 @@ if st.session_state.page_selection == "Budget and Pricing":
                 })
                 st.success(f"{appliance_name} added successfully!")
 
-    # Display appliances
-    if st.session_state["appliances"]:
-        st.subheader("Appliance List")
-        df = pd.DataFrame(st.session_state["appliances"])
-        st.dataframe(df)
     
     # Check if appliances list is initialized and not empty
     if "appliances" in st.session_state and st.session_state["appliances"]:
