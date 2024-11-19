@@ -268,45 +268,60 @@ elif st.session_state.page_selection == "Suggest Appliances":
     st.write('Rating: Php10.4')
 
 
-    # Load the dataset
-    dataset = pd.read_csv('appliance_data.csv')
     
-    # Preprocess data
+    # Load the dataset
+    dataset = pd.read_csv('appliance_data_philippines_updated.csv')
+    
+    # Encode appliance type and essentiality
     le = LabelEncoder()
     dataset['Appliance Type Encoded'] = le.fit_transform(dataset['Appliance Type'])
+    dataset['Essential Encoded'] = dataset['Essential'].astype(int)
     
-    # Feature selection
-    X = dataset[['Estimated Energy Consumption per kWh', 'Appliance Type Encoded']]
+    # Features and target variable
+    X = dataset[['Rated Power (kWh)', 'Appliance Type Encoded', 'Essential Encoded']]
     y = dataset['Predicted Cost']
     
-    # Split the dataset
+    # Train-test split
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
     
-    # Train the model
+    # Train the random forest model
     model = RandomForestRegressor(n_estimators=100, random_state=42)
     model.fit(X_train, y_train)
     
-    
-    # Load the trained model and dataset
+    # Save the trained model
     import pickle
-    
-    # Save the model for later use
-    with open('appliance_model.pkl', 'wb') as f:
+    with open('appliance_model_philippines_updated.pkl', 'wb') as f:
         pickle.dump(model, f)
     
-    # Load model in Streamlit
-    with open('appliance_model.pkl', 'rb') as f:
+    # Load the trained model
+    with open('appliance_model_philippines_updated.pkl', 'rb') as f:
         model = pickle.load(f)
     
-    # Streamlit App
-    st.title("Electric Advisor - Appliance Recommendation")
+    # Load dataset for reference
+    dataset = pd.read_csv('appliance_data_philippines_updated.csv')
     
-    budget = st.number_input("Enter your budget (in $):", min_value=0.0, step=1.0)
+    # Streamlit UI
+    st.title("Electric Advisor - Appliance Recommendation (Philippine Rate)")
+    
+    # User inputs
+    rate = st.number_input("Enter electricity rate per kWh (default is 11.8569):", min_value=0.0, value=11.8569, step=0.1)
+    budget = st.number_input("Enter your budget (in ₱):", min_value=0.0, step=1.0)
+    
+    # Filter for essential appliances if user chooses
+    essential_only = st.checkbox("Show only essential appliances", value=False)
     
     if st.button("Get Recommendations"):
-        filtered_data = dataset[dataset['Predicted Cost'] <= budget]
+        # Adjust costs based on the user's rate
+        dataset['Adjusted Cost'] = np.round(dataset['Rated Power (kWh)'] * rate, 2)
+        
+        # Apply filters
+        filtered_data = dataset[dataset['Adjusted Cost'] <= budget]
+        if essential_only:
+            filtered_data = filtered_data[filtered_data['Essential']]
+    
         if not filtered_data.empty:
-            st.write(f"Appliances within your budget of ${budget}:")
-            st.table(filtered_data[['Appliance Type', 'Predicted Cost']])
+            st.write(f"Appliances within your budget of ₱{budget} at {rate}₱/kWh:")
+            st.table(filtered_data[['Appliance Type', 'Essential', 'Rated Power (kWh)', 'Adjusted Cost']])
         else:
             st.write("No appliances found within the specified budget.")
+
