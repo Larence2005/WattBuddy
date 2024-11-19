@@ -218,8 +218,8 @@ st.write ('\n')
 st.write ('\n')
 st.write(f'Accuracy: {accuracy:.1f}')
 st.write(f"Mean Absolute Error: {mae:.2f}")
-            st.write(f"Mean Squared Error: {mse:.2f}")
-            st.write(f"Root Mean Squared Error: {rmse:.2f}")
+st.write(f"Mean Squared Error: {mse:.2f}")
+st.write(f"Root Mean Squared Error: {rmse:.2f}")
 
 
 # About page content
