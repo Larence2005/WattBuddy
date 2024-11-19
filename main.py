@@ -163,4 +163,7 @@ elif st.session_state.page_selection == "About":
 elif st.session_state.page_selection == "Suggest Appliances":
     st.title("Suggest Appliancess")
     st.write("This page suggests appliances based on your budget")
+    st.write('\n')
+    st.write('Data set used for this auto suggestion is from year 2022')
+    st.write('Rating: Php10.4')
 
