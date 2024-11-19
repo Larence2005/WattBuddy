@@ -1,40 +1,33 @@
+
+You said:
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
-from streamlit_navigation_bar import st_navbar
 
-# Set page configuration
-st.set_page_config(initial_sidebar_state="collapsed")
+# Initialize session state for page selection
+if 'page_selection' not in st.session_state:
+    st.session_state.page_selection = 'About'
 
-# Define navigation bar pages and styles
-pages = ["About", "Budget and Pricing", "Suggest Appliances"]
-styles = {
-    "nav": {
-        "background-color": "rgb(123, 209, 146)",
-    },
-    "div": {
-        "max-width": "32rem",
-    },
-    "span": {
-        "border-radius": "0.5rem",
-        "color": "rgb(49, 51, 63)",
-        "margin": "0 0.125rem",
-        "padding": "0.4375rem 0.625rem",
-    },
-    "active": {
-        "background-color": "rgba(255, 255, 255, 0.25)",
-    },
-    "hover": {
-        "background-color": "rgba(255, 255, 255, 0.35)",
-    },
-}
+def set_page_selection(page):
+    st.session_state.page_selection = page
 
-# Render the navigation bar
-page = st_navbar(pages, styles=styles)
 
-# Content based on selected page
-if page == "Budget and Pricing":
+# Sidebar navigation
+with st.sidebar:
+    st.title("Navigation")
+    if st.button("About", use_container_width=True, on_click=set_page_selection, args=("About",)):
+        pass  # Selection handled by callback
+    
+    if st.button("Budget and Pricing", use_container_width=True, on_click=set_page_selection, args=("Budget and Pricing",)):
+        pass  # Selection handled by callback
+
+    if st.button("Suggest Appliances", use_container_width=True, on_click=set_page_selection, args=("Suggest Appliances",)):
+        pass  # Selection handled by callback
+
+
+# Home page content
+if st.session_state.page_selection == "Budget and Pricing":
     # Budget and Pricing Input Section
     st.title("Budget and Pricing")
     st.write('\n')
@@ -64,26 +57,112 @@ if page == "Budget and Pricing":
                 })
                 st.success(f"{appliance_name} added successfully!")
 
-    # Display and process appliances list
+    # Display appliances
     if st.session_state["appliances"]:
-        df = pd.DataFrame(st.session_state["appliances"])
         st.subheader("Appliance List")
+        df = pd.DataFrame(st.session_state["appliances"])
         st.dataframe(df)
-
-        # Add remove buttons
+    
+        # Add remove buttons with a flag to catch removal action
         for idx, row in df.iterrows():
+            # Use a unique key for each button based on index
             remove_button = st.button(f"Remove {row['Name']}", key=f"remove_{idx}")
+            
             if remove_button:
-                st.session_state["appliances"].pop(idx)
-                st.experimental_rerun()
+                # Remove the appliance from the session state without rerun
+                st.session_state["appliances"].pop(idx)  # Remove the appliance from the list
+                st.session_state['removed_appliance'] = row['Name']  # Store the removed appliance's name
+                st.success(f"Appliance '{row['Name']}' removed!")
+            
 
         # Total consumption and cost
         total_cost = df["Cost (Php)"].sum()
         total_kwh = df["kWh Consumed"].sum()
-        monthly_cost = total_cost * 30
-        st.write(f"#### Monthly Electric Cost: Php {monthly_cost:.2f}")
 
-elif page == "About":
+        # Calculate monthly values
+        monthly_cost = total_cost * 30  # Assuming 30 days in a month
+        monthly_kwh = total_kwh * 30  # Assuming usage is similar every day
+
+        # Display total and monthly stats
+        st.write('\n')
+        st.write(f"#### Electric Cost (Per Day): Php {total_cost:.2f}")
+        st.write(f"#### kWh Consumption (Per Day): {total_kwh:.2f} kWh")
+        st.write(f"#### Electric Cost (Monthly): Php {monthly_cost:.2f}")
+        st.write(f"#### kWh Consumption (Monthly): {monthly_kwh:.2f} kWh")
+
+        # Cost status (monthly cost vs. budget)
+        if monthly_cost <= budget * 0.7:
+            st.success("Your monthly electric cost is LOW!")
+            classification = "low"
+        elif monthly_cost <= budget:
+            st.warning("Your monthly electric cost is BALANCED!")
+            classification = "balanced"
+        else:
+            st.error("Your monthly electric cost is HIGH!")
+            classification = "high"
+
+        # Money Saved or Loss
+        st.write('\n')
+        st.subheader("Money Saved or Loss")
+        total_monthly_loss = max(monthly_cost - budget, 0)
+        money_saved_texts = []
+
+        for idx, row in df.iterrows():
+            appliance_monthly_cost = row["Cost (Php)"] * 30
+            if classification == "high":
+                appliance_excess_ratio = appliance_monthly_cost / monthly_cost
+                percentage_lost = appliance_excess_ratio * 100
+                money_saved_texts.append(f"{row['Name']}: Reduce usage! Potential loss: {percentage_lost:.2f}%")
+            else:
+                appliance_cost_ratio = appliance_monthly_cost / monthly_cost
+                money_saved_percentage = appliance_cost_ratio * 100
+                money_saved_texts.append(f"{row['Name']}: Money saved: {money_saved_percentage:.2f}%")
+
+        st.write(f"**Total Monthly Loss: Php {total_monthly_loss:.2f}**")
+        for text in money_saved_texts:
+            st.write(text)
+
+        # Train Linear Regression Model
+        X = df["Hours Used"].values.reshape(-1, 1)  # Feature: Hours Used
+        y = df["Cost (Php)"].values.reshape(-1, 1)  # Target: Cost
+        model = LinearRegression()
+        model.fit(X, y)
+
+        # Wattage percentage graph
+        st.write('\n')
+        st.subheader("Wattage Percentage Graph")
+        fig, ax = plt.subplots()
+        wattage_percentages = (df["Wattage (W)"] / df["Wattage (W)"].sum()) * 100
+        ax.pie(wattage_percentages, labels=df["Name"], autopct="%1.1f%%", startangle=90)
+        ax.axis("equal")
+        st.pyplot(fig)
+
+        # Predict suggested hours using the trained Linear Regression model
+        daily_budget = budget / 30  # Daily budget based on total budget
+        cost_per_hour = model.coef_[0][0]  # Coefficient from the Linear Regression model (cost per hour)
+        
+        # Suggest hours based on budget and cost relationship
+        df["Hours Suggested"] = df.apply(
+            lambda row: 0 if classification in ["low", "balanced"] else min(
+                daily_budget / (row["Wattage (W)"] * price_per_kwh / 1000),  # Maximum hours within budget
+                model.predict([[row["Hours Used"]]])[0][0] / cost_per_hour,  # Predicted hours from the model
+            ),
+            axis=1,
+        )
+
+
+        
+        # Display the updated table with suggested hours
+        st.write("\n")
+        st.write("\n### Usage Suggestions:")
+        st.dataframe(df[["Name", "Hours Used", "Cost (Php)", "Hours Suggested"]])
+
+        
+    else:
+        st.info("Add appliances to calculate and analyze.")
+
+# About page content
+elif st.session_state.page_selection == "About":
     st.title("WattBuddy")
     st.subheader("Your Electricity Advisor")
     st.write('\n')
@@ -94,8 +173,11 @@ elif page == "About":
         The app also provides suggestions for adjusting appliance usage to stay within the given budget.
     """)
 
-elif page == "Suggest Appliances":
-    st.title("Suggest Appliances")
-    st.write("This page suggests appliances based on your budget.")
-    st.write('Data set used for this auto suggestion is from the year 2022.')
+
+elif st.session_state.page_selection == "Suggest Appliances":
+    st.title("Suggest Appliancess")
+    st.write("This page suggests appliances based on your budget")
+    st.write('\n')
+    st.write('Data set used for this auto suggestion is from year 2022')
     st.write('Rating: Php10.4')
+    
