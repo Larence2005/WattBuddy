@@ -271,7 +271,7 @@ elif st.session_state.page_selection == "Suggest Appliances":
 
     
     # Load the dataset
-    dataset = pd.read_csv('appliance_data_philippines_updated.csv')
+    dataset = pd.read_csv('appliance_data_philippines_monthly.csv')
     
     # Encode appliance type and essentiality
     le = LabelEncoder()
@@ -279,8 +279,8 @@ elif st.session_state.page_selection == "Suggest Appliances":
     dataset['Essential Encoded'] = dataset['Essential'].astype(int)
     
     # Features and target variable
-    X = dataset[['Rated Power (kWh)', 'Appliance Type Encoded', 'Essential Encoded']]
-    y = dataset['Predicted Cost']
+    X = dataset[['Rated Power (kWh)', 'Daily Usage (Hours)', 'Appliance Type Encoded', 'Essential Encoded']]
+    y = dataset['Monthly Cost']
     
     # Train-test split
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
@@ -289,40 +289,50 @@ elif st.session_state.page_selection == "Suggest Appliances":
     model = RandomForestRegressor(n_estimators=100, random_state=42)
     model.fit(X_train, y_train)
     
-    # Save the trained model
-    import pickle
-    with open('appliance_model_philippines_updated.pkl', 'wb') as f:
-        pickle.dump(model, f)
-    
-    # Load the trained model
-    with open('appliance_model_philippines_updated.pkl', 'rb') as f:
-        model = pickle.load(f)
+    # Save the trained model using joblib
+    joblib.dump(model, 'appliance_model_philippines_monthly.joblib')
+
+
+    # Load the trained model using joblib
+    model = joblib.load('appliance_model_philippines_monthly.joblib')
     
     # Load dataset for reference
-    dataset = pd.read_csv('appliance_data_philippines_updated.csv')
+    dataset = pd.read_csv('appliance_data_philippines_monthly.csv')
     
     # Streamlit UI
     st.title("Electric Advisor - Appliance Recommendation (Philippine Rate)")
     
     # User inputs
     rate = st.number_input("Enter electricity rate per kWh (default is 11.8569):", min_value=0.0, value=11.8569, step=0.1)
-    budget = st.number_input("Enter your budget (in ₱):", min_value=0.0, step=1.0)
-    
-    # Filter for essential appliances if user chooses
+    budget = st.number_input("Enter your total monthly budget for electricity (in ₱):", min_value=0.0, step=1.0)
     essential_only = st.checkbox("Show only essential appliances", value=False)
     
     if st.button("Get Recommendations"):
         # Adjust costs based on the user's rate
-        dataset['Adjusted Cost'] = np.round(dataset['Rated Power (kWh)'] * rate, 2)
-        
-        # Apply filters
-        filtered_data = dataset[dataset['Adjusted Cost'] <= budget]
-        if essential_only:
-            filtered_data = filtered_data[filtered_data['Essential']]
+        dataset['Adjusted Monthly Cost'] = np.round(
+            dataset['Rated Power (kWh)'] * dataset['Daily Usage (Hours)'] * rate * 30, 2
+        )
     
-        if not filtered_data.empty:
-            st.write(f"Appliances within your budget of ₱{budget} at {rate}₱/kWh:")
-            st.table(filtered_data[['Appliance Type', 'Essential', 'Rated Power (kWh)', 'Adjusted Cost']])
+        # Apply essential filter if checked
+        if essential_only:
+            filtered_data = dataset[dataset['Essential']]
         else:
-            st.write("No appliances found within the specified budget.")
-
+            filtered_data = dataset
+    
+        # Calculate total monthly cost and filter appliances
+        recommended_appliances = []
+        total_cost = 0
+    
+        for _, row in filtered_data.iterrows():
+            if total_cost + row['Adjusted Monthly Cost'] <= budget:
+                total_cost += row['Adjusted Monthly Cost']
+                recommended_appliances.append(row)
+    
+        if recommended_appliances:
+            st.write(f"Appliances within your total monthly budget of ₱{budget} at {rate}₱/kWh:")
+            st.table(pd.DataFrame(recommended_appliances)[[
+                'Appliance Type', 'Essential', 'Rated Power (kWh)', 'Daily Usage (Hours)', 'Adjusted Monthly Cost'
+            ]])
+            st.write(f"Total Monthly Cost: ₱{total_cost}")
+        else:
+            st.write("No combination of appliances fits within your monthly budget.")
