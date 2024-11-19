@@ -15,19 +15,6 @@ def set_page_selection(page):
 
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Sidebar navigation
-'''
-with st.sidebar:
-    st.title("Navigation")
-    if st.button("About", use_container_width=True, on_click=set_page_selection, args=("About",)):
-        pass  # Selection handled by callback
-    
-    if st.button("Budget and Pricing", use_container_width=True, on_click=set_page_selection, args=("Budget and Pricing",)):
-        pass  # Selection handled by callback
-
-    if st.button("Suggest Appliances", use_container_width=True, on_click=set_page_selection, args=("Suggest Appliances",)):
-        pass  # Selection handled by callback
-'''
-
 page = st_navbar(["About", "Budget and Pricing", "Suggested Appliances"])
 st.session_state.page_selection = page
 
