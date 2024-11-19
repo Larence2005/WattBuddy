@@ -266,7 +266,7 @@ elif st.session_state.page_selection == "Suggest Appliances":
     st.write("This page suggests appliances based on your budget")
     st.write('\n')
     st.write('Data set used for this auto suggestion is from year 2022')
-    st.write('Rating: Php10.4')
+    st.write('Rating: Php11.8569')
 
 
     
@@ -283,6 +283,14 @@ elif st.session_state.page_selection == "Suggest Appliances":
     rate = st.number_input("Enter electricity rate per kWh (default is 11.8569):", min_value=0.0, value=11.8569, step=0.1)
     budget = st.number_input("Enter your total monthly budget for electricity (in ₱):", min_value=0.0, step=1.0)
     essential_only = st.checkbox("Show only essential appliances", value=False)
+
+    if 'Rated Power (kWh)' not in dataset or 'Daily Usage (Hours)' not in dataset:
+        st.error("Required columns are missing in the dataset. Check dataset creation.")
+    else:
+        dataset['Adjusted Monthly Cost'] = np.round(
+            dataset['Rated Power (kWh)'] * dataset['Daily Usage (Hours)'] * rate * 30, 2
+        )
+
     
     if st.button("Get Recommendations"):
         # Adjust costs based on the user's rate
