@@ -42,40 +42,24 @@ if st.session_state.page_selection == "Budget and Pricing":
     with st.form("add_appliance_form"):
         appliance_name = st.text_input("Appliance Name:")
         wattage = st.number_input("Wattage (in Watts):", min_value=0.0, step=1.0)
-        hours_used = st.number_input("Usage Time (in Hours per Day):", min_value=0.0, step=0.1)
-        usage_days = st.multiselect(
-            "Select Days of Usage:",
-            options=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-            default=["Monday"]
-        )
-        usage_frequency = st.number_input(
-            "How many times in a month is it used?", min_value=1, max_value=31, value=1, step=1
-        )
+        hours_used = st.number_input("Usage Time (in Hours):", min_value=0.0, step=0.1)
         add_appliance = st.form_submit_button("Add Appliance")
-    
         if add_appliance:
-            if appliance_name and wattage and hours_used and usage_days and usage_frequency > 0:
-                monthly_kwh = (wattage * hours_used / 1000) * usage_frequency
-                monthly_cost = monthly_kwh * price_per_kwh
+            if appliance_name and wattage and hours_used:
                 st.session_state["appliances"].append({
                     "Name": appliance_name,
                     "Wattage (W)": wattage,
-                    "Hours Used (Daily)": hours_used,
-                    "Usage Days": ", ".join(usage_days),  # Store selected days as a comma-separated string
-                    "Frequency (Monthly)": usage_frequency,
-                    "kWh Consumed (Monthly)": monthly_kwh,
-                    "Cost (Php)": monthly_cost
+                    "Hours Used": hours_used,
+                    "kWh Consumed": wattage * hours_used / 1000,
+                    "Cost (Php)": (wattage * hours_used / 1000) * price_per_kwh
                 })
                 st.success(f"{appliance_name} added successfully!")
-
-
 
     # Display appliances
     if st.session_state["appliances"]:
         st.subheader("Appliance List")
         df = pd.DataFrame(st.session_state["appliances"])
         st.dataframe(df)
-
     
         # Add remove buttons with a flag to catch removal action
         for idx, row in df.iterrows():
@@ -179,25 +163,14 @@ if st.session_state.page_selection == "Budget and Pricing":
 elif st.session_state.page_selection == "About":
     st.title("WattBuddy")
     st.subheader("Your Electricity Advisor")
-    
     st.write('\n')
-    
     st.header("About WattBuddy")
     st.write("""
         WattBuddy helps users manage their electricity consumption and budget. By entering the cost of electricity and 
         adding appliances, users can calculate the total cost and consumption based on their usage.
-        The app also provides suggestions for adjusting appliance usage to stay within the given budget. 
-        It also provides a list of suggested applicances base on the users budget.
+        The app also provides suggestions for adjusting appliance usage to stay within the given budget.
     """)
 
-    st.header("Made By: Cardinal Byte")
-    st.subheader("Member:")
-    st.write("""  
-                - Evan Vincent B. Lim\n
-                - John Larence D. Lusaya\n
-                - Kobe Aniban Lituañas\n
-                - Louis Patrick N. Jaso\n
-              """)
 
 elif st.session_state.page_selection == "Suggest Appliances":
     st.title("Suggest Appliancess")
