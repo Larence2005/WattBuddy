@@ -174,31 +174,6 @@ if st.session_state.page_selection == "Budget and Pricing":
         
         # Add the suggested hours to the appliance table and display it
         st.dataframe(df[["Name", "Hours Used", "Cost (Php)", "Hours Suggested"]])
-        
-        # Provide additional cost reduction recommendations
-        st.write('\n')
-        st.subheader("Cost Reduction Recommendations")
-        
-        # Sort appliances by the predicted monthly cost
-        sorted_df = df.sort_values("Monthly Cost (Php)", ascending=False)
-        
-        # Identify appliances that are exceeding the budget
-        for idx, row in sorted_df.iterrows():
-            appliance_name = row["Name"]
-            appliance_monthly_cost = row["Monthly Cost (Php)"]
-            appliance_usage_hours = row["Hours Used"]
-            suggested_hours = row["Hours Suggested"]
-            
-            # Suggest reducing usage if appliance exceeds budget
-            if appliance_monthly_cost > monthly_cost:
-                st.write(f"**{appliance_name}:**")
-                st.write(f"  - Current Monthly Cost: Php {appliance_monthly_cost:.2f}")
-                st.write(f"  - Suggested Hours to Reduce: {suggested_hours:.2f} hours")
-                st.write(f"  - Potential Savings: Php {appliance_monthly_cost - suggested_hours * cost_per_hour:.2f}")
-            else:
-                st.write(f"**{appliance_name}:**")
-                st.write(f"  - This appliance is within the budget. No changes needed.")
-
 
 
     else:
