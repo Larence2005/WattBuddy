@@ -226,9 +226,6 @@ if st.session_state.page_selection == "Budget and Pricing":
     else:
         st.info("Add appliances to calculate and analyze.")
 
-        
-    # Predict the target values
-    y_pred = model.predict(X)
                 
     # Calculate R-squared
     r2 = r2_score(y, y_pred)
