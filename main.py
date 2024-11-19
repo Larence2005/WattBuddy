@@ -29,7 +29,20 @@ with st.sidebar:
 '''
 
 page = st_navbar(["About", "Budget and Pricing", "Suggested Appliances"])
-st.write(page)
+st.session_state.page_selection = page
+
+# Initialize session state for page selection
+if 'page_selection' not in st.session_state:
+    st.session_state.page_selection = 'About'
+
+# Navigation using st_navbar
+page = st_navbar(["About", "Budget and Pricing", "Suggest Appliances"])
+
+# Sync selected page with session state
+st.session_state.page_selection = page
+
+# Display the current page
+st.write(f"Current Page: {st.session_state.page_selection}")
 
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Home page content
