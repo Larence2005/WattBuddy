@@ -209,7 +209,7 @@ if st.session_state.page_selection == "Budget and Pricing":
             
             # Calculate Root Mean Squared Error
             rmse = mse ** 0.5
-            st.write('Accuracy: ' + accuracy)
+            st.write(f'Accuracy: {accuracy:.2f}')
             st.write(f"Mean Absolute Error: {mae:.2f}")
             st.write(f"Mean Squared Error: {mse:.2f}")
             st.write(f"Root Mean Squared Error: {rmse:.2f}")
