@@ -165,7 +165,7 @@ if st.session_state.page_selection == "Budget and Pricing":
         ax.pie(wattage_percentages, labels=df["Name"], autopct="%1.1f%%", startangle=90)
         ax.axis("equal")
         st.pyplot(fig)
-
+        
         # Predict suggested hours using the trained Linear Regression model
         daily_budget = budget / 30  # Daily budget based on total budget
         cost_per_hour = model.coef_[0][0]  # Coefficient from the Linear Regression model (cost per hour)
@@ -175,7 +175,7 @@ if st.session_state.page_selection == "Budget and Pricing":
             lambda row: 0 if classification in ["low", "balanced"] else min(
                 daily_budget / (row["Wattage (W)"] * price_per_kwh / 1000),  # Maximum hours within budget
                 model.predict([[row["Hours Used"]]])[0] / cost_per_hour,  # Predicted hours from the model
-            ),
+            ) if pd.notna(row["Hours Used"]) and row["Wattage (W)"] > 0 else 0,  # Handle missing/invalid data
             axis=1,
         )
         
@@ -185,7 +185,12 @@ if st.session_state.page_selection == "Budget and Pricing":
         
         # Iterate over the rows and create a bullet point list for each appliance
         for index, row in df.iterrows():
-            st.write(f"- **{row['Name']}**: Suggested Hours = {row['Hours Suggested']:.2f} hours")
+            # Check if 'Hours Suggested' is a valid number
+            if pd.notna(row["Hours Suggested"]):
+                st.write(f"- **{row['Name']}**: Suggested Hours = {row['Hours Suggested']:.2f} hours")
+            else:
+                st.write(f"- **{row['Name']}**: No suggestion available")
+
 
         
     else:
