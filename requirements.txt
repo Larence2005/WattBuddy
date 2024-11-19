@@ -4,4 +4,4 @@ numpy
 matplotlib
 LinearRegression
 scikit-learn
-st_navbar
+streamlit_navigation_bar
