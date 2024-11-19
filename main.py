@@ -7,6 +7,12 @@ from sklearn.linear_model import LinearRegression
 from streamlit_navigation_bar import st_navbar
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Initialize session state for page selection
+page = st_navbar(["About", "Budget and Pricing", "Suggested Appliances"])
+st.session_state.page_selection = page
+
+# Navigation using st_navbar
+page = st_navbar(["About", "Budget and Pricing", "Suggest Appliances"])
+
 if 'page_selection' not in st.session_state:
     st.session_state.page_selection = 'About'
 
@@ -15,20 +21,6 @@ def set_page_selection(page):
 
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Sidebar navigation
-page = st_navbar(["About", "Budget and Pricing", "Suggested Appliances"])
-st.session_state.page_selection = page
-
-# Initialize session state for page selection
-if 'page_selection' not in st.session_state:
-    st.session_state.page_selection = 'About'
-
-# Navigation using st_navbar
-page = st_navbar(["About", "Budget and Pricing", "Suggest Appliances"])
-
-# Sync selected page with session state
-st.session_state.page_selection = page
-
-# Display the current page
 st.write(f"Current Page: {st.session_state.page_selection}")
 
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------
