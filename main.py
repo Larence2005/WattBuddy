@@ -38,48 +38,48 @@ if st.session_state.page_selection == "Budget and Pricing":
     if "appliances" not in st.session_state:
         st.session_state["appliances"] = []
 
-# Form to add appliances
-with st.form("add_appliance_form"):
-    # Appliance details
-    appliance_name = st.text_input("Appliance Name:")
-    wattage = st.number_input("Wattage (in Watts):", min_value=0.0, step=1.0)
-    hours_used = st.number_input("Usage Time (in Hours):", min_value=0.0, step=0.1)
+    # Form to add appliances
+    with st.form("add_appliance_form"):
+        # Appliance details
+        appliance_name = st.text_input("Appliance Name:")
+        wattage = st.number_input("Wattage (in Watts):", min_value=0.0, step=1.0)
+        hours_used = st.number_input("Usage Time (in Hours):", min_value=0.0, step=0.1)
+        
+        # New fields: Day selection and weeks in a month
+        selected_day = st.radio(
+            "Select the day of usage:", 
+            options=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], 
+            horizontal=True
+        )
+        weeks_in_month = st.number_input(
+            "How many weeks in a month do you use this appliance?", 
+            min_value=1, 
+            max_value=4, 
+            value=4, 
+            step=1
+        )
     
-    # New fields: Day selection and weeks in a month
-    selected_day = st.radio(
-        "Select the day of usage:", 
-        options=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], 
-        horizontal=True
-    )
-    weeks_in_month = st.number_input(
-        "How many weeks in a month do you use this appliance?", 
-        min_value=1, 
-        max_value=4, 
-        value=4, 
-        step=1
-    )
-
-    # Submit button
-    add_appliance = st.form_submit_button("Add Appliance")
-    if add_appliance:
-        if appliance_name and wattage and hours_used:
-            # Calculate daily and monthly usage cost
-            kwh_consumed = wattage * hours_used / 1000
-            daily_cost = kwh_consumed * price_per_kwh
-            monthly_cost = daily_cost * weeks_in_month * 7  # Usage across the selected weeks
-            
-            # Add appliance data to session state
-            st.session_state["appliances"].append({
-                "Name": appliance_name,
-                "Wattage (W)": wattage,
-                "Hours Used": hours_used,
-                "Day": selected_day,
-                "Weeks in Month": weeks_in_month,
-                "kWh Consumed": kwh_consumed,
-                "Cost (Php)": daily_cost,
-                "Monthly Cost (Php)": monthly_cost
-            })
-            st.success(f"{appliance_name} added successfully!")
+        # Submit button
+        add_appliance = st.form_submit_button("Add Appliance")
+        if add_appliance:
+            if appliance_name and wattage and hours_used:
+                # Calculate daily and monthly usage cost
+                kwh_consumed = wattage * hours_used / 1000
+                daily_cost = kwh_consumed * price_per_kwh
+                monthly_cost = daily_cost * weeks_in_month * 7  # Usage across the selected weeks
+                
+                # Add appliance data to session state
+                st.session_state["appliances"].append({
+                    "Name": appliance_name,
+                    "Wattage (W)": wattage,
+                    "Hours Used": hours_used,
+                    "Day": selected_day,
+                    "Weeks in Month": weeks_in_month,
+                    "kWh Consumed": kwh_consumed,
+                    "Cost (Php)": daily_cost,
+                    "Monthly Cost (Php)": monthly_cost
+                })
+                st.success(f"{appliance_name} added successfully!")
 
 
     # Display appliances
