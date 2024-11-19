@@ -128,25 +128,33 @@ if st.session_state.page_selection == "Budget and Pricing":
         total_monthly_loss = max(total_monthly_cost - budget, 0)
         money_saved_texts = []
         
-        # Loop through each appliance and calculate the savings percentage based on the budget
+        # Calculate the total monthly cost of appliances that exceed the budget (total loss)
+        total_loss = 0
+        for idx, row in df.iterrows():
+            appliance_monthly_cost = row["Monthly Cost (Php)"]
+            if appliance_monthly_cost > budget:
+                total_loss += appliance_monthly_cost - budget
+        
+        # Loop through each appliance and calculate the percentage of total loss
         for idx, row in df.iterrows():
             appliance_monthly_cost = row["Monthly Cost (Php)"]
             if appliance_monthly_cost <= budget:
-                # Calculate the percentage of budget saved by this appliance
+                # Calculate the percentage of the budget saved by this appliance
                 money_saved_percentage = (appliance_monthly_cost / budget) * 100
                 money_saved_texts.append(f"{row['Name']}: Money saved: {money_saved_percentage:.2f}% of your budget")
             else:
-                # If the appliance cost exceeds the budget, show loss percentage
-                appliance_excess_ratio = (appliance_monthly_cost - budget) / budget
-                percentage_lost = appliance_excess_ratio * 100
-                money_saved_texts.append(f"{row['Name']}: Potential loss: {percentage_lost:.2f}% of your budget")
+                # If the appliance cost exceeds the budget, show loss percentage of total loss
+                appliance_loss = appliance_monthly_cost - budget
+                loss_percentage_of_total = (appliance_loss / total_loss) * 100 if total_loss > 0 else 0
+                money_saved_texts.append(f"{row['Name']}: Potential loss: {loss_percentage_of_total:.2f}% of the total loss")
         
-        # Show total monthly loss or savings
+        # Show total monthly loss
         st.write(f"**Total Monthly Loss: Php {total_monthly_loss:.2f}**")
         
         # Display the savings or loss for each appliance
         for text in money_saved_texts:
             st.write(text)
+
             
 
         # Train Linear Regression Model
