@@ -10,46 +10,18 @@ if 'page_selection' not in st.session_state:
 def set_page_selection(page):
     st.session_state.page_selection = page
 
-# Top navigation
-st.markdown(
-    """
-    <style>
-    .topnav {
-        background-color: #333;
-        overflow: hidden;
-    }
-    .topnav a {
-        float: left;
-        display: block;
-        color: #f2f2f2;
-        text-align: center;
-        padding: 14px 16px;
-        text-decoration: none;
-        font-size: 17px;
-    }
-    .topnav a:hover {
-        background-color: #ddd;
-        color: black;
-    }
-    </style>
-    <div class="topnav">
-        <a href="#" onclick="window.parent.postMessage('About', '*')">About</a>
-        <a href="#" onclick="window.parent.postMessage('Budget and Pricing', '*')">Budget and Pricing</a>
-        <a href="#" onclick="window.parent.postMessage('Suggest Appliances', '*')">Suggest Appliances</a>
-    </div>
-    """, unsafe_allow_html=True)
 
-# Handling the page selection
-page = st.session_state.get('page_selection', 'About')
-if page == 'About':
-    st.title("About Page")
-    # Add the content for the About page
-elif page == 'Budget and Pricing':
-    st.title("Budget and Pricing")
-    # Add the content for Budget and Pricing page
-elif page == 'Suggest Appliances':
-    st.title("Suggest Appliances")
-    # Add the content for Suggest Appliances page
+# Sidebar navigation
+with st.sidebar:
+    st.title("Navigation")
+    if st.button("About", use_container_width=True, on_click=set_page_selection, args=("About",)):
+        pass  # Selection handled by callback
+    
+    if st.button("Budget and Pricing", use_container_width=True, on_click=set_page_selection, args=("Budget and Pricing",)):
+        pass  # Selection handled by callback
+
+    if st.button("Suggest Appliances", use_container_width=True, on_click=set_page_selection, args=("Suggest Appliances",)):
+        pass  # Selection handled by callback
 
 
 # Home page content
