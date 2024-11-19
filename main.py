@@ -34,14 +34,14 @@ with st.sidebar:
         st.error("Image file not found. Please check the path to the image.")
    
     st.markdown("---")
-    
-    if st.button("About", use_container_width=True, on_click=set_page_selection, args=("About",)):
-        pass  # Selection handled by callback
 
     if st.button("Budget and Pricing", use_container_width=True, on_click=set_page_selection, args=("Budget and Pricing",)):
         pass  # Selection handled by callback
 
     if st.button("Suggest Appliances", use_container_width=True, on_click=set_page_selection, args=("Suggest Appliances",)):
+        pass  # Selection handled by callback
+
+    if st.button("About", use_container_width=True, on_click=set_page_selection, args=("About",)):
         pass  # Selection handled by callback
 
 #--------------------------------------------------------------------------------------------------------------------------------------------------
@@ -144,10 +144,10 @@ if st.session_state.page_selection == "Budget and Pricing":
             st.success("Your total monthly electric cost is LOW!")
             classification = "low"
         elif total_monthly_cost <= budget:
-            st.warning("Your total monthly electric cost is BALANCED!")
+            st.warning("Your total monthly electric cost is BALANCED!" ,icon="⚠️")
             classification = "balanced"
         else:
-            st.error("Your total monthly electric cost is HIGH!")
+            st.error("Your total monthly electric cost is HIGH!" ,icon="🚨")
             classification = "high"
 
         # Money Saved or Loss
@@ -344,12 +344,12 @@ elif st.session_state.page_selection == "About":
         </h2>
     """, unsafe_allow_html=True)
 
-st.markdown("---")
+    st.markdown("---")
 
     #Content
-st.write("\n")
-st.markdown("""
-        <p style="text-align: justify;">
+    st.write("\n")
+    st.markdown("""
+            <p style="text-align: justify;">
             WattBuddy helps users manage their electricity consumption and budget. By entering the cost of electricity and 
             adding appliances, users can calculate the total cost and consumption based on their usage.
             The app also provides suggestions for adjusting appliance usage to stay within the given budget.
@@ -357,15 +357,15 @@ st.markdown("""
         </p>
     """, unsafe_allow_html=True)
 
-st.write("\n\n")
+    st.write("\n\n")
 
-st.markdown("""
+    st.markdown("""
         <h5 style="color: whitesmoke;">
             Developed by: Cardinal Bytes
         </h5>
     """, unsafe_allow_html=True)
 
-st.write("""
+    st.write("""
             - Evan Vincent B. Lim
             - John Larence D. Lusaya
             - Kobe Aniban Lituañas
@@ -374,7 +374,7 @@ st.write("""
             Your Electricity Advisor | Powered By: Streamlit and Python
         """)
     
-on = st.toggle("Learn More")
+    on = st.toggle("Learn More")
 
-if on:
-    st.write("SOMETHING HERE")
+    if on:
+        st.write("SOMETHING HERE")
