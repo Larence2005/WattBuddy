@@ -81,14 +81,16 @@ if st.session_state.page_selection == "Budget and Pricing":
                     "Monthly Cost (Php)": monthly_cost
                 })
                 st.success(f"{appliance_name} added successfully!")
-
-
-
+    
     # Display appliances
     if st.session_state["appliances"]:
         st.subheader("Appliance List")
+    
+        # Create DataFrame from session state
+        df = pd.DataFrame(st.session_state["appliances"])
+    
+        # Display the appliance data
         st.dataframe(df[["Name", "Wattage (W)", "Hours Used", "Days Used", "Weeks in Month", "Cost (Php)", "Monthly Cost (Php)"]])
-        st.dataframe(df)
     
         # Add remove buttons with a flag to catch removal action
         for idx, row in df.iterrows():
@@ -96,10 +98,10 @@ if st.session_state.page_selection == "Budget and Pricing":
             remove_button = st.button(f"Remove {row['Name']}", key=f"remove_{idx}")
             
             if remove_button:
-                # Remove the appliance from the session state without rerun
-                st.session_state["appliances"].pop(idx)  # Remove the appliance from the list
-                st.session_state['removed_appliance'] = row['Name']  # Store the removed appliance's name
+                # Remove the appliance from the session state by matching the appliance name
+                st.session_state["appliances"] = [appliance for appliance in st.session_state["appliances"] if appliance["Name"] != row["Name"]]
                 st.success(f"Appliance '{row['Name']}' removed!")
+
             
 
         # Total consumption and cost
