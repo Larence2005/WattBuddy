@@ -1,29 +1,44 @@
-#Imports
+# Imports
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
-
 from sklearn.linear_model import LinearRegression
 from streamlit_navigation_bar import st_navbar
-#----------------------------------------------------------------------------------------------------------------------------------------------------------------
-# Initialize session state for page selection
+
+# Initialize navigation bar and determine the active page
 page = st_navbar(["About", "Budget and Pricing", "Suggested Appliances"])
-st.session_state.page_selection = page
 
-if 'page_selection' not in st.session_state:
-    st.session_state.page_selection = 'About'
-
-def set_page_selection(page):
-    st.session_state.page_selection = page
+# Display the current page
+st.write(f"Current Page: {page}")
 
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------
-# Sidebar navigation
-st.write(f"Current Page: {st.session_state.page_selection}")
+# About page content
+if page == "About":
+    st.title("WattBuddy")
+    st.subheader("Your Electricity Advisor")
+    
+    st.write('\n')
+    
+    st.header("About WattBuddy")
+    st.write("""
+        WattBuddy helps users manage their electricity consumption and budget. By entering the cost of electricity and 
+        adding appliances, users can calculate the total cost and consumption based on their usage.
+        The app also provides suggestions for adjusting appliance usage to stay within the given budget. 
+        It also provides a list of suggested appliances based on the user's budget.
+    """)
+
+    st.header("Made By: Cardinal Byte")
+    st.subheader("Member:")
+    st.write("""  
+                Evan Vincent B. Lim
+                John Larence D. Lusaya
+                Kobe Aniban Lituañas
+                Louis Patrick N. Jaso
+              """)
 
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------
-# Home page content
-if st.session_state.page_selection == "Budget and Pricing":
-    # Budget and Pricing Input Section
+# Budget and Pricing page content
+elif page == "Budget and Pricing":
     st.title("Budget and Pricing")
     st.write('\n')
     budget = st.number_input("Enter your budget in Php:", min_value=0.0, value=1000.0, step=50.0)
@@ -52,7 +67,6 @@ if st.session_state.page_selection == "Budget and Pricing":
                 })
                 st.success(f"{appliance_name} added successfully!")
                 
-#----------------------------------------------------------------------------------------------------------------------------------------------------------------
     # Display appliances
     if st.session_state["appliances"]:
         st.subheader("Appliance List")
@@ -85,27 +99,6 @@ if st.session_state.page_selection == "Budget and Pricing":
             st.error("Your monthly electric cost is HIGH!")
             classification = "high"
 
-        # Money Saved or Loss
-        st.write('\n')
-        st.subheader("Money Saved or Loss")
-        total_monthly_loss = max(monthly_cost - budget, 0)
-        money_saved_texts = []
-
-        for idx, row in df.iterrows():
-            appliance_monthly_cost = row["Cost (Php)"] * 30
-            if classification == "high":
-                appliance_excess_ratio = appliance_monthly_cost / monthly_cost
-                percentage_lost = appliance_excess_ratio * 100
-                money_saved_texts.append(f"{row['Name']}: Reduce usage! Potential loss: {percentage_lost:.2f}%")
-            else:
-                appliance_cost_ratio = appliance_monthly_cost / monthly_cost
-                money_saved_percentage = appliance_cost_ratio * 100
-                money_saved_texts.append(f"{row['Name']}: Money saved: {money_saved_percentage:.2f}%")
-
-        st.write(f"**Total Monthly Loss: Php {total_monthly_loss:.2f}**")
-        for text in money_saved_texts:
-            st.write(text)
-
         # Train Linear Regression Model
         X = df["Hours Used"].values.reshape(-1, 1)  # Feature: Hours Used
         y = df["Cost (Php)"].values.reshape(-1, 1)  # Target: Cost
@@ -113,7 +106,6 @@ if st.session_state.page_selection == "Budget and Pricing":
         model.fit(X, y)
 
         # Wattage percentage graph
-        st.write('\n')
         st.subheader("Wattage Percentage Graph")
         fig, ax = plt.subplots()
         wattage_percentages = (df["Wattage (W)"] / df["Wattage (W)"].sum()) * 100
@@ -123,8 +115,6 @@ if st.session_state.page_selection == "Budget and Pricing":
 
         # Predict suggested hours using the trained Linear Regression model
         daily_budget = budget / 30  # Calculate daily budget from monthly budget
-        
-        # Generate "suggested hours" for each appliance
         df["Hours Suggested"] = df.apply(
             lambda row: max(
                 model.predict([[daily_budget / price_per_kwh]])[0][0] / row["Wattage (W)"],
@@ -136,40 +126,12 @@ if st.session_state.page_selection == "Budget and Pricing":
         )
         
         # Display the updated table with suggested hours
-        st.write("\n")
-        st.write("\n### Usage Suggestions:")
+        st.subheader("Usage Suggestions")
         st.dataframe(df[["Name", "Hours Used", "Cost (Php)", "Hours Suggested"]])
-
-        
     else:
         st.info("Add appliances to calculate and analyze.")
 
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------
-# About page content
-elif st.session_state.page_selection == "About":
-    st.title("WattBuddy")
-    st.subheader("Your Electricity Advisor")
-    
-    st.write('\n')
-    
-    st.header("About WattBuddy")
-    st.write("""
-        WattBuddy helps users manage their electricity consumption and budget. By entering the cost of electricity and 
-        adding appliances, users can calculate the total cost and consumption based on their usage.
-        The app also provides suggestions for adjusting appliance usage to stay within the given budget. 
-        It also provides a list of suggested applicances base on the users budget.
-    """)
-
-    st.header("Made By: Cardinal Byte")
-    st.subheader("Member:")
-    st.write("""  
-                Evan Vincent B. Lim
-                John Larence D. Lusaya
-                Kobe Aniban Lituañas
-                Louis Patrick N. Jaso
-              """)
-
-#----------------------------------------------------------------------------------------------------------------------------------------------------------------
-#Suggest Appliances content
-elif st.session_state.page_selection == "Suggest Appliances":
+# Suggested Appliances page content
+elif page == "Suggested Appliances":
     st.header("This page suggests appliances based on your budget")
