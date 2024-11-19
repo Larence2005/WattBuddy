@@ -3,8 +3,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 
-import streamlit as st
-
 # Initialize session state for page selection
 if 'page_selection' not in st.session_state:
     st.session_state.page_selection = 'About'
@@ -12,60 +10,18 @@ if 'page_selection' not in st.session_state:
 def set_page_selection(page):
     st.session_state.page_selection = page
 
-# Top navigation bar with responsive design
-st.markdown(
-    """
-    <style>
-    /* Style for the navigation bar */
-    .topnav {
-        background-color: #333;
-        overflow: hidden;
-        position: fixed;
-        top: 0;
-        width: 100%;
-        z-index: 1000;
-    }
 
-    /* Links in the navigation bar */
-    .topnav a {
-        float: left;
-        display: block;
-        color: #f2f2f2;
-        text-align: center;
-        padding: 14px 16px;
-        text-decoration: none;
-        font-size: 17px;
-    }
+# Sidebar navigation
+with st.sidebar:
+    st.title("Navigation")
+    if st.button("About", use_container_width=True, on_click=set_page_selection, args=("About",)):
+        pass  # Selection handled by callback
+    
+    if st.button("Budget and Pricing", use_container_width=True, on_click=set_page_selection, args=("Budget and Pricing",)):
+        pass  # Selection handled by callback
 
-    /* Hover effect */
-    .topnav a:hover {
-        background-color: #ddd;
-        color: black;
-    }
-
-    /* Responsive layout: stack the nav links on small screens */
-    @media screen and (max-width: 600px) {
-        .topnav a {
-            float: none;
-            display: block;
-            text-align: left;
-        }
-    }
-
-    /* Adding space for the fixed navigation bar */
-    body {
-        padding-top: 50px;  /* Adjust depending on the height of your nav */
-    }
-    </style>
-    <div class="topnav">
-        <a href="#" onclick="window.parent.postMessage('About', '*')">About</a>
-        <a href="#" onclick="window.parent.postMessage('Budget and Pricing', '*')">Budget and Pricing</a>
-        <a href="#" onclick="window.parent.postMessage('Suggest Appliances', '*')">Suggest Appliances</a>
-    </div>
-    """, unsafe_allow_html=True)
-
-# Handling the page selection
-page = st.session_state.get('page_selection', 'About')
+    if st.button("Suggest Appliances", use_container_width=True, on_click=set_page_selection, args=("Suggest Appliances",)):
+        pass  # Selection handled by callback
 
 
 # Home page content
@@ -207,25 +163,13 @@ if st.session_state.page_selection == "Budget and Pricing":
 elif st.session_state.page_selection == "About":
     st.title("WattBuddy")
     st.subheader("Your Electricity Advisor")
-    
     st.write('\n')
-    
     st.header("About WattBuddy")
     st.write("""
         WattBuddy helps users manage their electricity consumption and budget. By entering the cost of electricity and 
         adding appliances, users can calculate the total cost and consumption based on their usage.
-        The app also provides suggestions for adjusting appliance usage to stay within the given budget. 
-        It also provides a list of suggested applicances base on the users budget.
+        The app also provides suggestions for adjusting appliance usage to stay within the given budget.
     """)
-
-    st.header("Made By: Cardinal Byte")
-    st.subheader("Member:")
-    st.write("""  
-                Evan Vincent B. Lim
-                John Larence D. Lusaya
-                Kobe Aniban Lituañas
-                Louis Patrick N. Jaso
-              """)
 
 
 elif st.session_state.page_selection == "Suggest Appliances":
@@ -234,4 +178,3 @@ elif st.session_state.page_selection == "Suggest Appliances":
     st.write('\n')
     st.write('Data set used for this auto suggestion is from year 2022')
     st.write('Rating: Php10.4')
-    
