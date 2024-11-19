@@ -139,7 +139,7 @@ if st.session_state.page_selection == "Budget and Pricing":
         )
         
         # Display the updated table with suggested hours
-        st.write("\n### Appliance Usage Suggestions:")
+        st.write("\n### Usage Suggestions:")
         st.dataframe(df[["Name", "Hours Used", "Cost (Php)", "Predicted Cost", "Hours Suggested"]])
 
         
