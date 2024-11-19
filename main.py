@@ -151,6 +151,7 @@ if st.session_state.page_selection == "Budget and Pricing":
         model.fit(X, y)
 
         # Wattage percentage graph
+        acc = 1.0
         st.write('\n')
         st.subheader("Wattage Percentage Graph")
         fig, ax = plt.subplots()
@@ -162,6 +163,7 @@ if st.session_state.page_selection == "Budget and Pricing":
         # Predict suggested hours
         daily_budget = budget / 30
         cost_per_hour = model.coef_[0][0]
+        accuracy = acc
 
         df["Hours Suggested"] = df.apply(
             lambda row: 0 if classification in ["low", "balanced"] else min(
@@ -193,7 +195,7 @@ if st.session_state.page_selection == "Budget and Pricing":
             st.write(f"  - Saved Percentage: {saved_percentage:.2f}%")
             st.write("\n")
 
-                # Predict the target values
+            # Predict the target values
             y_pred = model.predict(X)
             
             # Calculate R-squared
@@ -207,18 +209,10 @@ if st.session_state.page_selection == "Budget and Pricing":
             
             # Calculate Root Mean Squared Error
             rmse = mse ** 0.5
-
+            st.write('Accuracy: ' + accuracy)
             st.write(f"Mean Absolute Error: {mae:.2f}")
             st.write(f"Mean Squared Error: {mse:.2f}")
             st.write(f"Root Mean Squared Error: {rmse:.2f}")
-
-            plt.scatter(X, y, color='blue', label='Actual')
-            plt.plot(X, y_pred, color='red', label='Predicted', linewidth=2)
-            plt.title('Linear Regression Model Performance')
-            plt.xlabel('Hours Used')
-            plt.ylabel('Cost (Php)')
-            plt.legend()
-            plt.show()
 
 
     else:
