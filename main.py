@@ -61,15 +61,22 @@ if st.session_state.page_selection == "Budget and Pricing":
         df = pd.DataFrame(st.session_state["appliances"])
         st.dataframe(df)
     
-    # Add remove buttons with a flag to catch removal action
-    for idx, row in df.iterrows():
-        # Use a unique key for each button based on index
-        remove_button = st.button(f"Remove {row['Name']}", key=f"remove_{idx}")
-        
-        if remove_button:
-            # Remove the appliance from the session state without rerun
-            st.session_state["appliances"] = [appliance for i, appliance in enumerate(st.session_state["appliances"]) if i != idx]  # Safe removal
-            st.success(f"Appliance '{row['Name']}' removed!")
+    # Check if appliances list is initialized and not empty
+    if "appliances" in st.session_state and st.session_state["appliances"]:
+        df = pd.DataFrame(st.session_state["appliances"])  # Create DataFrame from session state
+        st.subheader("Appliance List")
+        st.dataframe(df)
+    
+        # Add remove buttons
+        for idx, row in df.iterrows():
+            remove_button = st.button(f"Remove {row['Name']}", key=f"remove_{idx}")
+            if remove_button:
+                # Safely remove the appliance
+                st.session_state["appliances"] = [
+                    appliance for i, appliance in enumerate(st.session_state["appliances"]) if i != idx
+                ]
+                st.success(f"Appliance '{row['Name']}' removed!")
+                st.experimental_rerun()  # Rerun the script to update the UI
 
             
 
