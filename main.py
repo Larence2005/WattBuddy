@@ -189,7 +189,7 @@ if st.session_state.page_selection == "Budget and Pricing":
                 saved_cost_percentage = 0
             
             # Display each appliance as a bullet point
-            st.write(f"• **{appliance_name}:**")
+            st.write(f" **{appliance_name}:**")
             st.write(f"  - Hours Used: {hours_used} hours")
             st.write(f"  - Suggested Hours: {hours_suggested:.2f} hours")
             st.write(f"  - Saved Cost Percentage: {saved_cost_percentage:.2f}%")
