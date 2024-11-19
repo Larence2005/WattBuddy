@@ -177,10 +177,10 @@ elif st.session_state.page_selection == "About":
     st.header("Made By: Cardinal Byte")
     st.subheader("Member:")
     st.write("""  
-                Evan Vincent B. Lim\n
-                John Larence D. Lusaya\n
-                Kobe Aniban Lituañas\n
-                Louis Patrick N. Jaso\n
+                - Evan Vincent B. Lim\n
+                - John Larence D. Lusaya\n
+                - Kobe Aniban Lituañas\n
+                - Louis Patrick N. Jaso\n
               """)
 
 elif st.session_state.page_selection == "Suggest Appliances":
