@@ -45,11 +45,11 @@ if st.session_state.page_selection == "Budget and Pricing":
         wattage = st.number_input("Wattage (in Watts):", min_value=0.0, step=1.0)
         hours_used = st.number_input("Usage Time (in Hours):", min_value=0.0, step=0.1)
         
-        # New fields: Day selection and weeks in a month
-        selected_day = st.radio(
-            "Select the day of usage:", 
-            options=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], 
-            horizontal=True
+        # New fields: Multiple day selection and weeks in a month
+        selected_days = st.multiselect(
+            "Select the days of usage:", 
+            options=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+            default=["Monday"]  # Default to Monday for convenience
         )
         weeks_in_month = st.number_input(
             "How many weeks in a month do you use this appliance?", 
@@ -66,14 +66,15 @@ if st.session_state.page_selection == "Budget and Pricing":
                 # Calculate daily and monthly usage cost
                 kwh_consumed = wattage * hours_used / 1000
                 daily_cost = kwh_consumed * price_per_kwh
-                monthly_cost = daily_cost * weeks_in_month * 7  # Usage across the selected weeks
+                monthly_days = len(selected_days) * weeks_in_month  # Total selected days in the month
+                monthly_cost = daily_cost * monthly_days
                 
                 # Add appliance data to session state
                 st.session_state["appliances"].append({
                     "Name": appliance_name,
                     "Wattage (W)": wattage,
                     "Hours Used": hours_used,
-                    "Day": selected_day,
+                    "Days Used": ", ".join(selected_days),  # Store as a comma-separated string
                     "Weeks in Month": weeks_in_month,
                     "kWh Consumed": kwh_consumed,
                     "Cost (Php)": daily_cost,
@@ -82,10 +83,11 @@ if st.session_state.page_selection == "Budget and Pricing":
                 st.success(f"{appliance_name} added successfully!")
 
 
+
     # Display appliances
     if st.session_state["appliances"]:
         st.subheader("Appliance List")
-        df = pd.DataFrame(st.session_state["appliances"])
+        st.dataframe(df[["Name", "Wattage (W)", "Hours Used", "Days Used", "Weeks in Month", "Cost (Php)", "Monthly Cost (Php)"]])
         st.dataframe(df)
     
         # Add remove buttons with a flag to catch removal action
