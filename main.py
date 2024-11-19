@@ -150,10 +150,8 @@ if st.session_state.page_selection == "Budget and Pricing":
         model = LinearRegression()
         model.fit(X, y)
 
-
         # Wattage percentage graph with dropdown toggle
         st.write('\n')
-        acc = 1
         st.subheader("Wattage Percentage Graph")
 
         # Create a dropdown (selectbox) to toggle the visibility of the graph
@@ -190,7 +188,6 @@ if st.session_state.page_selection == "Budget and Pricing":
         # Predict suggested hours
         daily_budget = budget / 30
         cost_per_hour = model.coef_[0][0]
-        accuracy = acc
 
         df["Hours Suggested"] = df.apply(
             lambda row: 0 if classification in ["low", "balanced"] else min(
@@ -225,7 +222,8 @@ if st.session_state.page_selection == "Budget and Pricing":
     else:
         st.info("Add appliances to calculate and analyze.")
 
-
+        acc = 1
+        accuracy = acc
         # Predict the target values
         y_pred = 1
     
