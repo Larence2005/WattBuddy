@@ -1,31 +1,37 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
+
+# Initialize session state for page selection
+if 'page_selection' not in st.session_state:
+    st.session_state.page_selection = 'Home'
+
+def set_page_selection(page):
+    st.session_state.page_selection = page
 
 # App title
 st.title("WattBuddy")
 st.subheader("Your Electricity Advisor")
 st.write('\n')
 
-# Sidebar for navigation
-if st.sidebar.button("Home"):
-    page = "Home"
-elif st.sidebar.button("About"):
-    page = "About"
-else:
-    page = "Home"  # Default to Home if no button is pressed
-
-# Sidebar for budget and pricing input
-st.sidebar.header("Budget and Pricing Input")
-budget = st.sidebar.number_input("Enter your budget in Php:", min_value=0.0, value=1000.0, step=50.0)
-price_per_kwh = st.sidebar.number_input("Enter Meralco's price per kWh in Php:", min_value=0.0, value=10.0, step=0.1)
+# Sidebar navigation
+with st.sidebar:
+    st.title("Navigation")
+    if st.button("Home", use_container_width=True, on_click=set_page_selection, args=("Home",)):
+        pass  # Selection handled by callback
+    if st.button("About", use_container_width=True, on_click=set_page_selection, args=("About",)):
+        pass  # Selection handled by callback
 
 # Home page content
-if page == "Home":
-    # Add appliances section
+if st.session_state.page_selection == "Home":
+    # Budget and Pricing Input Section
+    st.subheader("Budget and Pricing Input")
+    budget = st.number_input("Enter your budget in Php:", min_value=0.0, value=1000.0, step=50.0)
+    price_per_kwh = st.number_input("Enter Meralco's price per kWh in Php:", min_value=0.0, value=10.0, step=0.1)
     st.write('\n')
+
+    # Add appliances section
     st.subheader("Add Appliances")
     if "appliances" not in st.session_state:
         st.session_state["appliances"] = []
@@ -64,13 +70,9 @@ if page == "Home":
         # Display total and monthly stats
         st.write('\n')
         st.write(f"### Electric Cost (Per Day): Php {total_cost:.2f}")
-        st.write('\n')
         st.write(f"### kWh Consumption (Per Day): {total_kwh:.2f} kWh")
-        st.write('\n')
         st.write(f"### Electric Cost (Monthly): Php {monthly_cost:.2f}")
-        st.write('\n')
         st.write(f"### kWh Consumption (Monthly): {monthly_kwh:.2f} kWh")
-        st.write('\n')
 
         # Cost status (monthly cost vs. budget)
         if monthly_cost <= budget * 0.7:
@@ -83,15 +85,28 @@ if page == "Home":
             st.error("Your monthly electric cost is HIGH!")
             classification = "high"
 
-        # Train a linear regression model for suggestions
-        st.write('\n')
-
-        # Prepare data for linear regression
+        # Train Linear Regression Model
+        st.subheader("Usage Prediction Using Linear Regression")
         X = df["Hours Used"].values.reshape(-1, 1)  # Feature: Hours Used
         y = df["Cost (Php)"].values.reshape(-1, 1)  # Target: Cost
         model = LinearRegression()
         model.fit(X, y)
 
+        st.write("The model has been trained to predict cost based on hours of usage.")
+
+        # Predict suggested hours based on budget
+        df["Hours Suggested"] = df.apply(
+            lambda row: max(
+                (budget / monthly_cost) * row["Cost (Php)"] / (row["Wattage (W)"] * price_per_kwh / 1000),
+                0,
+            )
+            if classification == "high"
+            else row["Hours Used"],
+            axis=1,
+        )
+
+        st.write("### Suggested Appliance Usage")
+        st.dataframe(df[["Name", "Hours Used", "Hours Suggested"]])
 
         # Wattage percentage graph
         st.write('\n')
@@ -102,80 +117,11 @@ if page == "Home":
         ax.axis("equal")
         st.pyplot(fig)
 
-        # Predict suggested hours and calculate money saved
-        st.write('\n')
-        st.write('\n')
-        df["Hours Suggested"] = 0  # Default is zero (no suggestion)
-        money_saved_texts = []
-
-        # Calculate total cost and total usage for percentage saving calculation
-        total_cost = df["Cost (Php)"].sum()
-        monthly_cost = total_cost * 30  # Assuming 30 days in a month
-
-        # Calculate total monthly loss
-        total_monthly_loss = max(monthly_cost - budget, 0)
-        
-        # Loop over each appliance to calculate suggestions and money saved
-        for idx, row in df.iterrows():
-            if classification == "high":
-                # Calculate how much this appliance contributes to the excess cost
-                appliance_monthly_cost = row["Cost (Php)"] * 30
-                excess_cost = max(monthly_cost - budget, 0)
-
-                if excess_cost > 0:
-                    # Calculate the appliance's contribution to the excess cost
-                    appliance_excess_ratio = appliance_monthly_cost / monthly_cost
-                    percentage_lost = appliance_excess_ratio * 100
-                else:
-                    percentage_lost = 0
-
-                # Calculate suggested hours (you can keep your existing logic)
-                # Calculate suggested hours
-                suggested_hours = (budget / monthly_cost) * row["Cost (Php)"] / (row["Wattage (W)"] * price_per_kwh / 1000)
-                suggested_hours = max(suggested_hours, 0)
-                df.at[idx, "Hours Suggested"] = suggested_hours
-
-                # Add suggestion text for HIGH classification
-                money_saved_texts.append(
-                    f"\n{row['Name']}: Reduce usage! Potential loss: {percentage_lost:.2f}%"
-                )
-            else:
-                # For BALANCED or GOOD classifications
-                if monthly_cost <= budget * 0.7:
-                    # Calculate money saved percentage based on individual appliance's cost ratio
-                    appliance_cost_ratio = (row["Cost (Php)"] * 30) / monthly_cost
-                    money_saved_percentage = appliance_cost_ratio * 100
-
-                    money_saved_texts.append(
-                        f"\n{row['Name']}: Money saved: {money_saved_percentage:.2f}%"
-                    )
-                elif monthly_cost <= budget:
-                    # Calculate money saved percentage based on individual appliance's cost ratio
-                    appliance_cost_ratio = (row["Cost (Php)"] * 30) / monthly_cost
-                    money_saved_percentage = appliance_cost_ratio * 100
-
-                    money_saved_texts.append(
-                        f"{row['Name']}: Money saved: {money_saved_percentage:.2f}%"
-                    )
-
-        # Display the final results with the money saved or loss texts
-        st.write("\n### Money Saved or Loss:")
-        st.write(f"**Total Monthly Loss: Php {total_monthly_loss:.2f}**")
-        for text in money_saved_texts:
-            st.write(text)
-
-        st.write('\n')
-        st.write('\n')
-        st.subheader("Suggestions")
-        st.write("Based on your budget, here are usage suggestions:")
-        st.dataframe(df[["Name", "Hours Used", "Hours Suggested"]])
-
-
     else:
         st.info("Add appliances to calculate and analyze.")
 
 # About page content
-elif page == "About":
+elif st.session_state.page_selection == "About":
     st.header("About WattBuddy")
     st.write("""
         WattBuddy helps users manage their electricity consumption and budget. By entering the cost of electricity and 
