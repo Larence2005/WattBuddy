@@ -60,6 +60,18 @@ if st.session_state.page_selection == "Budget and Pricing":
         st.subheader("Appliance List")
         df = pd.DataFrame(st.session_state["appliances"])
         st.dataframe(df)
+    
+        # Add remove buttons with a flag to catch removal action
+        for idx, row in df.iterrows():
+            # Use a unique key for each button based on index
+            remove_button = st.button(f"Remove {row['Name']}", key=f"remove_{idx}")
+            
+            if remove_button:
+                # Remove the appliance from the session state without rerun
+                st.session_state["appliances"].pop(idx)  # Remove the appliance from the list
+                st.session_state['removed_appliance'] = row['Name']  # Store the removed appliance's name
+                st.success(f"Appliance '{row['Name']}' removed!")
+            
 
         # Total consumption and cost
         total_cost = df["Cost (Php)"].sum()
