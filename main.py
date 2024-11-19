@@ -23,6 +23,9 @@ with st.sidebar:
     if st.button("About", use_container_width=True, on_click=set_page_selection, args=("About",)):
         pass  # Selection handled by callback
 
+    if st.button("Budget Only", use_container_width=True, on_click=set_page_selection, args=("Budget Only",)):
+        pass  # Selection handled by callback
+
 # Home page content
 if st.session_state.page_selection == "Home":
     # Budget and Pricing Input Section
@@ -147,3 +150,7 @@ elif st.session_state.page_selection == "About":
         adding appliances, users can calculate the total cost and consumption based on their usage.
         The app also provides suggestions for adjusting appliance usage to stay within the given budget.
     """)
+
+
+elif st.session_state.page_selection == "Budget Only":
+    
