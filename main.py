@@ -169,9 +169,32 @@ if st.session_state.page_selection == "Budget and Pricing":
             axis=1,
         )
 
+        # Display the suggested hours and saved cost as a percentage in bullet points
         st.write("\n")
-        st.write("\n### Usage Suggestions:")
-        st.dataframe(df[["Name", "Hours Used", "Cost (Php)", "Hours Suggested"]])
+        st.write("### Usage Suggestions:")
+        
+        for idx, row in df.iterrows():
+            appliance_name = row["Name"]
+            hours_used = row["Hours Used"]
+            original_cost = row["Cost (Php)"]
+            hours_suggested = row["Hours Suggested"]
+            
+            # Predict the cost for the suggested hours based on the model
+            predicted_cost_for_suggested_hours = model.predict([[hours_suggested]])[0][0] if hours_suggested > 0 else 0
+            
+            # Calculate the percentage of saved cost
+            if original_cost > 0:
+                saved_cost_percentage = ((original_cost - predicted_cost_for_suggested_hours) / original_cost) * 100
+            else:
+                saved_cost_percentage = 0
+            
+            # Display each appliance as a bullet point
+            st.write(f"• **{appliance_name}:**")
+            st.write(f"  - Hours Used: {hours_used} hours")
+            st.write(f"  - Suggested Hours: {hours_suggested:.2f} hours")
+            st.write(f"  - Saved Cost Percentage: {saved_cost_percentage:.2f}%")
+            st.write("\n")
+
 
     else:
         st.info("Add appliances to calculate and analyze.")
