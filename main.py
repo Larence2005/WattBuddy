@@ -163,13 +163,25 @@ if st.session_state.page_selection == "Budget and Pricing":
 elif st.session_state.page_selection == "About":
     st.title("WattBuddy")
     st.subheader("Your Electricity Advisor")
+    
     st.write('\n')
+    
     st.header("About WattBuddy")
     st.write("""
         WattBuddy helps users manage their electricity consumption and budget. By entering the cost of electricity and 
         adding appliances, users can calculate the total cost and consumption based on their usage.
-        The app also provides suggestions for adjusting appliance usage to stay within the given budget.
+        The app also provides suggestions for adjusting appliance usage to stay within the given budget. 
+        It also provides a list of suggested applicances base on the users budget.
     """)
+
+    st.header("Made By: Cardinal Byte")
+    st.subheader("Member:")
+    st.write("""  
+                Evan Vincent B. Lim
+                John Larence D. Lusaya
+                Kobe Aniban Lituañas
+                Louis Patrick N. Jaso
+              """)
 
 
 elif st.session_state.page_selection == "Suggest Appliances":
