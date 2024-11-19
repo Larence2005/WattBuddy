@@ -270,7 +270,7 @@ elif st.session_state.page_selection == "Suggest Appliances":
 
 
         
-     # Load the trained model using joblib
+    # Load the trained model using joblib
     model = joblib.load('appliance_model_philippines_monthly.joblib')
     
     # Load dataset for reference
@@ -285,12 +285,18 @@ elif st.session_state.page_selection == "Suggest Appliances":
     essential_only = st.checkbox("Show only essential appliances", value=False)
     
     # Check if the session state has been initialized
-    if 'recommended_appliances' not in st.session_state:
+    if 'last_rate' not in st.session_state:
+        st.session_state.last_rate = rate
+        st.session_state.last_budget = budget
         st.session_state.recommended_appliances = None
         st.session_state.total_cost = 0
     
-    # Update the recommendation if inputs change or button is clicked
-    if st.button("Get Recommendations"):
+    # Check if the rate or budget has changed
+    if st.session_state.last_rate != rate or st.session_state.last_budget != budget:
+        # Update session state with new inputs
+        st.session_state.last_rate = rate
+        st.session_state.last_budget = budget
+    
         # Adjust costs based on the user's rate
         dataset['Adjusted Monthly Cost'] = (
             dataset['Rated Power (kWh)'] * dataset['Daily Usage (Hours)'] * rate * 30
