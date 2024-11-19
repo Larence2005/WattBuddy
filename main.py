@@ -78,8 +78,8 @@ if st.session_state.page_selection == "Budget and Pricing":
 
         # Cost status (monthly cost vs. budget)
         if monthly_cost <= budget * 0.7:
-            st.success("Your monthly electric cost is GOOD!")
-            classification = "good"
+            st.success("Your monthly electric cost is LOW!")
+            classification = "low"
         elif monthly_cost <= budget:
             st.warning("Your monthly electric cost is BALANCED!")
             classification = "balanced"
@@ -123,21 +123,19 @@ if st.session_state.page_selection == "Budget and Pricing":
         ax.axis("equal")
         st.pyplot(fig)
 
-        # Predict suggested hours based on budget
+        # Predict suggested cost per hour using the trained model
+        predicted_cost_per_hour = model.predict(df["Hours Used"].values.reshape(-1, 1))
+        
+        # Suggested hours based on the predicted cost
         df["Hours Suggested"] = df.apply(
             lambda row: max(
-                (budget / monthly_cost) * row["Cost (Php)"] / (row["Wattage (W)"] * price_per_kwh / 1000),
+                model.predict([[budget / monthly_cost]])[0][0] if classification == "high" else row["Hours Used"],
                 0,
-            )
-            if classification == "high"
-            else row["Hours Used"],
+            ),
             axis=1,
         )
 
-        st.write("### Suggested Appliance Usage")
-        st.dataframe(df[["Name", "Hours Used", "Hours Suggested"]])
         
-
     else:
         st.info("Add appliances to calculate and analyze.")
 
