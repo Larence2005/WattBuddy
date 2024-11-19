@@ -40,20 +40,48 @@ if st.session_state.page_selection == "Budget and Pricing":
 
     # Form to add appliances
     with st.form("add_appliance_form"):
+        # Appliance details
         appliance_name = st.text_input("Appliance Name:")
         wattage = st.number_input("Wattage (in Watts):", min_value=0.0, step=1.0)
         hours_used = st.number_input("Usage Time (in Hours):", min_value=0.0, step=0.1)
+        
+        # New fields: Multiple day selection and weeks in a month
+        selected_days = st.multiselect(
+            "Select the days of usage:", 
+            options=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+            default=["Monday"]  # Default to Monday for convenience
+        )
+        weeks_in_month = st.number_input(
+            "How many weeks in a month do you use this appliance?", 
+            min_value=1, 
+            max_value=4, 
+            value=4, 
+            step=1
+        )
+    
+        # Submit button
         add_appliance = st.form_submit_button("Add Appliance")
         if add_appliance:
             if appliance_name and wattage and hours_used:
+                # Calculate daily and monthly usage cost
+                kwh_consumed = wattage * hours_used / 1000
+                daily_cost = kwh_consumed * price_per_kwh
+                monthly_days = len(selected_days) * weeks_in_month  # Total selected days in the month
+                monthly_cost = daily_cost * monthly_days
+                
+                # Add appliance data to session state
                 st.session_state["appliances"].append({
                     "Name": appliance_name,
                     "Wattage (W)": wattage,
                     "Hours Used": hours_used,
-                    "kWh Consumed": wattage * hours_used / 1000,
-                    "Cost (Php)": (wattage * hours_used / 1000) * price_per_kwh
+                    "Days Used": ", ".join(selected_days),  # Store as a comma-separated string
+                    "Weeks in Month": weeks_in_month,
+                    "kWh Consumed": kwh_consumed,
+                    "Cost (Php)": daily_cost,
+                    "Monthly Cost (Php)": monthly_cost
                 })
                 st.success(f"{appliance_name} added successfully!")
+
 
     # Display appliances
     if st.session_state["appliances"]:
