@@ -16,7 +16,7 @@ with st.sidebar:
     st.title("Navigation")
     if st.button("About", use_container_width=True, on_click=set_page_selection, args=("About",)):
         pass  # Selection handled by callback
-    
+
     if st.button("Budget and Pricing", use_container_width=True, on_click=set_page_selection, args=("Budget and Pricing",)):
         pass  # Selection handled by callback
 
@@ -44,7 +44,7 @@ if st.session_state.page_selection == "Budget and Pricing":
         appliance_name = st.text_input("Appliance Name:")
         wattage = st.number_input("Wattage (in Watts):", min_value=0.0, step=1.0)
         hours_used = st.number_input("Usage Time (in Hours):", min_value=0.0, step=0.1)
-        
+
         # New fields: Multiple day selection and weeks in a month
         selected_days = st.multiselect(
             "Select the days of usage:", 
@@ -58,7 +58,7 @@ if st.session_state.page_selection == "Budget and Pricing":
             value=4, 
             step=1
         )
-    
+
         # Submit button
         add_appliance = st.form_submit_button("Add Appliance")
         if add_appliance:
@@ -68,7 +68,7 @@ if st.session_state.page_selection == "Budget and Pricing":
                 daily_cost = kwh_consumed * price_per_kwh
                 monthly_days = len(selected_days) * weeks_in_month  # Total selected days in the month
                 monthly_cost = daily_cost * monthly_days
-                
+
                 # Add appliance data to session state
                 st.session_state["appliances"].append({
                     "Name": appliance_name,
@@ -81,32 +81,36 @@ if st.session_state.page_selection == "Budget and Pricing":
                     "Monthly Cost (Php)": monthly_cost
                 })
                 st.success(f"{appliance_name} added successfully!")
-    
+
     # Display appliances
     if st.session_state["appliances"]:
         st.subheader("Appliance List")
-    
+
         # Create DataFrame from session state
         df = pd.DataFrame(st.session_state["appliances"])
-    
+
         # Display the appliance data
         st.dataframe(df[["Name", "Wattage (W)", "Hours Used", "Days Used", "Weeks in Month", "Cost (Php)", "Monthly Cost (Php)"]])
-    
+
         # Add remove buttons with a flag to catch removal action
         for idx, row in df.iterrows():
             # Use a unique key for each button based on index
             remove_button = st.button(f"Remove {row['Name']}", key=f"remove_{idx}")
-            
+
             if remove_button:
                 # Remove the appliance from the session state by matching the appliance name
                 st.session_state["appliances"] = [appliance for appliance in st.session_state["appliances"] if appliance["Name"] != row["Name"]]
                 st.success(f"Appliance '{row['Name']}' removed!")
 
-            
 
+
+        # Total consumption and cost
         # Total consumption and cost (updated for correct monthly calculation)
         total_cost = df["Cost (Php)"].sum()
         total_kwh = df["kWh Consumed"].sum()
+        # Calculate monthly values
+        monthly_cost = total_cost * 30  # Assuming 30 days in a month
+        monthly_kwh = total_kwh * 30  # Assuming usage is similar every day
         
         # Calculate the correct monthly cost by considering each appliance's specific usage days
         monthly_cost = df.apply(lambda row: row["Cost (Php)"] * len(row["Days Used"].split(", ")) * row["Weeks in Month"], axis=1).sum()
@@ -119,7 +123,6 @@ if st.session_state.page_selection == "Budget and Pricing":
         st.write(f"#### Electric Cost (Monthly): Php {monthly_cost:.2f}")
         st.write(f"#### kWh Consumption (Monthly): {monthly_kwh:.2f} kWh")
 
-
         # Cost status (monthly cost vs. budget)
         if monthly_cost <= budget * 0.7:
             st.success("Your monthly electric cost is LOW!")
@@ -131,35 +134,26 @@ if st.session_state.page_selection == "Budget and Pricing":
             st.error("Your monthly electric cost is HIGH!")
             classification = "high"
 
-        # Calculate remaining budget after considering total monthly cost
-        remaining_budget = budget - monthly_cost
-        
-        # Money Saved or Loss calculation
+        # Money Saved or Loss
         st.write('\n')
         st.subheader("Money Saved or Loss")
-        
+        total_monthly_loss = max(monthly_cost - budget, 0)
         money_saved_texts = []
-        for idx, row in df.iterrows():
-            appliance_monthly_cost = row["Cost (Php)"] * len(row["Days Used"].split(", ")) * row["Weeks in Month"]
-            appliance_percentage_of_total_cost = (appliance_monthly_cost / monthly_cost) * 100
-        
-            # Calculate Money Saved or Loss based on remaining budget
-            if remaining_budget >= 0:
-                # Money saved percentage is based on remaining budget
-                appliance_percentage_saved = (appliance_monthly_cost / remaining_budget) * 100
-                money_saved_texts.append(f"{row['Name']}: Money saved = {appliance_percentage_saved:.2f}%")
-            else:
-                # Calculate the total monthly loss (only if monthly cost exceeds the budget)
-                total_monthly_loss = max(monthly_cost - budget, 0)
-                
-                # Display the total monthly loss
-                st.write(f"**Total Monthly Loss: Php {total_monthly_loss:.2f}**")
 
-        
+        for idx, row in df.iterrows():
+            appliance_monthly_cost = row["Cost (Php)"] * 30
+            if classification == "high":
+                appliance_excess_ratio = appliance_monthly_cost / monthly_cost
+                percentage_lost = appliance_excess_ratio * 100
+                money_saved_texts.append(f"{row['Name']}: Reduce usage! Potential loss: {percentage_lost:.2f}%")
+            else:
+                appliance_cost_ratio = appliance_monthly_cost / monthly_cost
+                money_saved_percentage = appliance_cost_ratio * 100
+                money_saved_texts.append(f"{row['Name']}: Money saved: {money_saved_percentage:.2f}%")
+
         st.write(f"**Total Monthly Loss: Php {total_monthly_loss:.2f}**")
         for text in money_saved_texts:
             st.write(text)
-
 
         # Train Linear Regression Model
         X = df["Hours Used"].values.reshape(-1, 1)  # Feature: Hours Used
@@ -179,7 +173,7 @@ if st.session_state.page_selection == "Budget and Pricing":
         # Predict suggested hours using the trained Linear Regression model
         daily_budget = budget / 30  # Daily budget based on total budget
         cost_per_hour = model.coef_[0][0]  # Coefficient from the Linear Regression model (cost per hour)
-        
+
         # Suggest hours based on budget and cost relationship
         df["Hours Suggested"] = df.apply(
             lambda row: 0 if classification in ["low", "balanced"] else min(
@@ -188,17 +182,16 @@ if st.session_state.page_selection == "Budget and Pricing":
             ),
             axis=1,
         )
-        
+
         # Display the updated suggestions in a bulletin format
         st.write("\n")
         st.write("\n### Usage Suggestions:")
-        
+
         # Iterate over the rows and create a bullet point list for each appliance
         for index, row in df.iterrows():
             st.write(f"- **{row['Name']}**: Suggested Hours = {row['Hours Suggested']:.2f} hours")
 
 
-        
     else:
         st.info("Add appliances to calculate and analyze.")
 
