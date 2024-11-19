@@ -151,7 +151,6 @@ if st.session_state.page_selection == "Budget and Pricing":
             axis=1,
         )
 
-
         
         # Display usage suggestions in sentence format with bold names and bullet points
         st.write("\n")
@@ -160,9 +159,7 @@ if st.session_state.page_selection == "Budget and Pricing":
             st.write(f"**{row['Name']}**")
             st.write(f"- Hours Used: {row['Hours Used']}")
             st.write(f"- Cost: Php {row['Cost (Php)']}")
-            st.write(f"- Suggested Hours: {row['Hours Suggested']}")
-
-
+            st.write(f"- Suggested Hours: {row['Hours Suggested']:.3f}")
 
         
     else:
