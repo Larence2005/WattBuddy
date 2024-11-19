@@ -107,13 +107,10 @@ if st.session_state.page_selection == "Home":
             st.write(text)
 
         # Train Linear Regression Model
-        st.subheader("Usage Prediction Using Linear Regression")
         X = df["Hours Used"].values.reshape(-1, 1)  # Feature: Hours Used
         y = df["Cost (Php)"].values.reshape(-1, 1)  # Target: Cost
         model = LinearRegression()
         model.fit(X, y)
-
-        st.write("The model has been trained to predict cost based on hours of usage.")
 
         # Predict suggested hours based on budget
         df["Hours Suggested"] = df.apply(
