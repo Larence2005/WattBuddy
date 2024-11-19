@@ -83,10 +83,13 @@ if st.session_state.page_selection == "Budget and Pricing":
 
         # Display total and monthly stats
         st.write('\n')
-        st.write(f"Electric Cost (Per Day): ###Php {total_cost:.2f}")
-        st.write(f"kWh Consumption (Per Day): ###{total_kwh:.2f} kWh")
-        st.write(f"Electric Cost (Monthly): ###Php {monthly_cost:.2f}")
-        st.write(f"kWh Consumption (Monthly): ###{monthly_kwh:.2f} kWh")
+        st.write(f"Electric Cost (Per Day): Php {total_cost:.2f}")
+        st.write('\n')
+        st.write(f"kWh Consumption (Per Day): {total_kwh:.2f} kWh")
+        st.write('\n')
+        st.write(f"Electric Cost (Monthly): Php {monthly_cost:.2f}")
+        st.write('\n')
+        st.write(f"kWh Consumption (Monthly): {monthly_kwh:.2f} kWh")
 
         # Cost status (monthly cost vs. budget)
         if monthly_cost <= budget * 0.7:
