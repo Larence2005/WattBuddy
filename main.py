@@ -127,7 +127,6 @@ if st.session_state.page_selection == "Budget and Pricing":
         daily_budget = budget / 30  # Calculate daily budget from monthly budget
         
         # Generate "suggested hours" for each appliance
-        df["Predicted Cost"] = model.predict(df["Hours Used"].values.reshape(-1, 1))  # Predict costs with current usage
         df["Hours Suggested"] = df.apply(
             lambda row: max(
                 model.predict([[daily_budget / price_per_kwh]])[0][0] / row["Wattage (W)"],
@@ -140,7 +139,7 @@ if st.session_state.page_selection == "Budget and Pricing":
         
         # Display the updated table with suggested hours
         st.write("\n### Usage Suggestions:")
-        st.dataframe(df[["Name", "Hours Used", "Cost (Php)", "Predicted Cost", "Hours Suggested"]])
+        st.dataframe(df[["Name", "Hours Used", "Cost (Php)", "Hours Suggested"]])
 
         
     else:
