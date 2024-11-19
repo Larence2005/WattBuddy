@@ -102,20 +102,22 @@ if st.session_state.page_selection == "Budget and Pricing":
                 st.success(f"Appliance '{row['Name']}' removed!")
             
 
-        # Total consumption and cost
-        total_cost = df["Cost (Php)"].sum()
-        total_kwh = df["kWh Consumed"].sum()
+                # Total consumption and cost
+                total_monthly_cost = 0
+                total_kwh = 0
+                
+                for idx, row in df.iterrows():
+                    appliance_monthly_cost = row["Cost (Php)"] * row["Weeks in Month"] * len(row["Days Used"].split(", "))
+                    total_monthly_cost += appliance_monthly_cost
+                    total_kwh += row["kWh Consumed"] * row["Weeks in Month"] * len(row["Days Used"].split(", "))
+                
+                # Display total and monthly stats
+                st.write('\n')
+                st.write(f"#### Electric Cost (Per Day): Php {total_cost:.2f}")
+                st.write(f"#### kWh Consumption (Per Day): {total_kwh:.2f} kWh")
+                st.write(f"#### Electric Cost (Monthly): Php {total_monthly_cost:.2f}")
+                st.write(f"#### kWh Consumption (Monthly): {total_kwh:.2f} kWh")
 
-        # Calculate monthly values
-        monthly_cost = total_cost * 30  # Assuming 30 days in a month
-        monthly_kwh = total_kwh * 30  # Assuming usage is similar every day
-
-        # Display total and monthly stats
-        st.write('\n')
-        st.write(f"#### Electric Cost (Per Day): Php {total_cost:.2f}")
-        st.write(f"#### kWh Consumption (Per Day): {total_kwh:.2f} kWh")
-        st.write(f"#### Electric Cost (Monthly): Php {monthly_cost:.2f}")
-        st.write(f"#### kWh Consumption (Monthly): {monthly_kwh:.2f} kWh")
 
         # Cost status (monthly cost vs. budget)
         if monthly_cost <= budget * 0.7:
