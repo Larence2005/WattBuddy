@@ -70,7 +70,6 @@ if st.session_state.page_selection == "Budget and Pricing":
                 # Remove the appliance from the session state without rerun
                 st.session_state["appliances"].pop(idx)  # Remove the appliance from the list
                 st.session_state['removed_appliance'] = row['Name']  # Store the removed appliance's name
-                st.success(f"Appliance '{row['Name']}' removed!")
             
 
         # Total consumption and cost
