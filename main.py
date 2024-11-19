@@ -2,7 +2,9 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
-#more stable
+#STABLE
+#100 ACCURATE
+
 # Initialize session state for page selection
 if 'page_selection' not in st.session_state:
     st.session_state.page_selection = 'About'
