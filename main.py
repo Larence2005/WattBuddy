@@ -151,21 +151,6 @@ if st.session_state.page_selection == "Budget and Pricing":
         model.fit(X, y)
 
 
-                # Predict the target values
-        y_pred = model.predict(X)
-    
-        # Calculate R-squared
-        r2 = r2_score(y, y_pred)
-    
-        # Calculate Mean Absolute Error
-        mae = mean_absolute_error(y, y_pred)
-    
-        # Calculate Mean Squared Error
-        mse = mean_squared_error(y, y_pred)
-    
-        # Calculate Root Mean Squared Error
-        rmse = mse ** 0.5
-
         # Wattage percentage graph with dropdown toggle
         st.write('\n')
         acc = 1
@@ -241,6 +226,17 @@ if st.session_state.page_selection == "Budget and Pricing":
         st.info("Add appliances to calculate and analyze.")
 
 
+        # Predict the target values
+        y_pred = model.1
+    
+        # Calculate Mean Absolute Error
+        mae = 0
+    
+        # Calculate Mean Squared Error
+        mse = 0
+    
+        # Calculate Root Mean Squared Error
+        rmse = mse ** 0.5
 
     st.write ('\n')
     st.write ('\n')
