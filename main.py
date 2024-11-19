@@ -17,7 +17,7 @@ with st.sidebar:
     st.title("Navigation")
     if st.button("About", use_container_width=True, on_click=set_page_selection, args=("About",)):
         pass  # Selection handled by callback
-    
+
     if st.button("Budget and Pricing", use_container_width=True, on_click=set_page_selection, args=("Budget and Pricing",)):
         pass  # Selection handled by callback
 
@@ -45,7 +45,7 @@ if st.session_state.page_selection == "Budget and Pricing":
         appliance_name = st.text_input("Appliance Name:")
         wattage = st.number_input("Wattage (in Watts):", min_value=0.0, step=1.0)
         hours_used = st.number_input("Usage Time (in Hours):", min_value=0.0, step=0.1)
-        
+
         # New fields: Multiple day selection and weeks in a month
         selected_days = st.multiselect(
             "Select the days of usage:", 
@@ -59,7 +59,7 @@ if st.session_state.page_selection == "Budget and Pricing":
             value=4, 
             step=1
         )
-    
+
         # Submit button
         add_appliance = st.form_submit_button("Add Appliance")
         if add_appliance:
@@ -69,7 +69,7 @@ if st.session_state.page_selection == "Budget and Pricing":
                 daily_cost = kwh_consumed * price_per_kwh
                 monthly_days = len(selected_days) * weeks_in_month  # Total selected days in the month
                 monthly_cost = daily_cost * monthly_days
-                
+
                 # Add appliance data to session state
                 st.session_state["appliances"].append({
                     "Name": appliance_name,
@@ -89,48 +89,44 @@ if st.session_state.page_selection == "Budget and Pricing":
         st.subheader("Appliance List")
         df = pd.DataFrame(st.session_state["appliances"])
         st.dataframe(df)
-    
+
         # Add remove buttons with a flag to catch removal action
         for idx, row in df.iterrows():
             # Use a unique key for each button based on index
             remove_button = st.button(f"Remove {row['Name']}", key=f"remove_{idx}")
-            
+
             if remove_button:
                 # Remove the appliance from the session state without rerun
                 st.session_state["appliances"].pop(idx)  # Remove the appliance from the list
                 st.session_state['removed_appliance'] = row['Name']  # Store the removed appliance's name
                 st.success(f"Appliance '{row['Name']}' removed!")
-            
 
-                # Initialize monthly cost variables
-                total_monthly_cost = 0
-                total_kwh = 0
-                
-                # Loop through the appliances DataFrame to calculate the correct total cost
-                for idx, row in df.iterrows():
-                    # Calculate the monthly cost based on actual usage days and weeks
-                    appliance_monthly_cost = row["Cost (Php)"] * row["Weeks in Month"] * len(row["Days Used"].split(", "))
-                    total_monthly_cost += appliance_monthly_cost
-                    total_kwh += row["kWh Consumed"] * row["Weeks in Month"] * len(row["Days Used"].split(", "))
-                
-                # Display total and monthly stats
-                st.write('\n')
-                st.write(f"#### Electric Cost (Per Day): Php {total_monthly_cost / 30:.2f}")
-                st.write(f"#### kWh Consumption (Per Day): {total_kwh / 30:.2f} kWh")
-                st.write(f"#### Electric Cost (Monthly): Php {total_monthly_cost:.2f}")
-                st.write(f"#### kWh Consumption (Monthly): {total_kwh:.2f} kWh")
-                
-                # Check if the monthly cost is within the user's budget
-                if total_monthly_cost <= budget * 0.7:
-                    st.success("Your monthly electric cost is LOW!")
-                    classification = "low"
-                elif total_monthly_cost <= budget:
-                    st.warning("Your monthly electric cost is BALANCED!")
-                    classification = "balanced"
-                else:
-                    st.error("Your monthly electric cost is HIGH!")
-                    classification = "high"
 
+        # Total consumption and cost
+        total_cost = df["Cost (Php)"].sum()
+        total_kwh = df["kWh Consumed"].sum()
+
+        # Calculate monthly values
+        monthly_cost = total_cost * 30  # Assuming 30 days in a month
+        monthly_kwh = total_kwh * 30  # Assuming usage is similar every day
+
+        # Display total and monthly stats
+        st.write('\n')
+        st.write(f"#### Electric Cost (Per Day): Php {total_cost:.2f}")
+        st.write(f"#### kWh Consumption (Per Day): {total_kwh:.2f} kWh")
+        st.write(f"#### Electric Cost (Monthly): Php {monthly_cost:.2f}")
+        st.write(f"#### kWh Consumption (Monthly): {monthly_kwh:.2f} kWh")
+
+        # Cost status (monthly cost vs. budget)
+        if monthly_cost <= budget * 0.7:
+            st.success("Your monthly electric cost is LOW!")
+            classification = "low"
+        elif monthly_cost <= budget:
+            st.warning("Your monthly electric cost is BALANCED!")
+            classification = "balanced"
+        else:
+            st.error("Your monthly electric cost is HIGH!")
+            classification = "high"
 
         # Money Saved or Loss
         st.write('\n')
@@ -171,7 +167,7 @@ if st.session_state.page_selection == "Budget and Pricing":
         # Predict suggested hours using the trained Linear Regression model
         daily_budget = budget / 30  # Daily budget based on total budget
         cost_per_hour = model.coef_[0][0]  # Coefficient from the Linear Regression model (cost per hour)
-        
+
         # Suggest hours based on budget and cost relationship
         df["Hours Suggested"] = df.apply(
             lambda row: 0 if classification in ["low", "balanced"] else min(
@@ -182,13 +178,13 @@ if st.session_state.page_selection == "Budget and Pricing":
         )
 
 
-        
+
         # Display the updated table with suggested hours
         st.write("\n")
         st.write("\n### Usage Suggestions:")
         st.dataframe(df[["Name", "Hours Used", "Cost (Php)", "Hours Suggested"]])
 
-        
+
     else:
         st.info("Add appliances to calculate and analyze.")
 
