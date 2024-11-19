@@ -107,7 +107,7 @@ if st.session_state.page_selection == "Budget and Pricing":
 
         # Display total and monthly stats
         st.write('\n')
-        st.write(f"#### Electric Cost (Per Day): Php {total_daily_cost:.2f}")
+        st.write(f"###Electric Cost (Per Day): Php {total_daily_cost:.2f}")
         st.write(f"#### kWh Consumption (Per Day): {total_daily_kwh:.2f} kWh")
         st.write(f"#### Electric Cost (Monthly): Php {total_monthly_cost:.2f}")
         st.write(f"#### kWh Consumption (Monthly): {monthly_kwh:.2f} kWh")
