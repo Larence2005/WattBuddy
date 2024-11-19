@@ -98,7 +98,7 @@ if st.session_state.page_selection == "Budget and Pricing":
         total_daily_cost = df["Cost (Php)"].sum()
         total_monthly_cost = df["Monthly Cost (Php)"].sum()  # Sum of individual monthly costs
         total_daily_kwh = df["kWh Consumed"].sum()
-        
+
         # Calculate monthly kWh based on monthly costs and price per kWh
         monthly_kwh = total_monthly_cost / price_per_kwh
 
@@ -156,18 +156,20 @@ if st.session_state.page_selection == "Budget and Pricing":
         ax.axis("equal")
         st.pyplot(fig)
 
-        # Predict suggested hours using the trained Linear Regression model
-        daily_budget = budget / 30  # Daily budget based on total budget
-        cost_per_hour = model.coef_[0][0]  # Coefficient from the Linear Regression model (cost per hour)
-        
-        # Suggest hours based on budget and cost relationship using the trained model
+        # Predict suggested hours
+        daily_budget = budget / 30
+        cost_per_hour = model.coef_[0][0]
+
         df["Hours Suggested"] = df.apply(
-            lambda row: 0 if monthly_cost <= budget else min(
-                (budget / 30) / (row["Wattage (W)"] * price_per_kwh / 1000),  # Maximum hours within budget
-                model.predict([[row["Hours Used"]]])[0][0] / model.coef_[0][0],  # Predicted hours from the model
+            lambda row: 0 if classification in ["low", "balanced"] else min(
+                daily_budget / (row["Wattage (W)"] * price_per_kwh / 1000),
+                model.predict([[row["Hours Used"]]])[0][0] / cost_per_hour,
             ),
             axis=1,
         )
+
+        # Add the suggested hours to the appliance table and display it
+        st.dataframe(df[["Name", "Hours Used", "Cost (Php)", "Hours Suggested"]])
         
         # Display the suggested hours as a bulleted list with saved cost
         st.write("### Usage Suggestions:")
@@ -178,9 +180,9 @@ if st.session_state.page_selection == "Budget and Pricing":
             original_cost = row["Cost (Php)"]
             hours_suggested = row["Hours Suggested"]
             
-            # Calculate the saved cost based on the suggested hours using the model
-            predicted_cost_for_suggested_hours = model.predict([[hours_suggested]])[0][0] if hours_suggested > 0 else 0
-            saved_cost = original_cost - predicted_cost_for_suggested_hours
+            # Calculate the saved cost based on suggested hours
+            suggested_cost = (hours_suggested / hours_used) * original_cost if hours_used > 0 else 0
+            saved_cost = original_cost - suggested_cost
         
             st.write(f"• **{appliance_name}:**")
             st.write(f"  - Hours Used: {hours_used} hours")
