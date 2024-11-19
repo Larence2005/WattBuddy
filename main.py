@@ -150,18 +150,8 @@ if st.session_state.page_selection == "Budget and Pricing":
         model = LinearRegression()
         model.fit(X, y)
 
-        # Wattage percentage graph
-        acc = 1.0
-        st.write('\n')
-        st.subheader("Wattage Percentage Graph")
-        fig, ax = plt.subplots()
-        
-        # Set the figure background to transparent
-        fig.patch.set_alpha(0.0)
-        
-        # Calculate wattage percentages
-        wattage_percentages = (df["Wattage (W)"] / df["Wattage (W)"].sum()) * 100
-        
+
+
         # Wattage percentage graph
         acc = 1.0
         st.write('\n')
@@ -186,7 +176,6 @@ if st.session_state.page_selection == "Budget and Pricing":
         
         ax.axis("equal")  # Ensure the pie is circular
         st.pyplot(fig)
-
 
 
         # Predict suggested hours
