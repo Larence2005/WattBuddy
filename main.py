@@ -156,23 +156,23 @@ if st.session_state.page_selection == "Budget and Pricing":
         st.write('\n')
         acc = 1
         st.subheader("Wattage Percentage Graph")
-        
+
         # Create a dropdown (selectbox) to toggle the visibility of the graph
         graph_visibility = st.selectbox(
             "Select Graph Visibility",
             options=["Hide Graph", "Show Graph"],  # Options to show or hide the graph
             index=1  # Default is to show the graph
         )
-        
+
         if graph_visibility == "Show Graph":
             fig, ax = plt.subplots()
-            
+
             # Set the figure background to transparent
             fig.patch.set_alpha(0.0)
-            
+
             # Calculate wattage percentages
             wattage_percentages = (df["Wattage (W)"] / df["Wattage (W)"].sum()) * 100
-            
+
             # Create the pie chart with white text
             ax.pie(
                 wattage_percentages,
@@ -182,7 +182,7 @@ if st.session_state.page_selection == "Budget and Pricing":
                 textprops={'color': 'white'},  # Make text white
                 wedgeprops=dict(edgecolor="w")  # Optional: Highlight edges for better clarity
             )
-            
+
             ax.axis("equal")  # Ensure the pie is circular
             st.pyplot(fig)
 
@@ -226,28 +226,28 @@ if st.session_state.page_selection == "Budget and Pricing":
     else:
         st.info("Add appliances to calculate and analyze.")
 
-                
-            # Predict the target values
-            y_pred = model.predict(X)
-            
-            # Calculate R-squared
-            r2 = r2_score(y, y_pred)
-            
-            # Calculate Mean Absolute Error
-            mae = mean_absolute_error(y, y_pred)
-            
-            # Calculate Mean Squared Error
-            mse = mean_squared_error(y, y_pred)
-            
-            # Calculate Root Mean Squared Error
-            rmse = mse ** 0.5
-            
-            # Print the metrics
-            print(f"R-squared: {r2:.2f}")
-            print(f"Mean Absolute Error: {mae:.2f}")
-            print(f"Mean Squared Error: {mse:.2f}")
-            print(f"Root Mean Squared Error: {rmse:.2f}")
 
+    # Predict the target values
+    y_pred = model.predict(X)
+
+    # Calculate R-squared
+    r2 = r2_score(y, y_pred)
+
+    # Calculate Mean Absolute Error
+    mae = mean_absolute_error(y, y_pred)
+
+    # Calculate Mean Squared Error
+    mse = mean_squared_error(y, y_pred)
+
+    # Calculate Root Mean Squared Error
+    rmse = mse ** 0.5
+
+    st.write ('\n')
+    st.write ('\n')
+    st.write(f'Accuracy: {accuracy:.1f}')
+    st.write(f"Mean Absolute Error: {mae:.2f}")
+    st.write(f"Mean Squared Error: {mse:.2f}")
+    st.write(f"Root Mean Squared Error: {rmse:.2f}")
 
 
 # About page content
