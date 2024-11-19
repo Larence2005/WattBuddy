@@ -23,7 +23,7 @@ with st.sidebar:
     if st.button("About", use_container_width=True, on_click=set_page_selection, args=("About",)):
         pass  # Selection handled by callback
 
-    if st.button("Budget Only", use_container_width=True, on_click=set_page_selection, args=("Budget Only",)):
+    if st.button("Suggest Appliances", use_container_width=True, on_click=set_page_selection, args=("Suggest Appliances",)):
         pass  # Selection handled by callback
 
 # Home page content
@@ -152,5 +152,5 @@ elif st.session_state.page_selection == "About":
     """)
 
 
-elif st.session_state.page_selection == "Budget Only":
-    
+elif st.session_state.page_selection == "Suggest Appliances":
+    st.header("This page suggests appliances based on your budget")
