@@ -309,7 +309,7 @@ elif st.session_state.page_selection == "Suggest Appliances":
     
     if st.button("Get Recommendations"):
         # Adjust costs based on the user's rate
-        dataset['Adjusted Monthly Cost'] = np.round(
+        dataset['Monthly Cost'] = np.round(
             dataset['Rated Power (kWh)'] * dataset['Daily Usage (Hours)'] * rate * 30, 2
         )
     
@@ -324,8 +324,8 @@ elif st.session_state.page_selection == "Suggest Appliances":
         total_cost = 0
     
         for _, row in filtered_data.iterrows():
-            if total_cost + row['Adjusted Monthly Cost'] <= budget:
-                total_cost += row['Adjusted Monthly Cost']
+            if total_cost + row['Monthly Cost'] <= budget:
+                total_cost += row['Monthly Cost']
                 recommended_appliances.append(row)
     
         if recommended_appliances:
