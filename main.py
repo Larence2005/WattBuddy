@@ -158,6 +158,6 @@ elif st.session_state.page_selection == "About":
         The app also provides suggestions for adjusting appliance usage to stay within the given budget.
     """)
 
-
+#Suggest Appliances content
 elif st.session_state.page_selection == "Suggest Appliances":
     st.header("This page suggests appliances based on your budget")
