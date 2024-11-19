@@ -86,9 +86,6 @@ if st.session_state.page_selection == "Budget and Pricing":
     if st.session_state["appliances"]:
         st.subheader("Appliance List")
     
-        # Create DataFrame from session state
-        df = pd.DataFrame(st.session_state["appliances"])
-    
         # Display the appliance data
         st.dataframe(df[["Name", "Wattage (W)", "Hours Used", "Days Used", "Weeks in Month", "Cost (Php)", "Monthly Cost (Php)"]])
         st.dataframe(df)
