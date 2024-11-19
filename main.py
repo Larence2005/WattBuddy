@@ -2,8 +2,9 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
-from sklearn.linear_model import LinearRegression
 
+from sklearn.linear_model import LinearRegression
+from streamlit_navigation_bar import st_navbar
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Initialize session state for page selection
 if 'page_selection' not in st.session_state:
@@ -14,6 +15,7 @@ def set_page_selection(page):
 
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Sidebar navigation
+'''
 with st.sidebar:
     st.title("Navigation")
     if st.button("About", use_container_width=True, on_click=set_page_selection, args=("About",)):
@@ -24,6 +26,10 @@ with st.sidebar:
 
     if st.button("Suggest Appliances", use_container_width=True, on_click=set_page_selection, args=("Suggest Appliances",)):
         pass  # Selection handled by callback
+'''
+
+page = st_navbar(["About", "Budget and Pricing", "Suggested Appliances"])
+st.write(page)
 
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Home page content
