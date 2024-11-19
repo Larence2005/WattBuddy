@@ -227,7 +227,7 @@ if st.session_state.page_selection == "Budget and Pricing":
 
 
         # Predict the target values
-        y_pred = model.1
+        y_pred = 1
     
         # Calculate Mean Absolute Error
         mae = 0
