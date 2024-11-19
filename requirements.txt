@@ -8,3 +8,4 @@ streamlit_navigation_bar
 GridUpdateMode
 AgGrid
 GridOptionsBuilder
+st_aggrid
