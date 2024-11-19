@@ -294,7 +294,7 @@ elif st.session_state.page_selection == "Suggest Appliances":
     dataset = pd.read_csv('appliance_data_philippines_with_area.csv')
     
     # Streamlit UI
-    st.title("Electric Advisor - Appliance Recommendation (Philippine Rate)")
+    st.title("Appliance Recommendation")
     
     # User inputs
     rate = st.number_input("Enter electricity rate per kWh (default is 11.8569):", min_value=0.0, value=11.8569, step=0.1)
