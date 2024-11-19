@@ -225,7 +225,7 @@ if st.session_state.page_selection == "Budget and Pricing":
         acc = 1
         accuracy = acc
         # Predict the target values
-        y_pred = 1
+        y_pred = 1.0
     
         # Calculate Mean Absolute Error
         mae = 0
@@ -236,12 +236,12 @@ if st.session_state.page_selection == "Budget and Pricing":
         # Calculate Root Mean Squared Error
         rmse = mse ** 0.5
 
-    st.write ('\n')
-    st.write ('\n')
-    st.write(f'Accuracy: {accuracy:.1f}')
-    st.write(f"Mean Absolute Error: {mae:.2f}")
-    st.write(f"Mean Squared Error: {mse:.2f}")
-    st.write(f"Root Mean Squared Error: {rmse:.2f}")
+        st.write ('\n')
+        st.write ('\n')
+        st.write(f'Accuracy: {accuracy:.1f}')
+        st.write(f"Mean Absolute Error: {mae:.2f}")
+        st.write(f"Mean Squared Error: {mse:.2f}")
+        st.write(f"Root Mean Squared Error: {rmse:.2f}")
 
 
 # About page content
