@@ -161,5 +161,6 @@ elif st.session_state.page_selection == "About":
 
 
 elif st.session_state.page_selection == "Suggest Appliances":
-    st.header("This page suggests appliances based on your budget")
+    st.title("Suggest Appliancess")
+    st.write("This page suggests appliances based on your budget")
 
