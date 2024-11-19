@@ -269,12 +269,12 @@ elif st.session_state.page_selection == "Suggest Appliances":
     st.write('Rating: Php11.8569')
 
 
-        
+
     # Load the trained model using joblib
     model = joblib.load('appliance_model_philippines_monthly.joblib')
     
     # Load dataset for reference
-    dataset = pd.read_csv('appliance_data_philippines_monthly.csv')
+    dataset = pd.read_csv('appliance_data_philippines_with_area.csv')
     
     # Streamlit UI
     st.title("Electric Advisor - Appliance Recommendation (Philippine Rate)")
@@ -284,17 +284,22 @@ elif st.session_state.page_selection == "Suggest Appliances":
     budget = st.number_input("Enter your total monthly budget for electricity (in ₱):", min_value=0.0, step=1.0)
     essential_only = st.checkbox("Show only essential appliances", value=False)
     
+    # Allow user to filter by appliance area (Living Room, Kitchen, Bedroom, etc.)
+    areas = dataset['Appliance Area'].unique()
+    selected_areas = st.multiselect("Select appliance areas:", options=areas, default=areas)
+    
+    # Filter dataset by selected areas
+    filtered_data = dataset[dataset['Appliance Area'].isin(selected_areas)]
+    
     if st.button("Get Recommendations"):
         # Adjust costs based on the user's rate
-        dataset['Adjusted Monthly Cost'] = (
-            dataset['Rated Power (kWh)'] * dataset['Daily Usage (Hours)'] * rate * 30
+        filtered_data['Adjusted Monthly Cost'] = (
+            filtered_data['Rated Power (kWh)'] * filtered_data['Daily Usage (Hours)'] * rate * 30
         )
     
         # Apply essential filter if checked
         if essential_only:
-            filtered_data = dataset[dataset['Essential']]
-        else:
-            filtered_data = dataset
+            filtered_data = filtered_data[filtered_data['Essential']]
     
         # Calculate total monthly cost and filter appliances
         recommended_appliances = []
@@ -308,7 +313,7 @@ elif st.session_state.page_selection == "Suggest Appliances":
         if recommended_appliances:
             st.write(f"Appliances within your total monthly budget of ₱{budget} at {rate}₱/kWh:")
             st.table(pd.DataFrame(recommended_appliances)[[
-                'Appliance Type', 'Essential', 'Rated Power (kWh)', 'Daily Usage (Hours)', 'Adjusted Monthly Cost'
+                'Appliance Type', 'Essential', 'Appliance Area', 'Rated Power (kWh)', 'Daily Usage (Hours)', 'Adjusted Monthly Cost'
             ]])
             st.write(f"Total Monthly Cost: ₱{total_cost}")
         else:
