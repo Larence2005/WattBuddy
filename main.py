@@ -148,13 +148,6 @@ if st.session_state.page_selection == "Budget and Pricing":
         model = LinearRegression()
         model.fit(X, y)
 
-        plt.scatter(X, y, color='blue', label='Actual')
-        plt.plot(X, y_pred, color='red', label='Predicted', linewidth=2)
-        plt.title('Linear Regression Model Performance')
-        plt.xlabel('Hours Used')
-        plt.ylabel('Cost (Php)')
-        plt.legend()
-        plt.show()
 
         # Wattage percentage graph
         st.write('\n')
