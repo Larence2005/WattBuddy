@@ -114,13 +114,13 @@ if st.session_state.page_selection == "Budget and Pricing":
 
         # Cost status (monthly cost vs. budget)
         if total_monthly_cost <= budget * 0.7:
-            st.success("Your monthly electric cost is LOW!")
+            st.success("Your total monthly electric cost is LOW!")
             classification = "low"
         elif total_monthly_cost <= budget:
-            st.warning("Your monthly electric cost is BALANCED!")
+            st.warning("Your total monthly electric cost is BALANCED!")
             classification = "balanced"
         else:
-            st.error("Your monthly electric cost is HIGH!")
+            st.error("Your total monthly electric cost is HIGH!")
             classification = "high"
 
         # Money Saved or Loss
