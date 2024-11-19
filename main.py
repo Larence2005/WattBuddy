@@ -2,26 +2,37 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
+from streamlit_navigation_bar import st_navbar
 
-# Initialize session state for page selection
-if 'page_selection' not in st.session_state:
-    st.session_state.page_selection = 'About'
+st.set_page_config(initial_sidebar_state="collapsed")
 
-def set_page_selection(page):
-    st.session_state.page_selection = page
+pages = ["Home", "Library", "Tutorials", "Development", "Download"]
+styles = {
+    "nav": {
+        "background-color": "rgb(123, 209, 146)",
+    },
+    "div": {
+        "max-width": "32rem",
+    },
+    "span": {
+        "border-radius": "0.5rem",
+        "color": "rgb(49, 51, 63)",
+        "margin": "0 0.125rem",
+        "padding": "0.4375rem 0.625rem",
+    },
+    "active": {
+        "background-color": "rgba(255, 255, 255, 0.25)",
+    },
+    "hover": {
+        "background-color": "rgba(255, 255, 255, 0.35)",
+    },
+}
 
+page = st_navbar(pages, styles=styles)
+st.write(page)
 
-# Sidebar navigation
 with st.sidebar:
-    st.title("Navigation")
-    if st.button("About", use_container_width=True, on_click=set_page_selection, args=("About",)):
-        pass  # Selection handled by callback
-    
-    if st.button("Budget and Pricing", use_container_width=True, on_click=set_page_selection, args=("Budget and Pricing",)):
-        pass  # Selection handled by callback
-
-    if st.button("Suggest Appliances", use_container_width=True, on_click=set_page_selection, args=("Suggest Appliances",)):
-        pass  # Selection handled by callback
+    st.write("Sidebar")
 
 
 # Home page content
