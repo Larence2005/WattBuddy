@@ -3,6 +3,7 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import joblib
+from PIL import Image
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.model_selection import train_test_split
@@ -337,17 +338,17 @@ elif st.session_state.page_selection == "Suggest Appliances":
 #--------------------------------------------------------------------------------------------------------------------------------------------------
 # About page content
 elif st.session_state.page_selection == "About":
-   st.markdown("""
+    st.markdown("""
         <h2 style="color: orange;">
             About WattBuddy
         </h2>
     """, unsafe_allow_html=True)
 
-    st.markdown("---")
+st.markdown("---")
 
     #Content
-    st.write("\n")
-    st.markdown("""
+st.write("\n")
+st.markdown("""
         <p style="text-align: justify;">
             WattBuddy helps users manage their electricity consumption and budget. By entering the cost of electricity and 
             adding appliances, users can calculate the total cost and consumption based on their usage.
@@ -356,15 +357,15 @@ elif st.session_state.page_selection == "About":
         </p>
     """, unsafe_allow_html=True)
 
-    st.write("\n\n")
+st.write("\n\n")
 
-    st.markdown("""
+st.markdown("""
         <h5 style="color: whitesmoke;">
             Developed by: Cardinal Bytes
         </h5>
     """, unsafe_allow_html=True)
 
-    st.write("""
+st.write("""
             - Evan Vincent B. Lim
             - John Larence D. Lusaya
             - Kobe Aniban Lituañas
@@ -373,7 +374,7 @@ elif st.session_state.page_selection == "About":
             Your Electricity Advisor | Powered By: Streamlit and Python
         """)
     
-    on = st.toggle("Learn More")
+on = st.toggle("Learn More")
 
-    if on:
-        st.write("SOMETHING HERE")
+if on:
+    st.write("SOMETHING HERE")
