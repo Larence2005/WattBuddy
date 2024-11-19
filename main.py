@@ -209,10 +209,10 @@ if st.session_state.page_selection == "Budget and Pricing":
             rmse = mse ** 0.5
             
             # Print the metrics
-            print(f"R-squared: {r2:.2f}")
-            print(f"Mean Absolute Error: {mae:.2f}")
-            print(f"Mean Squared Error: {mse:.2f}")
-            print(f"Root Mean Squared Error: {rmse:.2f}")
+            st.write(f"R-squared: {r2:.2f}")
+            st.write(f"Mean Absolute Error: {mae:.2f}")
+            st.write(f"Mean Squared Error: {mse:.2f}")
+            st.write(f"Root Mean Squared Error: {rmse:.2f}")
 
 
 
