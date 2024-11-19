@@ -104,20 +104,21 @@ if st.session_state.page_selection == "Budget and Pricing":
 
             
 
-        # Total consumption and cost
+        # Total consumption and cost (updated for correct monthly calculation)
         total_cost = df["Cost (Php)"].sum()
         total_kwh = df["kWh Consumed"].sum()
-
-        # Calculate monthly values
-        monthly_cost = total_cost * 30  # Assuming 30 days in a month
-        monthly_kwh = total_kwh * 30  # Assuming usage is similar every day
-
+        
+        # Calculate the correct monthly cost by considering each appliance's specific usage days
+        monthly_cost = df.apply(lambda row: row["Cost (Php)"] * len(row["Days Used"].split(", ")) * row["Weeks in Month"], axis=1).sum()
+        monthly_kwh = df.apply(lambda row: row["kWh Consumed"] * len(row["Days Used"].split(", ")) * row["Weeks in Month"], axis=1).sum()
+        
         # Display total and monthly stats
         st.write('\n')
         st.write(f"#### Electric Cost (Per Day): Php {total_cost:.2f}")
         st.write(f"#### kWh Consumption (Per Day): {total_kwh:.2f} kWh")
         st.write(f"#### Electric Cost (Monthly): Php {monthly_cost:.2f}")
         st.write(f"#### kWh Consumption (Monthly): {monthly_kwh:.2f} kWh")
+
 
         # Cost status (monthly cost vs. budget)
         if monthly_cost <= budget * 0.7:
