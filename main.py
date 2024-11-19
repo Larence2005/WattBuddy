@@ -105,17 +105,13 @@ if st.session_state.page_selection == "Budget and Pricing":
 
 
         # Total consumption and cost
-        # Total consumption and cost (updated for correct monthly calculation)
         total_cost = df["Cost (Php)"].sum()
         total_kwh = df["kWh Consumed"].sum()
+
         # Calculate monthly values
         monthly_cost = total_cost * 30  # Assuming 30 days in a month
         monthly_kwh = total_kwh * 30  # Assuming usage is similar every day
-        
-        # Calculate the correct monthly cost by considering each appliance's specific usage days
-        monthly_cost = df.apply(lambda row: row["Cost (Php)"] * len(row["Days Used"].split(", ")) * row["Weeks in Month"], axis=1).sum()
-        monthly_kwh = df.apply(lambda row: row["kWh Consumed"] * len(row["Days Used"].split(", ")) * row["Weeks in Month"], axis=1).sum()
-        
+
         # Display total and monthly stats
         st.write('\n')
         st.write(f"#### Electric Cost (Per Day): Php {total_cost:.2f}")
@@ -178,18 +174,19 @@ if st.session_state.page_selection == "Budget and Pricing":
         df["Hours Suggested"] = df.apply(
             lambda row: 0 if classification in ["low", "balanced"] else min(
                 daily_budget / (row["Wattage (W)"] * price_per_kwh / 1000),  # Maximum hours within budget
-                model.predict([[row["Hours Used"]]])[0] / cost_per_hour,  # Predicted hours from the model
+                model.predict([[row["Hours Used"]]])[0][0] / cost_per_hour,  # Predicted hours from the model
             ),
             axis=1,
         )
 
-        # Display the updated suggestions in a bulletin format
+        # Display the header and usage suggestions
+        st.write("\n")
+        st.write("### Usage Suggestions:")
+        # Display the updated table with suggested hours
+        st.dataframe(df[["Name", "Hours Used", "Cost (Php)", "Hours Suggested"]])
         st.write("\n")
         st.write("\n### Usage Suggestions:")
-
-        # Iterate over the rows and create a bullet point list for each appliance
-        for index, row in df.iterrows():
-            st.write(f"- **{row['Name']}**: Suggested Hours = {row['Hours Suggested']:.2f} hours")
+        df.dataframe([["Name", "Hours Used", "Cost (Php)", "Hours Suggested"]])
 
 
     else:
