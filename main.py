@@ -55,11 +55,19 @@ if st.session_state.page_selection == "Budget and Pricing":
                 })
                 st.success(f"{appliance_name} added successfully!")
 
-    # Display appliances
-    if st.session_state["appliances"]:
-        st.subheader("Appliance List")
-        df = pd.DataFrame(st.session_state["appliances"])
-        st.dataframe(df)
+        # Display appliances
+        if st.session_state["appliances"]:
+            st.subheader("Appliance List")
+            df = pd.DataFrame(st.session_state["appliances"])
+            st.dataframe(df)
+        
+            # Add remove buttons
+            for idx, row in df.iterrows():
+                if st.button(f"Remove {row['Name']}", key=f"remove_{idx}"):
+                    # Remove the appliance from the session state
+                    st.session_state["appliances"].pop(idx)
+                    st.experimental_rerun()  # Rerun to reflect the changes
+
 
         # Total consumption and cost
         total_cost = df["Cost (Php)"].sum()
