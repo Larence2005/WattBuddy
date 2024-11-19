@@ -43,19 +43,25 @@ if st.session_state.page_selection == "Budget and Pricing":
         appliance_name = st.text_input("Appliance Name:")
         wattage = st.number_input("Wattage (in Watts):", min_value=0.0, step=1.0)
         hours_used = st.number_input("Usage Time (in Hours per Day):", min_value=0.0, step=0.1)
-        usage_day = st.radio("Select Day of Usage:", options=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"])
-        usage_frequency = st.number_input("How many times in a month is it used?", min_value=1, max_value=31, value=1, step=1)
+        usage_days = st.multiselect(
+            "Select Days of Usage:",
+            options=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+            default=["Monday"]
+        )
+        usage_frequency = st.number_input(
+            "How many times in a month is it used?", min_value=1, max_value=31, value=1, step=1
+        )
         add_appliance = st.form_submit_button("Add Appliance")
     
         if add_appliance:
-            if appliance_name and wattage and hours_used and usage_frequency > 0:
+            if appliance_name and wattage and hours_used and usage_days and usage_frequency > 0:
                 monthly_kwh = (wattage * hours_used / 1000) * usage_frequency
                 monthly_cost = monthly_kwh * price_per_kwh
                 st.session_state["appliances"].append({
                     "Name": appliance_name,
                     "Wattage (W)": wattage,
                     "Hours Used (Daily)": hours_used,
-                    "Usage Day": usage_day,
+                    "Usage Days": ", ".join(usage_days),  # Store selected days as a comma-separated string
                     "Frequency (Monthly)": usage_frequency,
                     "kWh Consumed (Monthly)": monthly_kwh,
                     "Cost (Php)": monthly_cost
@@ -63,11 +69,13 @@ if st.session_state.page_selection == "Budget and Pricing":
                 st.success(f"{appliance_name} added successfully!")
 
 
+
     # Display appliances
     if st.session_state["appliances"]:
         st.subheader("Appliance List")
         df = pd.DataFrame(st.session_state["appliances"])
         st.dataframe(df)
+
     
         # Add remove buttons with a flag to catch removal action
         for idx, row in df.iterrows():
