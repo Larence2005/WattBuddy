@@ -123,16 +123,24 @@ if st.session_state.page_selection == "Budget and Pricing":
         ax.axis("equal")
         st.pyplot(fig)
 
-        # Predict suggested hours based on budget
+        # Predict suggested hours using the trained Linear Regression model
+        daily_budget = budget / 30  # Calculate daily budget from monthly budget
+        
+        # Generate "suggested hours" for each appliance
+        df["Predicted Cost"] = model.predict(df["Hours Used"].values.reshape(-1, 1))  # Predict costs with current usage
         df["Hours Suggested"] = df.apply(
             lambda row: max(
-                (budget / monthly_cost) * row["Cost (Php)"] / (row["Wattage (W)"] * price_per_kwh / 1000),
+                model.predict([[daily_budget / price_per_kwh]])[0][0] / row["Wattage (W)"],
                 0,
             )
             if classification == "high"
-            else row["Hours Used"],
+            else row["Hours Used"],  # Keep current hours for "low" or "balanced" classifications
             axis=1,
         )
+        
+        # Display the updated table with suggested hours
+        st.write("\n### Appliance Usage Suggestions:")
+        st.dataframe(df[["Name", "Hours Used", "Cost (Php)", "Predicted Cost", "Hours Suggested"]])
 
         
     else:
