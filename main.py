@@ -131,26 +131,32 @@ if st.session_state.page_selection == "Budget and Pricing":
             st.error("Your monthly electric cost is HIGH!")
             classification = "high"
 
-        # Money Saved or Loss
+        # Calculate remaining budget after considering total monthly cost
+        remaining_budget = budget - monthly_cost
+        
+        # Money Saved or Loss calculation
         st.write('\n')
         st.subheader("Money Saved or Loss")
-        total_monthly_loss = max(monthly_cost - budget, 0)
+        
         money_saved_texts = []
-
         for idx, row in df.iterrows():
-            appliance_monthly_cost = row["Cost (Php)"] * 30
-            if classification == "high":
-                appliance_excess_ratio = appliance_monthly_cost / monthly_cost
-                percentage_lost = appliance_excess_ratio * 100
-                money_saved_texts.append(f"{row['Name']}: Reduce usage! Potential loss: {percentage_lost:.2f}%")
+            appliance_monthly_cost = row["Cost (Php)"] * len(row["Days Used"].split(", ")) * row["Weeks in Month"]
+            appliance_percentage_of_total_cost = (appliance_monthly_cost / monthly_cost) * 100
+        
+            # Calculate Money Saved or Loss based on remaining budget
+            if remaining_budget >= 0:
+                # Money saved percentage is based on remaining budget
+                appliance_percentage_saved = (appliance_monthly_cost / remaining_budget) * 100
+                money_saved_texts.append(f"{row['Name']}: Money saved = {appliance_percentage_saved:.2f}%")
             else:
-                appliance_cost_ratio = appliance_monthly_cost / monthly_cost
-                money_saved_percentage = appliance_cost_ratio * 100
-                money_saved_texts.append(f"{row['Name']}: Money saved: {money_saved_percentage:.2f}%")
-
+                # Loss percentage if there is no remaining budget
+                appliance_percentage_loss = (appliance_monthly_cost / -remaining_budget) * 100
+                money_saved_texts.append(f"{row['Name']}: Potential loss = {appliance_percentage_loss:.2f}%")
+        
         st.write(f"**Total Monthly Loss: Php {total_monthly_loss:.2f}**")
         for text in money_saved_texts:
             st.write(text)
+
 
         # Train Linear Regression Model
         X = df["Hours Used"].values.reshape(-1, 1)  # Feature: Hours Used
@@ -187,6 +193,7 @@ if st.session_state.page_selection == "Budget and Pricing":
         # Iterate over the rows and create a bullet point list for each appliance
         for index, row in df.iterrows():
             st.write(f"- **{row['Name']}**: Suggested Hours = {row['Hours Suggested']:.2f} hours")
+
 
         
     else:
