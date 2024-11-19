@@ -112,7 +112,16 @@ if st.session_state.page_selection == "Home":
         model = LinearRegression()
         model.fit(X, y)
 
-        # Predict suggested hours based on budget
+        # Wattage percentage graph
+        st.write('\n')
+        st.subheader("Wattage Percentage Graph")
+        fig, ax = plt.subplots()
+        wattage_percentages = (df["Wattage (W)"] / df["Wattage (W)"].sum()) * 100
+        ax.pie(wattage_percentages, labels=df["Name"], autopct="%1.1f%%", startangle=90)
+        ax.axis("equal")
+        st.pyplot(fig)
+
+                # Predict suggested hours based on budget
         df["Hours Suggested"] = df.apply(
             lambda row: max(
                 (budget / monthly_cost) * row["Cost (Php)"] / (row["Wattage (W)"] * price_per_kwh / 1000),
@@ -125,15 +134,7 @@ if st.session_state.page_selection == "Home":
 
         st.write("### Suggested Appliance Usage")
         st.dataframe(df[["Name", "Hours Used", "Hours Suggested"]])
-
-        # Wattage percentage graph
-        st.write('\n')
-        st.subheader("Wattage Percentage Graph")
-        fig, ax = plt.subplots()
-        wattage_percentages = (df["Wattage (W)"] / df["Wattage (W)"].sum()) * 100
-        ax.pie(wattage_percentages, labels=df["Name"], autopct="%1.1f%%", startangle=90)
-        ax.axis("equal")
-        st.pyplot(fig)
+        
 
     else:
         st.info("Add appliances to calculate and analyze.")
