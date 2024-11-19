@@ -162,18 +162,25 @@ if st.session_state.page_selection == "Budget and Pricing":
         # Calculate wattage percentages
         wattage_percentages = (df["Wattage (W)"] / df["Wattage (W)"].sum()) * 100
         
-        # Create the pie chart with white text
+        # Create the pie chart with white labels and black percentages
         ax.pie(
             wattage_percentages,
             labels=df["Name"],
             autopct=lambda p: f'{p:.1f}%',  # Format percentage
             startangle=90,
-            textprops={'color': 'white'},  # Make text white
+            textprops={'color': 'white'},  # Make labels white
+            pctdistance=0.85,  # Adjust percentage placement
             wedgeprops=dict(edgecolor="w")  # Optional: Highlight edges for better clarity
         )
         
+        # Customize percentage text color separately
+        for text in ax.texts:
+            if text.get_text().startswith('1'):
+                text.set_color('black')  # Set percentage text to black
+        
         ax.axis("equal")  # Ensure the pie is circular
         st.pyplot(fig)
+
 
         # Predict suggested hours
         daily_budget = budget / 30
