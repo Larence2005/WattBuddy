@@ -16,7 +16,7 @@ with st.sidebar:
     st.title("Navigation")
     if st.button("About", use_container_width=True, on_click=set_page_selection, args=("About",)):
         pass  # Selection handled by callback
-
+    
     if st.button("Budget and Pricing", use_container_width=True, on_click=set_page_selection, args=("Budget and Pricing",)):
         pass  # Selection handled by callback
 
@@ -44,7 +44,7 @@ if st.session_state.page_selection == "Budget and Pricing":
         appliance_name = st.text_input("Appliance Name:")
         wattage = st.number_input("Wattage (in Watts):", min_value=0.0, step=1.0)
         hours_used = st.number_input("Usage Time (in Hours):", min_value=0.0, step=0.1)
-
+        
         # New fields: Multiple day selection and weeks in a month
         selected_days = st.multiselect(
             "Select the days of usage:", 
@@ -58,7 +58,7 @@ if st.session_state.page_selection == "Budget and Pricing":
             value=4, 
             step=1
         )
-
+    
         # Submit button
         add_appliance = st.form_submit_button("Add Appliance")
         if add_appliance:
@@ -68,7 +68,7 @@ if st.session_state.page_selection == "Budget and Pricing":
                 daily_cost = kwh_consumed * price_per_kwh
                 monthly_days = len(selected_days) * weeks_in_month  # Total selected days in the month
                 monthly_cost = daily_cost * monthly_days
-
+                
                 # Add appliance data to session state
                 st.session_state["appliances"].append({
                     "Name": appliance_name,
@@ -81,41 +81,37 @@ if st.session_state.page_selection == "Budget and Pricing":
                     "Monthly Cost (Php)": monthly_cost
                 })
                 st.success(f"{appliance_name} added successfully!")
-
+    
     # Display appliances
     if st.session_state["appliances"]:
         st.subheader("Appliance List")
-
+    
         # Create DataFrame from session state
         df = pd.DataFrame(st.session_state["appliances"])
-
+    
         # Display the appliance data
         st.dataframe(df[["Name", "Wattage (W)", "Hours Used", "Days Used", "Weeks in Month", "Cost (Php)", "Monthly Cost (Php)"]])
-
+    
         # Add remove buttons with a flag to catch removal action
         for idx, row in df.iterrows():
             # Use a unique key for each button based on index
             remove_button = st.button(f"Remove {row['Name']}", key=f"remove_{idx}")
-
+            
             if remove_button:
                 # Remove the appliance from the session state by matching the appliance name
                 st.session_state["appliances"] = [appliance for appliance in st.session_state["appliances"] if appliance["Name"] != row["Name"]]
                 st.success(f"Appliance '{row['Name']}' removed!")
 
-
+            
 
         # Total consumption and cost
-        # Total consumption and cost (updated for correct monthly calculation)
         total_cost = df["Cost (Php)"].sum()
         total_kwh = df["kWh Consumed"].sum()
+
         # Calculate monthly values
         monthly_cost = total_cost * 30  # Assuming 30 days in a month
         monthly_kwh = total_kwh * 30  # Assuming usage is similar every day
-        
-        # Calculate the correct monthly cost by considering each appliance's specific usage days
-        monthly_cost = df.apply(lambda row: row["Cost (Php)"] * len(row["Days Used"].split(", ")) * row["Weeks in Month"], axis=1).sum()
-        monthly_kwh = df.apply(lambda row: row["kWh Consumed"] * len(row["Days Used"].split(", ")) * row["Weeks in Month"], axis=1).sum()
-        
+
         # Display total and monthly stats
         st.write('\n')
         st.write(f"#### Electric Cost (Per Day): Php {total_cost:.2f}")
@@ -173,7 +169,7 @@ if st.session_state.page_selection == "Budget and Pricing":
         # Predict suggested hours using the trained Linear Regression model
         daily_budget = budget / 30  # Daily budget based on total budget
         cost_per_hour = model.coef_[0][0]  # Coefficient from the Linear Regression model (cost per hour)
-
+        
         # Suggest hours based on budget and cost relationship
         df["Hours Suggested"] = df.apply(
             lambda row: 0 if classification in ["low", "balanced"] else min(
@@ -182,16 +178,16 @@ if st.session_state.page_selection == "Budget and Pricing":
             ),
             axis=1,
         )
-
+        
         # Display the updated suggestions in a bulletin format
         st.write("\n")
         st.write("\n### Usage Suggestions:")
-
+        
         # Iterate over the rows and create a bullet point list for each appliance
         for index, row in df.iterrows():
             st.write(f"- **{row['Name']}**: Suggested Hours = {row['Hours Suggested']:.2f} hours")
 
-
+        
     else:
         st.info("Add appliances to calculate and analyze.")
 
