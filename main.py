@@ -21,7 +21,7 @@ with st.sidebar:
     if st.button("About", use_container_width=True, on_click=set_page_selection, args=("About",)):
         pass  # Selection handled by callback
     
-    if st.button("Home", use_container_width=True, on_click=set_page_selection, args=("Home",)):
+    if st.button("Budget and Pricing", use_container_width=True, on_click=set_page_selection, args=("Budget and Pricing",)):
         pass  # Selection handled by callback
 
     if st.button("Suggest Appliances", use_container_width=True, on_click=set_page_selection, args=("Suggest Appliances",)):
@@ -29,7 +29,7 @@ with st.sidebar:
 
 
 # Home page content
-if st.session_state.page_selection == "Home":
+if st.session_state.page_selection == "Budget and Pricing":
     # Budget and Pricing Input Section
     st.subheader("Budget and Pricing Input")
     budget = st.number_input("Enter your budget in Php:", min_value=0.0, value=1000.0, step=50.0)
