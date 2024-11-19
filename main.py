@@ -284,19 +284,7 @@ elif st.session_state.page_selection == "Suggest Appliances":
     budget = st.number_input("Enter your total monthly budget for electricity (in ₱):", min_value=0.0, step=1.0)
     essential_only = st.checkbox("Show only essential appliances", value=False)
     
-    # Check if the session state has been initialized
-    if 'last_rate' not in st.session_state:
-        st.session_state.last_rate = rate
-        st.session_state.last_budget = budget
-        st.session_state.recommended_appliances = None
-        st.session_state.total_cost = 0
-    
-    # Check if the rate or budget has changed
-    if st.session_state.last_rate != rate or st.session_state.last_budget != budget:
-        # Update session state with new inputs
-        st.session_state.last_rate = rate
-        st.session_state.last_budget = budget
-    
+    if st.button("Get Recommendations"):
         # Adjust costs based on the user's rate
         dataset['Adjusted Monthly Cost'] = (
             dataset['Rated Power (kWh)'] * dataset['Daily Usage (Hours)'] * rate * 30
@@ -317,16 +305,11 @@ elif st.session_state.page_selection == "Suggest Appliances":
                 total_cost += row['Adjusted Monthly Cost']
                 recommended_appliances.append(row)
     
-        # Store recommendations in session state
-        st.session_state.recommended_appliances = recommended_appliances
-        st.session_state.total_cost = total_cost
-    
-    # Show the recommendations if they exist
-    if st.session_state.recommended_appliances:
-        st.write(f"Appliances within your total monthly budget of ₱{budget} at {rate}₱/kWh:")
-        st.table(pd.DataFrame(st.session_state.recommended_appliances)[[
-            'Appliance Type', 'Essential', 'Rated Power (kWh)', 'Daily Usage (Hours)', 'Adjusted Monthly Cost'
-        ]])
-        st.write(f"Total Monthly Cost: ₱{st.session_state.total_cost}")
-    else:
-        st.write("No combination of appliances fits within your monthly budget.")
+        if recommended_appliances:
+            st.write(f"Appliances within your total monthly budget of ₱{budget} at {rate}₱/kWh:")
+            st.table(pd.DataFrame(recommended_appliances)[[
+                'Appliance Type', 'Essential', 'Rated Power (kWh)', 'Daily Usage (Hours)', 'Adjusted Monthly Cost'
+            ]])
+            st.write(f"Total Monthly Cost: ₱{total_cost}")
+        else:
+            st.write("No combination of appliances fits within your monthly budget.")
