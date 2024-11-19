@@ -3,6 +3,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.preprocessing import LabelEncoder
 
 #more stable
 
@@ -263,3 +266,23 @@ elif st.session_state.page_selection == "Suggest Appliances":
     st.write('\n')
     st.write('Data set used for this auto suggestion is from year 2022')
     st.write('Rating: Php10.4')
+
+
+# Load the dataset
+dataset = pd.read_csv('appliance_data.csv')
+
+# Preprocess data
+le = LabelEncoder()
+dataset['Appliance Type Encoded'] = le.fit_transform(dataset['Appliance Type'])
+
+# Feature selection
+X = dataset[['Estimated Energy Consumption per kWh', 'Appliance Type Encoded']]
+y = dataset['Predicted Cost']
+
+# Split the dataset
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Train the model
+model = RandomForestRegressor(n_estimators=100, random_state=42)
+model.fit(X_train, y_train)
+
