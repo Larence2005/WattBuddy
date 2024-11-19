@@ -123,15 +123,14 @@ if st.session_state.page_selection == "Budget and Pricing":
         ax.axis("equal")
         st.pyplot(fig)
 
-        # Predict suggested cost per hour using the trained model
-        predicted_cost_per_hour = model.predict(df["Hours Used"].values.reshape(-1, 1))
-        
-        # Suggested hours based on the predicted cost
+        # Predict suggested hours based on budget
         df["Hours Suggested"] = df.apply(
             lambda row: max(
-                model.predict([[budget / monthly_cost]])[0][0] if classification == "high" else row["Hours Used"],
+                (budget / monthly_cost) * row["Cost (Php)"] / (row["Wattage (W)"] * price_per_kwh / 1000),
                 0,
-            ),
+            )
+            if classification == "high"
+            else row["Hours Used"],
             axis=1,
         )
 
