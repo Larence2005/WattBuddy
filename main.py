@@ -270,29 +270,6 @@ elif st.session_state.page_selection == "Suggest Appliances":
 
 
     
-    # Load the dataset
-    dataset = pd.read_csv('appliance_data_philippines_monthly.csv')
-    
-    # Encode appliance type and essentiality
-    le = LabelEncoder()
-    dataset['Appliance Type Encoded'] = le.fit_transform(dataset['Appliance Type'])
-    dataset['Essential Encoded'] = dataset['Essential'].astype(int)
-    
-    # Features and target variable
-    X = dataset[['Rated Power (kWh)', 'Daily Usage (Hours)', 'Appliance Type Encoded', 'Essential Encoded']]
-    y = dataset['Monthly Cost']
-    
-    # Train-test split
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-    
-    # Train the random forest model
-    model = RandomForestRegressor(n_estimators=100, random_state=42)
-    model.fit(X_train, y_train)
-    
-    # Save the trained model using joblib
-    joblib.dump(model, 'appliance_model_philippines_monthly.joblib')
-
-
     # Load the trained model using joblib
     model = joblib.load('appliance_model_philippines_monthly.joblib')
     
@@ -309,7 +286,7 @@ elif st.session_state.page_selection == "Suggest Appliances":
     
     if st.button("Get Recommendations"):
         # Adjust costs based on the user's rate
-        dataset['Monthly Cost'] = np.round(
+        dataset['Adjusted Monthly Cost'] = np.round(
             dataset['Rated Power (kWh)'] * dataset['Daily Usage (Hours)'] * rate * 30, 2
         )
     
@@ -324,8 +301,8 @@ elif st.session_state.page_selection == "Suggest Appliances":
         total_cost = 0
     
         for _, row in filtered_data.iterrows():
-            if total_cost + row['Monthly Cost'] <= budget:
-                total_cost += row['Monthly Cost']
+            if total_cost + row['Adjusted Monthly Cost'] <= budget:
+                total_cost += row['Adjusted Monthly Cost']
                 recommended_appliances.append(row)
     
         if recommended_appliances:
