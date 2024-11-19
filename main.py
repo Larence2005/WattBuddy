@@ -2,8 +2,6 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
-from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
-
 #more stable
 #100 percent accurate
 # Initialize session state for page selection
@@ -150,7 +148,6 @@ if st.session_state.page_selection == "Budget and Pricing":
         model = LinearRegression()
         model.fit(X, y)
 
-
         # Wattage percentage graph
         st.write('\n')
         st.subheader("Wattage Percentage Graph")
@@ -175,47 +172,24 @@ if st.session_state.page_selection == "Budget and Pricing":
         # Display the suggested hours and saved percentage based on hours reduction
         st.write("\n")
         st.write("### Usage Suggestions:")
-        
+
         for idx, row in df.iterrows():
             appliance_name = row["Name"]
             hours_used = row["Hours Used"]
             hours_suggested = row["Hours Suggested"]
-            
+
             # Calculate the saved percentage based on hours reduction
             if hours_used > 0:
                 saved_percentage = ((hours_used - hours_suggested) / hours_used) * 100
             else:
                 saved_percentage = 0
-            
+
             # Display each appliance as a bullet point
             st.write(f"**{appliance_name}:**")
             st.write(f"  - Hours Used: {hours_used} hours")
             st.write(f"  - Suggested Hours: {hours_suggested:.2f} hours")
             st.write(f"  - Saved Percentage: {saved_percentage:.2f}%")
             st.write("\n")
-
-
-            # Predict the target values
-            y_pred = model.predict(X)
-            
-            # Calculate R-squared
-            r2 = r2_score(y, y_pred)
-            
-            # Calculate Mean Absolute Error
-            mae = mean_absolute_error(y, y_pred)
-            
-            # Calculate Mean Squared Error
-            mse = mean_squared_error(y, y_pred)
-            
-            # Calculate Root Mean Squared Error
-            rmse = mse ** 0.5
-            
-            # Print the metrics
-            print(f"R-squared: {r2:.2f}")
-            print(f"Mean Absolute Error: {mae:.2f}")
-            print(f"Mean Squared Error: {mse:.2f}")
-            print(f"Root Mean Squared Error: {rmse:.2f}")
-
 
 
     else:
