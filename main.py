@@ -148,7 +148,6 @@ if st.session_state.page_selection == "Budget and Pricing":
             axis=1,
         )
 
-
         
         # Display the updated table with suggested hours
         st.write("\n")
