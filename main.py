@@ -155,9 +155,23 @@ if st.session_state.page_selection == "Budget and Pricing":
         st.write('\n')
         st.subheader("Wattage Percentage Graph")
         fig, ax = plt.subplots()
+        
+        # Set the figure background to transparent
+        fig.patch.set_alpha(0.0)
+        
+        # Calculate wattage percentages
         wattage_percentages = (df["Wattage (W)"] / df["Wattage (W)"].sum()) * 100
-        ax.pie(wattage_percentages, labels=df["Name"], autopct="%1.1f%%", startangle=90)
-        ax.axis("equal")
+        
+        # Create the pie chart
+        ax.pie(
+            wattage_percentages,
+            labels=df["Name"],
+            autopct="%1.1f%%",
+            startangle=90,
+            wedgeprops=dict(edgecolor="w")  # Optional: Highlight edges for better clarity
+        )
+        
+        ax.axis("equal")  # Ensure the pie is circular
         st.pyplot(fig)
 
         # Predict suggested hours
