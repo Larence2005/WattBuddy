@@ -154,6 +154,7 @@ if st.session_state.page_selection == "Budget and Pricing":
 
         # Wattage percentage graph with dropdown toggle
         st.write('\n')
+        acc = 1
         st.subheader("Wattage Percentage Graph")
         
         # Create a dropdown (selectbox) to toggle the visibility of the graph
