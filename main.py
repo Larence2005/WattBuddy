@@ -154,6 +154,7 @@ if st.session_state.page_selection == "Budget and Pricing":
         
         # Display usage suggestions in sentence format with bold names and bullet points
         st.write("\n")
+        st.write("\n")
         st.write("\n### Usage Suggestions:")
         for index, row in df.iterrows():
             st.write(f"**{row['Name']}**")
