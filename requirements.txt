@@ -5,4 +5,4 @@ matplotlib
 LinearRegression
 scikit-learn
 streamlit_navigation_bar
-pickle
+joblib
