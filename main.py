@@ -1,8 +1,10 @@
+#Imports
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 
+#----------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Initialize session state for page selection
 if 'page_selection' not in st.session_state:
     st.session_state.page_selection = 'About'
@@ -10,7 +12,7 @@ if 'page_selection' not in st.session_state:
 def set_page_selection(page):
     st.session_state.page_selection = page
 
-
+#----------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Sidebar navigation
 with st.sidebar:
     st.title("Navigation")
@@ -23,7 +25,7 @@ with st.sidebar:
     if st.button("Suggest Appliances", use_container_width=True, on_click=set_page_selection, args=("Suggest Appliances",)):
         pass  # Selection handled by callback
 
-
+#----------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Home page content
 if st.session_state.page_selection == "Budget and Pricing":
     # Budget and Pricing Input Section
@@ -54,7 +56,8 @@ if st.session_state.page_selection == "Budget and Pricing":
                     "Cost (Php)": (wattage * hours_used / 1000) * price_per_kwh
                 })
                 st.success(f"{appliance_name} added successfully!")
-
+                
+#----------------------------------------------------------------------------------------------------------------------------------------------------------------
     # Display appliances
     if st.session_state["appliances"]:
         st.subheader("Appliance List")
@@ -146,18 +149,32 @@ if st.session_state.page_selection == "Budget and Pricing":
     else:
         st.info("Add appliances to calculate and analyze.")
 
+#----------------------------------------------------------------------------------------------------------------------------------------------------------------
 # About page content
 elif st.session_state.page_selection == "About":
     st.title("WattBuddy")
     st.subheader("Your Electricity Advisor")
+    
     st.write('\n')
+    
     st.header("About WattBuddy")
     st.write("""
         WattBuddy helps users manage their electricity consumption and budget. By entering the cost of electricity and 
         adding appliances, users can calculate the total cost and consumption based on their usage.
-        The app also provides suggestions for adjusting appliance usage to stay within the given budget.
+        The app also provides suggestions for adjusting appliance usage to stay within the given budget. 
+        It also provides a list of suggested applicances base on the users budget.
     """)
 
+    st.header("Made By: Cardinal Byte")
+    st.subheader("Member:")
+    st.write("""  
+                Evan Vincent B. Lim
+                John Larence D. Lusaya
+                Kobe Aniban Lituañas
+                Louis Patrick N. Jaso
+              """)
+
+#----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #Suggest Appliances content
 elif st.session_state.page_selection == "Suggest Appliances":
     st.header("This page suggests appliances based on your budget")
