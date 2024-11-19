@@ -11,7 +11,6 @@ def set_page_selection(page):
     st.session_state.page_selection = page
 
 # App title
-st.title("WattBuddy")
 st.subheader("Your Electricity Advisor")
 st.write('\n')
 
@@ -31,6 +30,7 @@ with st.sidebar:
 # Home page content
 if st.session_state.page_selection == "Budget and Pricing":
     # Budget and Pricing Input Section
+    st.title("WattBuddy")
     st.subheader("Budget and Pricing Input")
     budget = st.number_input("Enter your budget in Php:", min_value=0.0, value=1000.0, step=50.0)
     price_per_kwh = st.number_input("Enter Meralco's price per kWh in Php:", min_value=0.0, value=10.0, step=0.1)
@@ -146,7 +146,8 @@ if st.session_state.page_selection == "Budget and Pricing":
 
 # About page content
 elif st.session_state.page_selection == "About":
-    st.header("About WattBuddy")
+    st.title("WattBuddy")
+    st.subheader("About WattBuddy")
     st.write("""
         WattBuddy helps users manage their electricity consumption and budget. By entering the cost of electricity and 
         adding appliances, users can calculate the total cost and consumption based on their usage.
