@@ -81,14 +81,16 @@ if st.session_state.page_selection == "Budget and Pricing":
                     "Monthly Cost (Php)": monthly_cost
                 })
                 st.success(f"{appliance_name} added successfully!")
-    
+
     # Display appliances
     if st.session_state["appliances"]:
         st.subheader("Appliance List")
-    
+
+        # Create DataFrame from session state
+        df = pd.DataFrame(st.session_state["appliances"])
+
         # Display the appliance data
         st.dataframe(df[["Name", "Wattage (W)", "Hours Used", "Days Used", "Weeks in Month", "Cost (Php)", "Monthly Cost (Php)"]])
-        st.dataframe(df)
 
         # Add remove buttons with a flag to catch removal action
         for idx, row in df.iterrows():
@@ -96,22 +98,24 @@ if st.session_state.page_selection == "Budget and Pricing":
             remove_button = st.button(f"Remove {row['Name']}", key=f"remove_{idx}")
 
             if remove_button:
-                # Remove the appliance from the session state without rerun
-                st.session_state["appliances"].pop(idx)  # Remove the appliance from the list
-                st.session_state['removed_appliance'] = row['Name']  # Store the removed appliance's name
                 # Remove the appliance from the session state by matching the appliance name
                 st.session_state["appliances"] = [appliance for appliance in st.session_state["appliances"] if appliance["Name"] != row["Name"]]
                 st.success(f"Appliance '{row['Name']}' removed!")
 
 
+
         # Total consumption and cost
+        # Total consumption and cost (updated for correct monthly calculation)
         total_cost = df["Cost (Php)"].sum()
         total_kwh = df["kWh Consumed"].sum()
-
         # Calculate monthly values
         monthly_cost = total_cost * 30  # Assuming 30 days in a month
         monthly_kwh = total_kwh * 30  # Assuming usage is similar every day
-
+        
+        # Calculate the correct monthly cost by considering each appliance's specific usage days
+        monthly_cost = df.apply(lambda row: row["Cost (Php)"] * len(row["Days Used"].split(", ")) * row["Weeks in Month"], axis=1).sum()
+        monthly_kwh = df.apply(lambda row: row["kWh Consumed"] * len(row["Days Used"].split(", ")) * row["Weeks in Month"], axis=1).sum()
+        
         # Display total and monthly stats
         st.write('\n')
         st.write(f"#### Electric Cost (Per Day): Php {total_cost:.2f}")
@@ -174,16 +178,18 @@ if st.session_state.page_selection == "Budget and Pricing":
         df["Hours Suggested"] = df.apply(
             lambda row: 0 if classification in ["low", "balanced"] else min(
                 daily_budget / (row["Wattage (W)"] * price_per_kwh / 1000),  # Maximum hours within budget
-                model.predict([[row["Hours Used"]]])[0][0] / cost_per_hour,  # Predicted hours from the model
+                model.predict([[row["Hours Used"]]])[0] / cost_per_hour,  # Predicted hours from the model
             ),
             axis=1,
         )
 
-
-        # Display the updated table with suggested hours
+        # Display the updated suggestions in a bulletin format
         st.write("\n")
         st.write("\n### Usage Suggestions:")
-        st.dataframe(df[["Name", "Hours Used", "Cost (Php)", "Hours Suggested"]])
+
+        # Iterate over the rows and create a bullet point list for each appliance
+        for index, row in df.iterrows():
+            st.write(f"- **{row['Name']}**: Suggested Hours = {row['Hours Suggested']:.2f} hours")
 
 
     else:
