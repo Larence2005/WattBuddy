@@ -152,30 +152,39 @@ if st.session_state.page_selection == "Budget and Pricing":
 
 
 
-        # Wattage percentage graph
-        acc = 1.0
+        # Wattage percentage graph with dropdown toggle
         st.write('\n')
         st.subheader("Wattage Percentage Graph")
-        fig, ax = plt.subplots()
         
-        # Set the figure background to transparent
-        fig.patch.set_alpha(0.0)
-        
-        # Calculate wattage percentages
-        wattage_percentages = (df["Wattage (W)"] / df["Wattage (W)"].sum()) * 100
-        
-        # Create the pie chart with white text
-        ax.pie(
-            wattage_percentages,
-            labels=df["Name"],
-            autopct=lambda p: f'{p:.1f}%',  # Format percentage
-            startangle=90,
-            textprops={'color': 'white'},  # Make text white
-            wedgeprops=dict(edgecolor="w")  # Optional: Highlight edges for better clarity
+        # Create a dropdown (selectbox) to toggle the visibility of the graph
+        graph_visibility = st.selectbox(
+            "Select Graph Visibility",
+            options=["Hide Graph", "Show Graph"],  # Options to show or hide the graph
+            index=1  # Default is to show the graph
         )
         
-        ax.axis("equal")  # Ensure the pie is circular
-        st.pyplot(fig)
+        if graph_visibility == "Show Graph":
+            fig, ax = plt.subplots()
+            
+            # Set the figure background to transparent
+            fig.patch.set_alpha(0.0)
+            
+            # Calculate wattage percentages
+            wattage_percentages = (df["Wattage (W)"] / df["Wattage (W)"].sum()) * 100
+            
+            # Create the pie chart with white text
+            ax.pie(
+                wattage_percentages,
+                labels=df["Name"],
+                autopct=lambda p: f'{p:.1f}%',  # Format percentage
+                startangle=90,
+                textprops={'color': 'white'},  # Make text white
+                wedgeprops=dict(edgecolor="w")  # Optional: Highlight edges for better clarity
+            )
+            
+            ax.axis("equal")  # Ensure the pie is circular
+            st.pyplot(fig)
+
 
 
         # Predict suggested hours
