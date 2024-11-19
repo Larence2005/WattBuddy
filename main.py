@@ -149,9 +149,12 @@ if st.session_state.page_selection == "Budget and Pricing":
                 appliance_percentage_saved = (appliance_monthly_cost / remaining_budget) * 100
                 money_saved_texts.append(f"{row['Name']}: Money saved = {appliance_percentage_saved:.2f}%")
             else:
-                # Loss percentage if there is no remaining budget
-                appliance_percentage_loss = (appliance_monthly_cost / -remaining_budget) * 100
-                money_saved_texts.append(f"{row['Name']}: Potential loss = {appliance_percentage_loss:.2f}%")
+                # Calculate the total monthly loss (only if monthly cost exceeds the budget)
+                total_monthly_loss = max(monthly_cost - budget, 0)
+                
+                # Display the total monthly loss
+                st.write(f"**Total Monthly Loss: Php {total_monthly_loss:.2f}**")
+
         
         st.write(f"**Total Monthly Loss: Php {total_monthly_loss:.2f}**")
         for text in money_saved_texts:
