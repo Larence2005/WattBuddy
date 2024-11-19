@@ -55,24 +55,22 @@ if st.session_state.page_selection == "Budget and Pricing":
                 })
                 st.success(f"{appliance_name} added successfully!")
 
-    
-    # Check if appliances list is initialized and not empty
-    if "appliances" in st.session_state and st.session_state["appliances"]:
-        df = pd.DataFrame(st.session_state["appliances"])  # Create DataFrame from session state
+    # Display appliances
+    if st.session_state["appliances"]:
         st.subheader("Appliance List")
+        df = pd.DataFrame(st.session_state["appliances"])
         st.dataframe(df)
     
-        # Add remove buttons
+        # Add remove buttons with a flag to catch removal action
         for idx, row in df.iterrows():
+            # Use a unique key for each button based on index
             remove_button = st.button(f"Remove {row['Name']}", key=f"remove_{idx}")
+            
             if remove_button:
-                # Safely remove the appliance
-                st.session_state["appliances"] = [
-                    appliance for i, appliance in enumerate(st.session_state["appliances"]) if i != idx
-                ]
+                # Remove the appliance from the session state without rerun
+                st.session_state["appliances"].pop(idx)  # Remove the appliance from the list
+                st.session_state['removed_appliance'] = row['Name']  # Store the removed appliance's name
                 st.success(f"Appliance '{row['Name']}' removed!")
-                st.experimental_rerun()  # Rerun the script to update the UI
-
             
 
         # Total consumption and cost
